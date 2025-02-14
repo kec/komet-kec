@@ -6,20 +6,21 @@ import javafx.scene.layout.Pane;
 
 
 /**
- * Defines a sealed interface representing component panes that handle observable entities.
- * This interface extends {@code KlPane}, with its generic type bound to {@code Pane},
- * integrating observable components into JavaFX pane structures.
+ * Represents a component pane that integrates an observable entity and a JavaFX {@code Pane}.
  *
- * Subinterfaces of {@code KlComponentPane} include specialized implementations
- * for handling specific types of observable entities such as patterns, semantics, stamps,
- * concepts, and generic components. These subinterfaces add context-specific
- * functionalities while leveraging the base features provided by {@code KlComponentPane}.
+ * The {@code KlComponentPane} interface defines a contract for panes that manage an
+ * observable entity alongside a JavaFX {@code Pane}. This interface enables managing
+ * specific types of observable entities by extending it for various implementations
+ * such as {@code KlConceptPane}, {@code KlPatternPane}, {@code KlSemanticPane},
+ * {@code KlStampPane}, or {@code KlGenericComponentPane}.
  *
- * The interface permits concrete, non-sealed subinterfaces: {@code KlConceptPane},
- * {@code KlGenericComponentPane}, {@code KlPatternPane}, {@code KlSemanticPane},
- * and {@code KlStampPane}.
+ * The {@code OE} generic parameter defines the type of observable entity, while the
+ * {@code P} parameter specifies the type of JavaFX {@code Pane}.
+ *
+ * @param <OE> the type of observable entity associated with this component pane
+ * @param <P> the type of JavaFX {@code Pane} for this component pane
  */
-public sealed interface KlComponentPane<OE extends ObservableEntity> extends KlPane<Pane>
+public sealed interface KlComponentPane<OE extends ObservableEntity, P extends Pane> extends KlPane<P>
         permits KlConceptPane, KlGenericComponentPane, KlPatternPane, KlSemanticPane, KlStampPane {
     /**
      * Retrieves the observable component associated with this pane.

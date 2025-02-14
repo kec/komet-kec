@@ -1,5 +1,6 @@
 package dev.ikm.komet.layout;
 
+import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.common.util.uuid.UuidT5Generator;
 import javafx.collections.ObservableMap;
@@ -21,6 +22,51 @@ import java.util.UUID;
 
 public non-sealed interface KlWidget<T extends Parent> extends KlGadget<T> {
 
+    /**
+     * Enumeration representing layout preferences for a {@code KlWidget}.
+     * Each enum constant defines a specific preference key tied to layout
+     * and configuration settings used within the {@code KlWidget} or related
+     * components. Preferences include layout indices, spans, grow priorities,
+     * alignments, and margins.
+     * <p>
+     * Each preference key has an associated default value, which can be retrieved
+     * using the {@code defaultValue()} method. These preferences are specifically
+     * designed to work within a {@code GridPane}-based layout.
+     * <p>
+     * Enum Constants:
+     * <p>- COLUMN_INDEX: Represents the column index with a default value of 0.
+     * <p>- ROW_INDEX: Represents the row index with a default value of 0.
+     * <p>- COLUMN_SPAN: Represents the number of columns spanned, defaulting to 1.
+     * <p>- ROW_SPAN: Represents the number of rows spanned, defaulting to 1.
+     * <p>- H_GROW: Indicates the horizontal growth priority using {@code Priority}.
+     * <p>- V_GROW: Indicates the vertical growth priority using {@code Priority}.
+     * <p>- H_ALIGNMENT: Specifies the horizontal alignment using {@code Pos}.
+     * <p>- V_ALIGNMENT: Specifies the vertical alignment using {@code Pos}.
+     * <p>- MARGIN: Defines the layout margins using {@code Insets}.
+     * <p>NOTE: these values are stored in the ObservableMap of the {@code klWidget().properties()},
+     * If future KlWidget needs dictate keys not associated with this ObservableMap, they may be accomidated
+     * in a separate enumeration class and added to save and restore independently.
+     */
+    enum PreferenceKeys implements PropertyWithDefault {
+        COLUMN_INDEX(0),
+        ROW_INDEX(0),
+        COLUMN_SPAN(1),
+        ROW_SPAN(1),
+        H_GROW(Priority.NEVER.name()),
+        V_GROW(Priority.NEVER.name()),
+        H_ALIGNMENT(HPos.LEFT.name()),
+        V_ALIGNMENT(VPos.TOP.name()),
+        MARGIN(Insets.EMPTY);
+
+        final Object defaultValue;
+        PreferenceKeys(Object defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+        @Override
+        public Object defaultValue() {
+            return this.defaultValue;
+        }
+    }
     default KometPreferences preferences() {
         // TODO eliminate this after refactoring existing KlWidgets to support KlGadget, and factories with preferences.
         throw new UnsupportedOperationException("Please override and implement...");
@@ -157,95 +203,71 @@ public non-sealed interface KlWidget<T extends Parent> extends KlGadget<T> {
     }
 
     /**
-     * Sets the alignment for the pane in the GridPane layout.
+     * Sets the horizontal alignment for the widget within its grid cell.
      *
-     * @param alignment the positional alignment to set for the pane
+     * @param hPos the horizontal alignment to apply, specified as an HPos value
      */
-    default void setAlignment(Pos alignment) {
-        GridPane.setHalignment(klWidget(), HPos.valueOf(alignment.name()));
-        GridPane.setValignment(klWidget(), VPos.valueOf(alignment.name()));
+    default void setHalignment(HPos hPos) {
+        GridPane.setHalignment(klWidget(), hPos);
     }
 
     /**
-     * Retrieves the alignment of the pane within the GridPane layout.
+     * Retrieves the horizontal alignment of this widget within its grid cell.
      *
-     * This method checks the horizontal and vertical alignment settings of the
-     * pane. If both the horizontal and vertical alignments are not null and
-     * they have the same name, the method returns the corresponding {@code Pos}
-     * value.
-     *
-     * @return the positional alignment of the pane, or null if the alignments are not set or they differ
+     * @return the horizontal alignment represented as an {@code HPos} value.
      */
-    default Pos getAlignment() {
-        HPos halignment = GridPane.getHalignment(klWidget());
-        VPos valignment = GridPane.getValignment(klWidget());
-
-        if (halignment != null && valignment != null && halignment.name().equals(valignment.name())) {
-            return Pos.valueOf(halignment.name());
-        }
-        return null;
+    default HPos getHalignment() {
+        return GridPane.getHalignment(klWidget());
     }
 
     /**
-     * Sets the content bias for the pane within the GridPane layout.
+     * Sets the vertical alignment for this widget within its grid cell in a {@code GridPane} layout.
      *
-     * @param contentBias the orientation bias to set for the content
+     * @param vPos the vertical alignment to apply, specified as a {@code VPos} value
      */
-    default void setContentBias(Orientation contentBias) {
-        GridPane.setHalignment(klWidget(), contentBias == Orientation.HORIZONTAL ? HPos.CENTER : HPos.LEFT);
-        GridPane.setValignment(klWidget(), contentBias == Orientation.VERTICAL ? VPos.CENTER : VPos.TOP);
+    default void setValignment(VPos vPos) {
+        GridPane.setValignment(klWidget(), vPos);
     }
 
     /**
-     * Determines the bias of the content based on the alignment settings within the GridPane layout.
+     * Retrieves the vertical alignment of this widget within its grid cell in a {@code GridPane} layout.
+     * The alignment is represented as a {@code VPos} value.
      *
-     * If the horizontal alignment is CENTER and the vertical alignment is not CENTER,
-     * the method returns HORIZONTAL orientation. If the vertical alignment is CENTER
-     * and the horizontal alignment is not CENTER, the method returns VERTICAL orientation.
-     *
-     * @return the content bias as an Orientation (HORIZONTAL, VERTICAL), or null if neither condition is met.
+     * @return the vertical alignment of the widget within its grid cell.
      */
-    default Orientation getContentBias() {
-        HPos halignment = GridPane.getHalignment(klWidget());
-        VPos valignment = GridPane.getValignment(klWidget());
-
-        if (halignment == HPos.CENTER && valignment != VPos.CENTER) {
-            return Orientation.HORIZONTAL;
-        } else if (valignment == VPos.CENTER && halignment != HPos.CENTER) {
-            return Orientation.VERTICAL;
-        }
-        return null;
+    default VPos getValignment() {
+        return GridPane.getValignment(klWidget());
     }
 
     /**
-     * Sets the insets (margins) for the pane in the GridPane layout.
+     * Sets the margins for the pane in the GridPane layout.
      *
      * @param top the amount of space to be applied to the top of the pane
      * @param right the amount of space to be applied to the right of the pane
      * @param bottom the amount of space to be applied to the bottom of the pane
      * @param left the amount of space to be applied to the left of the pane
      */
-    default void setInsets(double top, double right, double bottom, double left) {
-        setInsets(new Insets(top, right, bottom, left));
+    default void setMargins(double top, double right, double bottom, double left) {
+        setMargins(new Insets(top, right, bottom, left));
     }
 
     /**
-     * Sets the insets (margins) for the pane in the GridPane layout.
+     * Sets the margins from the insets for the pane in the GridPane layout.
      *
      * @param insets the Insets object containing the top, right, bottom, and left margins
      */
-    default void setInsets(Insets insets) {
+    default void setMargins(Insets insets) {
         GridPane.setMargin(klWidget(), insets);
     }
 
     /**
-     * Retrieves the insets (margins) for the pane in the GridPane layout.
+     * Retrieves the margins as insets for the pane in the GridPane layout.
      *
      * The insets determine the amount of space to be applied around the pane.
      *
      * @return the Insets object containing the top, right, bottom, and left margins of the pane
      */
-    default Insets getInsets() {
+    default Insets getMargins() {
         return GridPane.getMargin(klWidget());
     }
 
@@ -255,9 +277,11 @@ public non-sealed interface KlWidget<T extends Parent> extends KlGadget<T> {
      * UUID will not change across the life of this Knowledge Layout Component.
      *
      * @return the UUID representing the unique identifier of the KlWidget.
+     * @deprecated use klObjectId() instead.
      */
+    @Deprecated
     default UUID klWidgetId() {
-        return UuidT5Generator.get(this.getClass().getName() + this.hashCode());
+        return klObjectId();
     }
 
 }

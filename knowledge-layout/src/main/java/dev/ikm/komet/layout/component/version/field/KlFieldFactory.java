@@ -14,7 +14,9 @@ import dev.ikm.komet.framework.view.ObservableView;
  * and context-aware behavior in the produced fields.
  *
  * @param <T> The type of value that the field will handle.
+ * @deprecated use KlFieldPaneFactory
  */
+@Deprecated
 public interface KlFieldFactory<T> {
 
     /**

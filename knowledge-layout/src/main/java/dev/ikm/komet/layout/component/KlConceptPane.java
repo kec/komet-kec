@@ -2,11 +2,24 @@ package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableConcept;
 import javafx.beans.property.ObjectProperty;
+import javafx.scene.layout.Pane;
 
 /**
- * Represents a single Concept presented in a Pane.
+ * Represents a pane bound to an observable concept within a JavaFX application.
+ *
+ * KlConceptPane is a specialized interface that extends the {@code KlComponentPane} interface,
+ * specifically associating its observable component with an {@code ObservableConcept}.
+ * This allows the pane to manage and present an observable concept while supporting properties
+ * and features that enable observation and modification of its state.
+ *
+ * The {@code P} generic parameter defines the type of JavaFX {@code Pane} associated
+ * with this interface.
+ *
+ * @param <P> the type of JavaFX {@code Pane} for this component.
+ * @see KlComponentPane
+ * @see ObservableConcept
  */
-public non-sealed interface KlConceptPane extends KlComponentPane<ObservableConcept> {
+public non-sealed interface KlConceptPane<P extends Pane> extends KlComponentPane<ObservableConcept, P> {
     /**
      * Retrieves the observable concept associated with this pane.
      *

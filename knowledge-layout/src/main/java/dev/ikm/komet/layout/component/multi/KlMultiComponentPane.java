@@ -4,6 +4,7 @@ import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.layout.KlWidget;
 import dev.ikm.komet.layout.component.KlComponentPane;
 import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 
 /**
  * The {@code KlMultiComponentPane} interface provides a contract for presenting
@@ -16,7 +17,7 @@ import javafx.collections.ObservableList;
  * @see ObservableEntity
  * @see KlComponentPane
  */
-public interface KlMultiComponentPane<OE extends ObservableEntity> extends KlWidget {
+public interface KlMultiComponentPane<OE extends ObservableEntity, P extends Pane> extends KlWidget<P> {
     /**
      * Retrieves the list of observable entities associated with this pane.
      *
@@ -28,5 +29,5 @@ public interface KlMultiComponentPane<OE extends ObservableEntity> extends KlWid
      *
      * @return an ObservableList of KlComponentPane objects, representing the individual component panes contained within this multi-component pane.
      */
-    ObservableList<KlComponentPane<OE>> klComponents();
+    ObservableList<KlComponentPane<OE, P>> klComponents();
 }

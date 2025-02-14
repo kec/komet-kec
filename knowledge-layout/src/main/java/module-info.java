@@ -20,5 +20,6 @@ module dev.ikm.komet.layout {
 
     opens dev.ikm.komet.layout to javafx.fxml;
     opens dev.ikm.layout.app to javafx.fxml;
+    exports dev.ikm.komet.layout.component.field;
 
 }

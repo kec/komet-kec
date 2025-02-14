@@ -5,31 +5,35 @@ import dev.ikm.komet.framework.view.ObservableView;
 import dev.ikm.komet.layout.KlEntityType;
 import dev.ikm.komet.layout.window.KlWindowPaneFactory;
 import dev.ikm.komet.preferences.KometPreferences;
+import javafx.scene.layout.Pane;
 import org.eclipse.collections.api.list.ImmutableList;
 
 /**
- * The KlMultiComponentPaneFactory interface is responsible for creating instances of KlMultiComponentPane
- * tailored to a specified list of observable entities, a given observable view, and user preferences.
- * This factory provides a mechanism to define a concrete implementation of the multi-component pane
- * built from observable entities.
+ * This interface defines a factory for creating instances of {@code KlMultiComponentPane}, which are used
+ * to visually manage and present multiple observable entities within a graphical user interface. The created
+ * pane is tailored to specific requirements, including a collection of observable entities, a provided view
+ * for navigation/coordinate settings, and user preferences.
  *
- * @param <OE> The type of ObservableEntity handled by the factory. ObservableEntities are entities
- *             whose versions and properties can be observed and tracked for changes.
+ * @param <OE> the type of observable entity that extends {@link ObservableEntity}; represents the entities
+ *             managed and rendered by the pane created by this factory
+ * @param <P> the type of pane used within the {@code KlMultiComponentPane}; typically extends {@link Pane}
  */
-public interface KlMultiComponentPaneFactory<OE extends ObservableEntity> extends KlWindowPaneFactory, KlEntityType<OE> {
+public interface KlMultiComponentPaneFactory<OE extends ObservableEntity, P extends Pane> extends KlWindowPaneFactory, KlEntityType<OE> {
 
     /**
-     * Creates an instance of KlMultiComponentPane tailored to the specified observable entities, observable view,
-     * and user preferences. This method constructs a multi-component pane that facilitates layout and comparison
-     * of multiple observable components of the same type.
+     * Creates an instance of {@code KlMultiComponentPane}, which is used to display and manage multiple
+     * observable entities within a graphical user interface, tailored to the provided observable entities,
+     * a specific observable view, and user preferences.
      *
-     * @param observableEntities a list of observable entities whose properties and versions are to be managed
-     *                           and rendered within the created pane
-     * @param observableView an observable view that provides coordinate and navigation settings for the pane
-     * @param preferences user preferences that influence the configuration and behavior of the created pane
-     * @return an instance of KlMultiComponentPane configured with the specified entities, view, and preferences
+     * @param observableEntities the immutable list of observable entities that will be managed by the created pane;
+     *                           each entity must extend {@link ObservableEntity}
+     * @param observableView     the observable view that provides context, including navigation and coordinate
+     *                           settings for the pane
+     * @param preferences        user-specific preferences that influence the behavior or appearance
+     *                           of the created pane
+     * @return an instance of {@code KlMultiComponentPane} configured according to the provided parameters
      */
-    KlMultiComponentPane<OE> create(ImmutableList<OE> observableEntities,
+    KlMultiComponentPane<OE, P> create(ImmutableList<OE> observableEntities,
                            ObservableView observableView,
                            KometPreferences preferences);
 }

@@ -1,24 +1,21 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
+import javafx.scene.layout.Pane;
 
 /**
- * Represents a generic component pane within the Komet framework that handles observable entities.
- * This interface serves as a specialized implementation of {@link KlComponentPane} for
- * generic observable components, offering a flexible structure for presenting and managing
- * components in a visually organized manner.
+ * Represents a generic component pane that supports observable entities and is associated
+ * with a JavaFX {@code Pane}.
  *
- * The {@code KlGenericComponentPane} interface extends the functionalities provided
- * by {@link KlComponentPane}, enabling interaction with {@link ObservableEntity} objects.
+ * KlGenericComponentPane is a specialized non-sealed interface that extends {@code KlComponentPane},
+ * providing the ability to handle generic observable entities. It serves as a flexible extension
+ * for managing and presenting various types of observable entities within JavaFX pane structures.
  *
- * Key responsibilities include:
- * - Supporting the retrieval and observation of generic observable components.
- * - Providing a flexible structure for handling various types of components within the Komet UI.
- * - Facilitating layout integration and customization for entities extending {@link ObservableEntity}.
+ * The `P` generic parameter defines the type of JavaFX {@code Pane} used for visualization.
  *
- * This interface is part of the `dev.ikm.komet.layout.component` package, designed to
- * integrate with the Komet framework's modular UI components while ensuring clarity
- * and consistency in managing entity-based components.
+ * @param <P> the type of JavaFX {@code Pane} associated with this component pane.
+ * @see KlComponentPane
+ * @see Pane
  */
-public non-sealed interface KlGenericComponentPane extends KlComponentPane<ObservableEntity> {
+public non-sealed interface KlGenericComponentPane<P extends Pane> extends KlComponentPane<ObservableEntity, P> {
 }

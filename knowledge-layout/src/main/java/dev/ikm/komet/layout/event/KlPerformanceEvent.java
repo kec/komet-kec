@@ -13,7 +13,7 @@ public interface KlPerformanceEvent extends KlEvent {
       *
       * @return a KlComponentPane instance related to the performance event
       */
-     KlComponentPane<?> performer();
+     KlComponentPane performer();
 
      /**
       * Retrieves the selection on which the event's action was performed.
