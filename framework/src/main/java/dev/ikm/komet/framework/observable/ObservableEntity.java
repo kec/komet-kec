@@ -37,7 +37,7 @@ import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * TODO: should be a way of listening for changes to the versions of the entity?
+ * TODO: should be a way of listening for changes to the versions of the entity? Yes, use the versionProperty()...
  *
  * @param <O>
  * @param <V>
@@ -126,7 +126,7 @@ public abstract class ObservableEntity<O extends ObservableVersion<V>, V extends
         return entityReference.get();
     }
 
-    ObservableList<O> versionProperty() {
+    public ObservableList<O> versionProperty() {
         return versionProperty;
     }
 
