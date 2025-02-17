@@ -3,14 +3,20 @@ package dev.ikm.komet.layout.component;
 import dev.ikm.komet.framework.observable.ObservableSemantic;
 
 /**
- * A factory interface for creating instances of {@code KlSemanticPane} associated with a specific
- * type of {@code ObservableSemantic}. This interface extends {@code KlComponentPaneFactory},
- * inheriting its capabilities while focusing specifically on handling {@code KlSemanticPane}
- * and {@code ObservableSemantic} types.
+ * A factory interface for creating instances of {@code KlSemanticPane} associated
+ * with {@code ObservableSemantic}. This interface specializes the generic
+ * {@code KlComponentPaneFactory} to ensure a direct relationship between the semantic pane
+ * and its observable semantic entity. It provides methods for creating and initializing
+ * semantic panes with specific observable entities and user preferences.
  *
- * @param <T>  the type of {@code KlSemanticPane} being created by this factory
- * @param <OE> the type of {@code ObservableSemantic} that this factory works with
+ * Implementations of this interface are responsible for defining the behavior
+ * for constructing semantic panes that represent or manipulate semantic-related
+ * components within the UI context.
+ *
+ * @see KlComponentPaneFactory
+ * @see KlSemanticPane
+ * @see ObservableSemantic
  */
-public non-sealed interface KlSemanticPaneFactory<T extends KlSemanticPane, OE extends ObservableSemantic>
-        extends KlComponentPaneFactory<T, OE> {
+public non-sealed interface KlSemanticPaneFactory
+        extends KlComponentPaneFactory<KlSemanticPane, ObservableSemantic> {
 }

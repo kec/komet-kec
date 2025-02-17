@@ -3,18 +3,20 @@ package dev.ikm.komet.layout.component.version;
 
 import dev.ikm.komet.framework.observable.ObservablePatternVersion;
 import javafx.beans.property.ObjectProperty;
+import javafx.scene.layout.Pane;
 
 /**
- * The {@code KlPatternVersionPane} interface represents a pane that displays a single version
- * of a pattern.
+ * The {@code KlPatternVersionPane} interface represents a specialized version pane for managing
+ * and presenting instances of {@link ObservablePatternVersion} within the context of a UI layout.
+ * It extends the generic {@code KlVersionPane} to provide specific functionality for handling pattern
+ * version-related entities while maintaining compatibility with the broader version pane framework.
  *
- * This interface is a specialization of {@link KlVersionPane} for handling
- * {@link ObservablePatternVersion} types.
+ * @param <P> the type of the JavaFX {@link Pane} that is used in this pane
  *
- * @see KlVersionPane
  * @see ObservablePatternVersion
+ * @see KlVersionPane
  */
-public non-sealed interface KlPatternVersionPane extends KlVersionPane<ObservablePatternVersion> {
+public non-sealed interface KlPatternVersionPane<P extends Pane> extends KlVersionPane<ObservablePatternVersion, P> {
     /**
      * Returns the observable pattern version associated with this pane.
      * The method retrieves the version by delegating to the {@code version()} method

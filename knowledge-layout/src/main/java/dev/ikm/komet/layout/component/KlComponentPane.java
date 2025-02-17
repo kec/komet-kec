@@ -18,9 +18,9 @@ import javafx.scene.layout.Pane;
  * {@code P} parameter specifies the type of JavaFX {@code Pane}.
  *
  * @param <OE> the type of observable entity associated with this component pane
- * @param <P> the type of JavaFX {@code Pane} for this component pane
+ * @param <FX> the type of JavaFX {@code Pane} for this component pane
  */
-public sealed interface KlComponentPane<OE extends ObservableEntity, P extends Pane> extends KlPane<P>
+public sealed interface KlComponentPane<OE extends ObservableEntity, FX extends Pane> extends KlPane<FX>
         permits KlConceptPane, KlGenericComponentPane, KlPatternPane, KlSemanticPane, KlStampPane {
     /**
      * Retrieves the observable component associated with this pane.

@@ -27,13 +27,13 @@ import dev.ikm.komet.framework.observable.ObservableConceptVersion;
  * - Designed as part of the Komet Knowledge Layout framework to support concept version management.
  * - Works seamlessly with other components within the versioning and layout system.
  *
- * @param <T> the type of the {@link KlConceptVersionPane}.
+ * @param <KL> the type of the {@link KlConceptVersionPane}.
  * @param <OV> the type of the {@link ObservableConceptVersion}.
  *
  * @see KlConceptVersionPane
  * @see ObservableConceptVersion
  * @see KlVersionPaneFactory
  */
-public non-sealed interface KlConceptVersionPaneFactory<T extends KlConceptVersionPane, OV extends ObservableConceptVersion>
-        extends KlVersionPaneFactory<T, OV> {
+public non-sealed interface KlConceptVersionPaneFactory<KL extends KlConceptVersionPane, OV extends ObservableConceptVersion>
+        extends KlVersionPaneFactory<KL, OV> {
 }

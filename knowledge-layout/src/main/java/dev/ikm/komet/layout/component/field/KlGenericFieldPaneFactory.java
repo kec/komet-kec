@@ -1,17 +1,19 @@
 package dev.ikm.komet.layout.component.field;
 
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+
 /**
- * A factory interface for creating instances of {@code KlGenericFieldPane}.
- * This interface extends {@code KlFieldPaneFactory} and specializes it for
- * creating generic field panes that can handle fields of any type in the
- * Knowledge Layout framework.
+ * Represents a specialized factory for creating and managing instances of
+ * {@link KlFieldPane} that operate on generic data of type {@code Object}
+ * and are associated with JavaFX {@link Pane}. This interface provides
+ * methods and mechanisms specifically designed to support the creation
+ * and management of generic field panes within the Knowledge Layout framework.
  *
- * The implementation provides a default method to define the interface class
- * as {@code KlGenericFieldPane.class}.
+ * Extends {@link KlFieldPaneFactory} parameterized with {@code Object} as
+ * the data type, {@link Pane} as the JavaFX parent node type, and
+ * {@link KlFieldPane} as the field pane implementation.
  */
-public interface KlGenericFieldPaneFactory extends KlFieldPaneFactory {
-    @Override
-    default Class<KlGenericFieldPane> klInterfaceClass() {
-        return KlGenericFieldPane.class;
-    }
+public interface KlGenericFieldPaneFactory extends KlFieldPaneFactory<Object, Parent, KlGenericFieldPane> {
+
 }

@@ -10,13 +10,13 @@ import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
  * This factory serves as an extension of {@link KlVersionPaneFactory}, providing a contract specifically
  * for generating UI components that represent semantic versions in a structured and consistent manner.
  *
- * @param <T> the type of {@link KlSemanticVersionPane} that this factory creates
+ * @param <KL> the type of {@link KlSemanticVersionPane} that this factory creates
  * @param <OV> the type of {@link ObservableSemanticVersion} associated with the pane
  *
  * @see KlSemanticVersionPane
  * @see ObservableSemanticVersion
  * @see KlVersionPaneFactory
  */
-public non-sealed interface KlSemanticVersionPaneFactory<T extends KlSemanticVersionPane, OV extends ObservableSemanticVersion>
-        extends KlVersionPaneFactory<T, OV> {
+public non-sealed interface KlSemanticVersionPaneFactory<KL extends KlSemanticVersionPane, OV extends ObservableSemanticVersion>
+        extends KlVersionPaneFactory<KL, OV> {
 }

@@ -10,13 +10,13 @@ import dev.ikm.komet.framework.observable.ObservableStampVersion;
  * methods for constructing version-related panes, and narrows the scope specifically
  * to {@link KlStampVersionPane}.
  *
- * @param <T>  the type of {@link KlStampVersionPane} that the factory will create
+ * @param <KL>  the type of {@link KlStampVersionPane} that the factory will create
  * @param <OV> the type of {@link ObservableStampVersion} that will be associated with the pane
  *
  * @see KlVersionPaneFactory
  * @see ObservableStampVersion
  * @see KlStampVersionPane
  */
-public non-sealed interface KlStampVersionPaneFactory<T extends KlStampVersionPane, OV extends ObservableStampVersion>
-        extends KlVersionPaneFactory<T, OV> {
+public non-sealed interface KlStampVersionPaneFactory<KL extends KlStampVersionPane, OV extends ObservableStampVersion>
+        extends KlVersionPaneFactory<KL, OV> {
 }

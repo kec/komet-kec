@@ -17,6 +17,7 @@ package dev.ikm.komet.framework.observable;
 
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.StampEntity;
+import dev.ikm.tinkar.entity.StampEntityVersion;
 import dev.ikm.tinkar.entity.StampVersionRecord;
 
 public class ObservableStamp
@@ -33,5 +34,36 @@ public class ObservableStamp
     @Override
     public ObservableEntitySnapshot getSnapshot(ViewCalculator calculator) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Retrieves the most recent version of the observable stamp based on the timestamp.
+     * If there is only one version, it returns that version.
+     * In the case of multiple versions, it evaluates each version to determine the latest one.
+     * Versions with a timestamp of {@code Long.MIN_VALUE} (cancelled) take precedence and are immediately returned.
+     * Uncommitted versions marked with {@code Long.MAX_VALUE} are ignored in the evaluation of the latest version.
+     *
+     * @return The latest {@link ObservableStampVersion}, or the canceled version if one exists.
+     */
+    public ObservableStampVersion lastVersion() {
+        if (versions().size() == 1) {
+            return versions().get(0);
+        }
+        ObservableStampVersion latest = null;
+        for (ObservableStampVersion version : versions()) {
+            if (version.time() == Long.MIN_VALUE) {
+                // if canceled (Long.MIN_VALUE), the latest is canceled.
+                return version;
+            } else if (latest == null) {
+                latest = version;
+            } else if (latest.time() == Long.MAX_VALUE) {
+                latest = version;
+            } else if (version.time() == Long.MAX_VALUE) {
+                // ignore uncommitted version;
+            } else if (latest.time() < version.time()) {
+                latest = version;
+            }
+        }
+        return latest;
     }
 }

@@ -2,6 +2,7 @@ package dev.ikm.komet.layout.component.version;
 
 import dev.ikm.komet.framework.observable.ObservableConceptVersion;
 import javafx.beans.property.ObjectProperty;
+import javafx.scene.layout.Pane;
 
 /**
  * The {@code KlConceptVersionPane} interface represents a pane that displays a single version
@@ -16,7 +17,7 @@ import javafx.beans.property.ObjectProperty;
  * @see KlVersionPane
  * @see ObservableConceptVersion
  */
-public non-sealed interface KlConceptVersionPane extends KlVersionPane<ObservableConceptVersion> {
+public non-sealed interface KlConceptVersionPane<P extends Pane> extends KlVersionPane<ObservableConceptVersion, P> {
     /**
      * Returns the observable concept version associated with this pane.
      * This method provides a convenience wrapper for getting the version

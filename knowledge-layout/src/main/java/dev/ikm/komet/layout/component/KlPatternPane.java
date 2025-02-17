@@ -5,20 +5,21 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
 /**
- * Represents a single Pattern presented in a Pane.
+ * Represents a pane bound to an observable pattern within a JavaFX application.
  *
- * KlPatternPane is a specialized interface that extends the KlComponentPane interface,
- * binding the observable component to an {@code ObservablePattern}. This allows the pane
- * to handle and present a specific pattern, with support for observing and modifying
- * the underlying pattern-related data.
+ * KlPatternPane is a specialized interface that extends the {@code KlComponentPane} interface,
+ * specifically associating its observable component with an {@code ObservablePattern}.
+ * This allows the pane to manage and present an observable pattern while supporting properties
+ * and features that enable observation and modification of its state.
  *
- * The `P` generic parameter defines the type of JavaFX {@code Pane} associated with this interface.
+ * By implementing this interface, one can work with the observable pattern and its related
+ * JavaFX {@code Pane}, providing a seamless integration between UI components and
+ * the underlying pattern-related observable data.
  *
- * @param <P> the type of JavaFX {@code Pane} for this component.
  * @see KlComponentPane
  * @see ObservablePattern
  */
-public non-sealed interface KlPatternPane<P extends Pane> extends KlComponentPane<ObservablePattern, P> {
+public non-sealed interface KlPatternPane extends KlComponentPane<ObservablePattern, Pane> {
 
     /**
      * Retrieves the observable pattern associated with this pane.

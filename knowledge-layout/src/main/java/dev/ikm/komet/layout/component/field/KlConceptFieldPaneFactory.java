@@ -1,21 +1,23 @@
 package dev.ikm.komet.layout.component.field;
 
+import dev.ikm.komet.layout.KlWidget;
 import dev.ikm.tinkar.entity.ConceptEntity;
+import javafx.scene.layout.Pane;
 
 /**
- * A factory interface for creating instances of {@code KlConceptFieldPane}.
- * This interface extends {@code KlFieldPaneFactory} and specializes it for
- * creating field panes that are designed to manage and interact with fields
- * associated with concept entities in the Knowledge Layout framework.
+ * Represents a factory interface for creating and managing instances of
+ * {@link KlConceptFieldPane}, a specialized implementation of {@link KlFieldPane}
+ * designed for handling fields associated with {@link ConceptEntity}.
  *
- * The implementation provides a default method to define the interface class
- * as {@code KlComponentFieldPane.class}.
+ * This interface extends {@link KlFieldPaneFactory}, parameterized with
+ * {@link ConceptEntity} for data binding, a specific JavaFX {@link Pane} subclass for UI representation,
+ * and {@link KlComponentFieldPane} for component-specific functionality. It provides methods and
+ * mechanisms to generate and manage field panes that integrate concept-related data
+ * with JavaFX layouts.
+ *
+ * @param <FX> The JavaFX {@link Pane} subclass associated with the field pane.
  */
-public interface KlConceptFieldPaneFactory extends
-        KlFieldPaneFactory<ConceptEntity, KlComponentFieldPane<ConceptEntity>> {
+public interface KlConceptFieldPaneFactory<FX extends Pane> extends
+        KlFieldPaneFactory<ConceptEntity, FX, KlComponentFieldPane<ConceptEntity, FX>> {
 
-    @Override
-    default Class<KlComponentFieldPane<ConceptEntity>> klInterfaceClass() {
-        return (Class<KlComponentFieldPane<ConceptEntity>>) (Class<?>) KlComponentFieldPane.class;
-    }
 }

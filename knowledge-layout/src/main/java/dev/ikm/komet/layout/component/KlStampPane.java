@@ -5,19 +5,21 @@ import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
 /**
- * Represents a single Stamp presented in a Pane.
+ * Represents a pane bound to an observable stamp within a JavaFX application.
  *
- * KlStampPane is a specialized interface that extends the KlComponentPane interface,
- * binding the observable component to an {@code ObservableStamp}. This allows the pane
- * to handle and present a specific stamp, with support for observing and modifying
- * the underlying stamp-related data.
+ * KlStampPane is a specialized interface that extends the {@code KlComponentPane} interface,
+ * specifically associating its observable component with an {@code ObservableStamp}.
+ * This allows the pane to manage and present an observable stamp while supporting properties
+ * and features that enable observation and modification of its state.
  *
- * The `P` generic parameter defines the type of JavaFX {@code Pane} associated with this interface.
+ * By implementing this interface, one can work with the observable stamp and its
+ * related JavaFX {@code Pane}, providing a seamless integration between UI components
+ * and the underlying stamp-related observable data.
  *
- * @param <P> the type of JavaFX {@code Pane} for this component.
  * @see KlComponentPane
+ * @see ObservableStamp
  */
-public non-sealed interface KlStampPane<P extends Pane> extends KlComponentPane<ObservableStamp, P> {
+public non-sealed interface KlStampPane extends KlComponentPane<ObservableStamp, Pane> {
 
     /**
      * Retrieves the observable stamp associated with this pane.

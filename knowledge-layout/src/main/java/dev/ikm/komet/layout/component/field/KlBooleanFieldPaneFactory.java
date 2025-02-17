@@ -1,16 +1,15 @@
 package dev.ikm.komet.layout.component.field;
 
+import javafx.scene.layout.Pane;
+
 /**
- * A factory interface for creating instances of {@code KlBooleanFieldPane}.
- * This interface extends {@code KlFieldPaneFactory} and specializes it for
- * working with Boolean-based field panes in the Knowledge Layout framework.
+ * A factory interface for creating instances of {@link KlBooleanFieldPane}. This interface
+ * specializes {@link KlFieldPaneFactory} for working with boolean data types, enabling the
+ * generation and management of {@code KlBooleanFieldPane} implementations to facilitate
+ * layout and interaction with boolean fields in the Knowledge Layout framework.
  *
- * The implementation provides default methods to define the interface class
- * as {@code KlBooleanFieldPane.class}.
+ * @param <FX> The JavaFX {@link Pane} subclass associated with the boolean field pane.
  */
-public interface KlBooleanFieldPaneFactory extends KlFieldPaneFactory<Boolean, KlBooleanFieldPane> {
-    @Override
-    default Class<KlBooleanFieldPane> klInterfaceClass() {
-        return KlBooleanFieldPane.class;
-    }
+public interface KlBooleanFieldPaneFactory<FX extends Pane> extends KlFieldPaneFactory<Boolean, FX, KlBooleanFieldPane<FX>> {
+
 }

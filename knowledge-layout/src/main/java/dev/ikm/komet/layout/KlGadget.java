@@ -32,9 +32,9 @@ import static dev.ikm.komet.layout.KlObject.PropertyKeys.*;
  * This interface provides methods and enumerations to define property keys, user preferences,
  * and mechanisms for retrieving contextual instances of {@code ViewCalculator}.
  *
- * @param <T> the type of the JavaFX component associated with this gadget
+ * @param <FX> the type of the JavaFX component associated with this gadget
  */
-public sealed interface KlGadget<T> extends KlContextSensitiveComponent, KlObject
+public sealed interface KlGadget<FX> extends KlContextSensitiveComponent, KlObject
         permits KlView, KlWidget, KlFxWindow, KlJournalWindow, KlWindowPane {
 
     /**
@@ -42,7 +42,7 @@ public sealed interface KlGadget<T> extends KlContextSensitiveComponent, KlObjec
      *
      * @return an instance of type T, representing a specific knowledge layout gadget.
      */
-    T fxGadget();
+    FX fxGadget();
 
     @Override
     default ObservableMap<Object, Object> properties() {

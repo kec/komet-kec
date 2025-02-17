@@ -2,7 +2,6 @@ package dev.ikm.komet.layout;
 
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
-import dev.ikm.tinkar.common.util.uuid.UuidT5Generator;
 import javafx.collections.ObservableMap;
 import javafx.geometry.*;
 import javafx.scene.Parent;
@@ -17,10 +16,10 @@ import java.util.UUID;
  * functionalities. It extends {@code KlGadget} and genericizes the
  * {@code Node} class, representing the underlying JavaFX node.
  *
- * @param <T> the type of {@code Node} that this widget extends or encapsulates.
+ * @param <FX> the type of {@code Node} that this widget extends or encapsulates.
  */
 
-public non-sealed interface KlWidget<T extends Parent> extends KlGadget<T> {
+public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
 
     /**
      * Enumeration representing layout preferences for a {@code KlWidget}.
@@ -76,7 +75,7 @@ public non-sealed interface KlWidget<T extends Parent> extends KlGadget<T> {
      *
      * @return The widget instance, represented by the specific implementation of the KlWidget.
      */
-    default T fxGadget() {
+    default FX fxGadget() {
         return klWidget();
     }
 

@@ -1,15 +1,21 @@
 package dev.ikm.komet.layout.component.field;
 
 import dev.ikm.tinkar.entity.ConceptEntity;
+import javafx.scene.Parent;
 
 /**
- * Represents a pane in the Knowledge Layout framework that is associated with fields
- * tied to concept entities. This interface extends {@code KlFieldPane}, providing
- * specialized support for managing and interacting with fields whose values are
- * of type {@code ConceptEntity}.
+ * Represents a pane in the Knowledge Layout framework designed to manage and
+ * interact with fields associated with concept entities. This interface extends
+ * {@code KlFieldPane}, parameterized with {@code ConceptEntity} and a parent type
+ * {@code P}, providing specialized support for concept-related field panes.
  *
- * @param <E> the type of {@code ConceptEntity} associated with this field pane
+ * This interface serves as a specialization of {@code KlFieldPane<E, P>} where
+ * {@code E} is constrained to {@code ConceptEntity}. It enables handling and
+ * observing field values tied to concept-specific data in layouts.
+ *
+ * @param <E> the type representing the concept entity managed by this field pane
+ * @param <P> the type of the parent node associated with this pane
  */
-public non-sealed interface KlConceptFieldPane<E extends ConceptEntity>
-        extends KlFieldPane<E> {
+public non-sealed interface KlConceptFieldPane<E extends ConceptEntity, P extends Parent>
+        extends KlFieldPane<E, P> {
 }

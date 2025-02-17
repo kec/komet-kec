@@ -3,14 +3,19 @@ package dev.ikm.komet.layout.component;
 import dev.ikm.komet.framework.observable.ObservablePattern;
 
 /**
- * A specialized factory interface for creating instances of `KlPatternPane` associated with
- * an `ObservablePattern`. This factory is responsible for providing tailored creation
- * methods, ensuring that the resulting panes are properly configured and associated
- * with the specified observable pattern entities.
+ * A factory interface for creating instances of {@code KlPatternPane}, which are specialized
+ * panes associated with {@code ObservablePattern} entities. The {@code KlPatternPaneFactory}
+ * extends the {@code KlComponentPaneFactory} interface and provides methods for creating pattern-based
+ * component panes that present and manage observable pattern data.
  *
- * @param <T>  the type of `KlPatternPane` produced by the factory
- * @param <OE> the type of `ObservablePattern` associated with the `KlPatternPane`
+ * This factory plays a crucial role in creating and initializing {@code KlPatternPane} instances
+ * with specific {@code ObservablePattern} entities. It ensures the proper association and setup
+ * of patterns, supporting dynamic updates and interactions within a JavaFX application.
+ *
+ * @see KlComponentPaneFactory
+ * @see KlPatternPane
+ * @see ObservablePattern
  */
-public non-sealed interface KlPatternPaneFactory<T extends KlPatternPane, OE extends ObservablePattern>
-        extends KlComponentPaneFactory<T, OE> {
+public non-sealed interface KlPatternPaneFactory
+        extends KlComponentPaneFactory<KlPatternPane, ObservablePattern> {
 }

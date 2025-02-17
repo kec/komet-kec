@@ -11,24 +11,32 @@ import dev.ikm.tinkar.common.bind.annotations.publicid.UuidAnnotation;
 import javafx.scene.Parent;
 
 /**
- * Represents a pane in the Knowledge Layout framework that is associated with a specific field.
- * This interface provides mechanisms to interact with and observe the value of the field,
- * as well as property access for the field data.
+ * Represents a pane within the Knowledge Layout framework that is used to manage
+ * and interact with fields associated with various data types. This interface
+ * serves as a base structure for field panes supporting observation and manipulation
+ * of field values through the use of the {@code ObservableField} abstraction.
  *
- * @param <T> the type of the value associated with this field pane
+ * This sealed interface defines the contract for all specific types of field panes
+ * within the framework, including those managing boolean values, concept entities,
+ * generic data, or component fields. It allows for type-safe interactions with the
+ * corresponding field values and provides support for parent node association.
+ *
+ * @param <DT> the data type of the value held and managed within this field pane
+ * @param <FX> the FX component type of the parent UI element associated with the pane
  */
 @FullyQualifiedName("Knowledge Layout field pane")
 @RegularName("Field pane")
 @ParentProxy(parentName = "Komet panels (SOLOR)",
         parentPublicId = @PublicIdAnnotation(@UuidAnnotation("b3d1cdf6-27a5-502d-8f16-ed026a7b9d15")))
-public sealed interface KlFieldPane<T> extends KlWidget<Parent>, ClassConceptBinding permits KlBooleanFieldPane, KlComponentFieldPane, KlConceptFieldPane, KlGenericFieldPane {
+public sealed interface KlFieldPane<DT, FX extends Parent> extends KlWidget<FX>, ClassConceptBinding
+        permits KlBooleanFieldPane, KlComponentFieldPane, KlConceptFieldPane, KlGenericFieldPane {
     /**
      * Retrieves the value associated with the field pane by accessing the value
      * of the underlying {@code ObservableField} instance.
      *
      * @return the value of type {@code T} managed by the associated {@code ObservableField}
      */
-    default T fieldValue() {
+    default DT fieldValue() {
         return getField().value();
     }
 
@@ -38,7 +46,7 @@ public sealed interface KlFieldPane<T> extends KlWidget<Parent>, ClassConceptBin
      * @param field the {@code ObservableField} instance to be associated with this field pane.
      *              It provides the value and observable properties for this field.
      */
-    void setField(ObservableField<T> field);
+    void setField(ObservableField<DT> field);
 
     /**
      * Retrieves the {@code ObservableField} instance associated with this field pane.
@@ -47,6 +55,6 @@ public sealed interface KlFieldPane<T> extends KlWidget<Parent>, ClassConceptBin
      *
      * @return the {@code ObservableField} instance managing the field's data and properties
      */
-    ObservableField<T> getField();
+    ObservableField<DT> getField();
 
 }
