@@ -4,28 +4,23 @@ import dev.ikm.komet.framework.observable.ObservableConcept;
 import javafx.scene.layout.Pane;
 
 /**
- * A specialized factory interface for creating instances of {@code KlComponentPane}
- * associated with {@code ObservableConcept}. This interface extends the
- * {@code KlComponentPaneFactory} to provide functionality specific to the creation
- * of panes for observable concepts. Implementations of this interface are responsible
- * for generating concept-specific component panes, integrating concepts into the Komet
- * framework's UI system.
+ * A non-sealed factory interface for creating instances of {@code KlComponentPane}
+ * specifically associated with concepts observable through the {@code ObservableConcept} type.
  *
- * In this interface:
- * - {@code KL} represents the specific type of {@code KlComponentPane} created by this factory,
- *   tailored to handle {@code ObservableConcept}.
- * - {@code OE} is specifically constrained to {@code ObservableConcept}, ensuring that
- *   this factory supports only concept-related components.
+ * The {@code KlConceptPaneFactory} interface extends the core functionality provided
+ * by {@code KlComponentPaneFactory}, while tightly integrating the factory with
+ * {@code ObservableConcept} entities. This enables the creation of JavaFX-based
+ * UI components representing distinct concept entities, facilitating their use
+ * within the context of the Komet framework's modular layout system.
  *
- * This interface is part of the `dev.ikm.komet.layout.component` package, which focuses
- * on enabling modular and flexible organization of UI components for concepts
- * and other observable entities.
- *
- * @param <KL> the specific type of {@code KlComponentPane} created by the factory
- * @param <OE> the {@code ObservableConcept} type associated with the created component pane
+ * @param <FX> the type of JavaFX pane created by this factory
+ * @param <KL> the type of {@code KlComponentPane} produced, which is tied to both {@code FX}
+ *             and {@code ObservableConcept}
+ * @param <OE> the type parameter representing the {@code ObservableConcept} associated
+ *             with the created {@code KlComponentPane}
  * @see KlComponentPaneFactory
  * @see ObservableConcept
  */
-public non-sealed interface KlConceptPaneFactory<KL extends KlComponentPane<OE, Pane>, OE extends ObservableConcept>
-        extends KlComponentPaneFactory<KL, OE> {
+public non-sealed interface KlConceptPaneFactory<FX extends Pane, KL extends KlComponentPane<OE, FX>, OE extends ObservableConcept>
+        extends KlComponentPaneFactory<FX, KL, OE> {
 }

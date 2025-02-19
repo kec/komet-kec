@@ -12,14 +12,14 @@ import javafx.scene.layout.Pane;
  * This allows the pane to manage and present an observable pattern while supporting properties
  * and features that enable observation and modification of its state.
  *
- * By implementing this interface, one can work with the observable pattern and its related
- * JavaFX {@code Pane}, providing a seamless integration between UI components and
- * the underlying pattern-related observable data.
+ * The {@code FX} generic parameter defines the type of JavaFX {@code Pane} associated
+ * with this interface.
  *
+ * @param <FX> the type of JavaFX {@code Pane} for this component pane.
  * @see KlComponentPane
  * @see ObservablePattern
  */
-public non-sealed interface KlPatternPane extends KlComponentPane<ObservablePattern, Pane> {
+public non-sealed interface KlPatternPane<FX extends Pane> extends KlComponentPane<ObservablePattern, FX> {
 
     /**
      * Retrieves the observable pattern associated with this pane.

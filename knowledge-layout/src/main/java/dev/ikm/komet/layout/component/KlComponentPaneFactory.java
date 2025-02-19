@@ -7,17 +7,27 @@ import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import javafx.scene.layout.Pane;
 
 /**
- * A factory interface for creating instances of {@code KlComponentPane} associated
- * with a specific type of {@code ObservableEntity}. This interface extends
- * {@code KlEntityType} and {@code KlFactory}, providing methods for creating
- * component panes that are associated with a given observable entity and
- * initialized with user preferences. Implementations of this factory specialize
- * in creating specific types of component panes for various observable entities.
+ * A sealed factory interface for creating instances of {@code KlComponentPane}
+ * that are associated with specific {@code ObservableEntity} types. This interface
+ * provides a template for constructing and initializing UI components that are dynamically
+ * bound to observable JavaFX entities. The core functionality includes creating panes
+ * with specified observable entities and applying user preferences.
  *
- * @param <KL>  the specific type of {@code KlComponentPane} created by this factory
- * @param <OE> the type of {@code ObservableEntity} associated with the created component pane
+ * The {@code KlComponentPaneFactory} interface integrates with the type system to restrict
+ * implementers to a predefined set of specific pane factories, ensuring the implementation
+ * of agreed-upon behavior across different types of observable data components.
+ *
+ * This interface extends the {@code KlEntityType} interface for obtaining runtime information
+ * about the observable entity type and the {@code KlFactory} interface for creating specific UI components.
+ *
+ * @param <FX> the type of JavaFX pane created by this factory
+ * @param <KL> the type of {@code KlComponentPane} created, which is tied to both {@code FX}
+ *             and {@code OE}
+ * @param <OE> the type of {@code ObservableEntity} associated with the created {@code KlComponentPane}
+ * @see KlEntityType
+ * @see KlFactory
  */
-public sealed interface KlComponentPaneFactory<KL extends KlComponentPane<OE, Pane>, OE extends ObservableEntity>
+public sealed interface KlComponentPaneFactory<FX extends Pane, KL extends KlComponentPane<OE, FX>, OE extends ObservableEntity>
         extends KlEntityType<OE>, KlFactory<KL>
         permits KlConceptPaneFactory, KlGenericComponentPaneFactory, KlPatternPaneFactory, KlSemanticPaneFactory, KlStampPaneFactory {
     /**

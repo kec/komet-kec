@@ -7,19 +7,20 @@ import javafx.scene.layout.Pane;
 /**
  * Represents a pane bound to an observable semantic within a JavaFX application.
  *
- * {@code KlSemanticPane} is a specialized interface that extends the {@code KlComponentPane} interface,
- * specifically associating its observable component with an {@code ObservableSemantic}.
- * This allows the pane to manage and present an observable semantic while supporting
- * properties and features that enable observation and modification of its state.
+ * The KlSemanticPane interface is a specialized extension of the KlComponentPane
+ * interface, specifically associating its observable component with an {@code ObservableSemantic}.
+ * This enables the pane to manage and present an observable semantic while supporting properties
+ * and features that facilitate observation and modification of its state.
  *
- * By implementing this interface, one can work with the observable semantic and its
- * related JavaFX {@code Pane}, providing a seamless integration between UI components
+ * By implementing this interface, one can seamlessly work with observable semantic entities
+ * and their corresponding JavaFX {@code Pane}, fostering integration between the UI components
  * and the underlying semantic-related observable data.
  *
+ * @param <FX> the type of JavaFX {@code Pane} associated with this semantic pane
  * @see KlComponentPane
  * @see ObservableSemantic
  */
-public non-sealed interface KlSemanticPane extends KlComponentPane<ObservableSemantic, Pane> {
+public non-sealed interface KlSemanticPane<FX extends Pane> extends KlComponentPane<ObservableSemantic, FX> {
 
     /**
      * Retrieves the observable semantic pattern associated with this pane.

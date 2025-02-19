@@ -1,6 +1,7 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableStamp;
+import dev.ikm.tinkar.entity.PatternEntity;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
@@ -12,14 +13,14 @@ import javafx.scene.layout.Pane;
  * This allows the pane to manage and present an observable stamp while supporting properties
  * and features that enable observation and modification of its state.
  *
- * By implementing this interface, one can work with the observable stamp and its
- * related JavaFX {@code Pane}, providing a seamless integration between UI components
- * and the underlying stamp-related observable data.
+ * The {@code FX} generic parameter defines the type of JavaFX {@code Pane} associated
+ * with this interface.
  *
+ * @param <FX> the type of JavaFX {@code Pane} for this component.
  * @see KlComponentPane
  * @see ObservableStamp
  */
-public non-sealed interface KlStampPane extends KlComponentPane<ObservableStamp, Pane> {
+public non-sealed interface KlStampPane<FX extends Pane> extends KlComponentPane<ObservableStamp, FX> {
 
     /**
      * Retrieves the observable stamp associated with this pane.

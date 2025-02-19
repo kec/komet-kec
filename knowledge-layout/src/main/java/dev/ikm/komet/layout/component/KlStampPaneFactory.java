@@ -1,22 +1,23 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableStamp;
+import javafx.scene.layout.Pane;
 
 /**
- * A factory interface for creating instances of {@code KlStampPane},
- * which are specialized component panes associated with an {@code ObservableStamp}.
- * This interface extends the {@code KlComponentPaneFactory} interface, inheriting
- * the ability to create component panes initialized with observable entity data
- * and user preferences.
+ * A factory interface for creating instances of {@code KlStampPane} that associate
+ * with {@code ObservableStamp}. This interface extends the {@code KlComponentPaneFactory}
+ * to specialize its functionality for stamp-related panes. The {@code KlStampPaneFactory}
+ * is responsible for dynamically constructing JavaFX panes tied to observable stamp entities.
  *
- * The {@code KlStampPaneFactory} serves as a bridge between {@code ObservableStamp}
- * entities and their corresponding UI components in a JavaFX application, ensuring
- * seamless interaction and presentation of stamp-related data.
+ * This factory provides the mechanisms essential for managing and initializing
+ * stamp-specific UI components, enabling dynamic binding, user preferences integration,
+ * and other features that support the display and interaction with {@code ObservableStamp} instances.
  *
+ * @param <FX> the type of JavaFX {@code Pane} used in the {@code KlStampPane} implementation
  * @see KlComponentPaneFactory
  * @see KlStampPane
  * @see ObservableStamp
  */
-public non-sealed interface KlStampPaneFactory
-        extends KlComponentPaneFactory<KlStampPane, ObservableStamp> {
+public non-sealed interface KlStampPaneFactory<FX extends Pane>
+        extends KlComponentPaneFactory<FX, KlStampPane<FX>, ObservableStamp> {
 }

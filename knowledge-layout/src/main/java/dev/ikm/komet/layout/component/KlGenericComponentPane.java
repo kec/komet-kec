@@ -13,9 +13,9 @@ import javafx.scene.layout.Pane;
  *
  * The `P` generic parameter defines the type of JavaFX {@code Pane} used for visualization.
  *
- * @param <P> the type of JavaFX {@code Pane} associated with this component pane.
+ * @param <FX> the type of JavaFX {@code Pane} associated with this component pane.
  * @see KlComponentPane
  * @see Pane
  */
-public non-sealed interface KlGenericComponentPane<P extends Pane> extends KlComponentPane<ObservableEntity, P> {
+public non-sealed interface KlGenericComponentPane<FX extends Pane> extends KlComponentPane<ObservableEntity, FX> {
 }
