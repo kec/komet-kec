@@ -62,7 +62,9 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         MAX_HEIGHT(Double.MAX_VALUE),
         MAX_WIDTH(Double.MAX_VALUE),
         PREFERRED_HEIGHT(Region.USE_COMPUTED_SIZE),
-        PREFERRED_WIDTH(Region.USE_COMPUTED_SIZE);
+        PREFERRED_WIDTH(Region.USE_COMPUTED_SIZE),
+        FILL_HEIGHT(true),
+        FILL_WIDTH(true);
 
         final Object defaultValue;
         PreferenceKeys(Object defaultValue) {
@@ -275,6 +277,52 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
      */
     default Insets getMargins() {
         return GridPane.getMargin(klWidget());
+    }
+
+
+    /**
+     * Sets whether the widget should fill its cell's width within the GridPane.
+     *
+     * @param fillWidth a boolean value where {@code true} means the widget should
+     *                  fill the width of its cell, and {@code false} means it should not.
+     */
+    default void setFillWidth(boolean fillWidth) {
+        GridPane.setFillWidth(klWidget(), fillWidth);
+    }
+    /**
+     * Determines whether the widget is configured to fill the available width.
+     *
+     * @return true if the widget is set to fill its width, otherwise false
+     */
+    default boolean getFillWidth() {
+        Boolean fillWidth = GridPane.isFillWidth(klWidget());
+        if (fillWidth == null) {
+            return true;
+        }
+        return fillWidth;
+    }
+
+    /**
+     * Sets whether the widget should fill the available vertical space in its layout container.
+     *
+     * @param fillHeight a boolean indicating whether the widget should fill the vertical space (true) or not (false)
+     */
+    default void setFillHeight(boolean fillHeight) {
+        GridPane.setFillHeight(klWidget(), fillHeight);
+    }
+    /**
+     * Determines whether the height of the target widget within the GridPane should
+     * be expanded to fill its cell, based on the GridPane's isFillHeight property.
+     *
+     * @return true if the height of the widget is set to fill its allocated cell space,
+     *         false otherwise.
+     */
+    default boolean getFillHeight() {
+        Boolean fillHeight = GridPane.isFillHeight(klWidget());
+        if (fillHeight == null) {
+            return true;
+        }
+        return fillHeight;
     }
 
     /**
