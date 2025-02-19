@@ -2,12 +2,15 @@ package dev.ikm.komet.layout;
 
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
+import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableMap;
 import javafx.geometry.*;
 import javafx.scene.Parent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -55,7 +58,11 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         V_GROW(Priority.NEVER.name()),
         H_ALIGNMENT(HPos.LEFT.name()),
         V_ALIGNMENT(VPos.TOP.name()),
-        MARGIN(Insets.EMPTY);
+        MARGIN(Insets.EMPTY),
+        MAX_HEIGHT(Double.MAX_VALUE),
+        MAX_WIDTH(Double.MAX_VALUE),
+        PREFERRED_HEIGHT(Region.USE_COMPUTED_SIZE),
+        PREFERRED_WIDTH(Region.USE_COMPUTED_SIZE);
 
         final Object defaultValue;
         PreferenceKeys(Object defaultValue) {
@@ -268,6 +275,167 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
      */
     default Insets getMargins() {
         return GridPane.getMargin(klWidget());
+    }
+
+    /**
+     * Retrieves the maxHeight property of the associated Region, if present.
+     *
+     * @return an Optional containing the maxHeight DoubleProperty of the Region if the fxGadget is an instance of Region;
+     *         otherwise, an empty Optional
+     */
+    default Optional<DoubleProperty> maxHeightPropertyOptional() {
+        if (fxGadget() instanceof Region region) {
+            return Optional.of(region.maxHeightProperty());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Sets the maximum height for this widget's associated region,
+     * if the underlying FX gadget is an instance of {@code Region}.
+     *
+     * @param maxHeight the maximum height value to set for the associated region
+     */
+    default void setMaxHeight(double maxHeight) {
+        if (fxGadget() instanceof Region region) {
+            region.setMaxHeight(maxHeight);
+        }
+    }
+
+    /**
+     * Retrieves the maximum height for the underlying region associated with this widget.
+     * If the underlying FX gadget is an instance of {@code Region}, the maximum height
+     * specific to that region is returned. Otherwise, the default value for using the
+     * computed size is returned.
+     *
+     * @return the maximum height of the region if applicable, otherwise the value
+     *         {@code Region.USE_COMPUTED_SIZE}.
+     */
+    default double getMaxHeight() {
+        if (fxGadget() instanceof Region region) {
+            return region.getMaxHeight();
+        }
+        return Region.USE_COMPUTED_SIZE;
+    }
+
+    /**
+     * Retrieves the optional maxWidth property of the current fxGadget if it is an instance of Region.
+     *
+     * @return An Optional containing the maxWidth property as a DoubleProperty if the fxGadget is a Region, or an empty Optional if not.
+     */
+    default Optional<DoubleProperty> maxWidthPropertyOptional() {
+        if (fxGadget() instanceof Region region) {
+            return Optional.of(region.maxWidthProperty());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Sets the maximum width for this widget's associated region, if the underlying FX
+     * gadget is an instance of {@code Region}.
+     *
+     * @param maxWidth the maximum width value to set for the associated region
+     */
+    default void setMaxWidth(double maxWidth) {
+        if (fxGadget() instanceof Region region) {
+            region.setMaxWidth(maxWidth);
+        }
+    }
+
+    /**
+     * Retrieves the maximum width for the underlying region associated with this widget.
+     * If the underlying FX gadget is an instance of {@code Region}, the maximum width
+     * specific to that region is returned. Otherwise, the default value for using the
+     * computed size is returned.
+     *
+     * @return the maximum width of the region if applicable, otherwise the value
+     *         {@code Region.USE_COMPUTED_SIZE}.
+     */
+    default double getMaxWidth() {
+        if (fxGadget() instanceof Region region) {
+            return region.getMaxWidth();
+        }
+        return Region.USE_COMPUTED_SIZE;
+    }
+
+    /**
+     * Retrieves the preferred height property of the underlying JavaFX Region
+     * if the fxGadget is an instance of Region.
+     *
+     * @return an Optional containing the preferred height property as a DoubleProperty
+     *         if the fxGadget is an instance of Region, otherwise an empty Optional.
+     */
+    default Optional<DoubleProperty> prefHeightPropertyOptional() {
+        if (fxGadget() instanceof Region region) {
+            return Optional.of(region.prefHeightProperty());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Sets the preferred height for this widget's associated region.
+     * If the underlying FX gadget is an instance of {@code Region}, the preferred height
+     * of the region is updated to the specified value.
+     *
+     * @param prefHeight the preferred height to set for the associated region
+     */
+    default void setPrefHeight(double prefHeight) {
+        if (fxGadget() instanceof Region region) {
+            region.setPrefHeight(prefHeight);
+        }
+    }
+
+    /**
+     * Retrieves the preferred height of the associated region.
+     * If the underlying FX gadget is an instance of {@code Region}, the preferred height
+     * specific to that region is returned. Otherwise, the value {@code Region.USE_COMPUTED_SIZE} is returned.
+     *
+     * @return the preferred height of the region if applicable, otherwise the value {@code Region.USE_COMPUTED_SIZE}.
+     */
+    default double getPrefHeight() {
+        if (fxGadget() instanceof Region region) {
+            return region.getPrefHeight();
+        }
+        return Region.USE_COMPUTED_SIZE;
+    }
+    /**
+     * Retrieves the optional `DoubleProperty` that represents the preferred width of the underlying FX gadget,
+     * if the FX gadget is an instance of `Region`.
+     *
+     * @return an `Optional` containing the preferred width property if the FX gadget is a `Region`, otherwise an empty `Optional`
+     */
+    default Optional<DoubleProperty> prefWidthPropertyOptional() {
+        if (fxGadget() instanceof Region region) {
+            return Optional.of(region.prefWidthProperty());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Sets the preferred width for the associated region of this widget if the underlying
+     * FX gadget is an instance of {@code Region}. Updates the region's preferred width to the
+     * specified value.
+     *
+     * @param prefWidth the preferred width to set for the associated region
+     */
+    default void setPrefWidth(double prefWidth) {
+        if (fxGadget() instanceof Region region) {
+            region.setPrefWidth(prefWidth);
+        }
+    }
+
+    /**
+     * Retrieves the preferred width of the associated region.
+     * If the underlying FX gadget is an instance of {@code Region}, the preferred width
+     * specific to that region is returned. Otherwise, the value {@code Region.USE_COMPUTED_SIZE} is returned.
+     *
+     * @return the preferred width of the region if applicable, otherwise the value {@code Region.USE_COMPUTED_SIZE}.
+     */
+    default double getPrefWidth() {
+        if (fxGadget() instanceof Region region) {
+            return region.getPrefWidth();
+        }
+        return Region.USE_COMPUTED_SIZE;
     }
 
     /**
