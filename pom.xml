@@ -70,7 +70,7 @@
         <!-- Tinkar Core Variables -->
         <tinkar-core.groupId>dev.ikm.tinkar</tinkar-core.groupId>
         <tinkar-composer.version>1.4.0</tinkar-composer.version>
-        <tinkar-core.version>1.85.0-IKM-PROXY-01-SNAPSHOT</tinkar-core.version>
+        <tinkar-core.version>1.87.0-SNAPSHOT</tinkar-core.version>
 
         <!-- IKM Evrete Variables -->
         <ikm-evrete.groupId>org.evrete</ikm-evrete.groupId>
@@ -107,10 +107,13 @@
         <ikonli.version>12.2.0</ikonli.version>
         <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
         <jpackage.version>1.6.0</jpackage.version>
-        <mockito.version>5.7.0</mockito.version>
+        <mockito.version>5.15.2</mockito.version>
         <nsmenufx.version>3.1.0</nsmenufx.version>
         <openjfx.version>23.0.1</openjfx.version>
         <scenic-view.version>11.0.2</scenic-view.version>
+        <java.version>23</java.version>
+
+
 
         <!-- TestFX / Monocle -->
         <commonTestFXArgs>
@@ -650,8 +653,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <source>21</source>
-                    <target>21</target>
+                    <source>23</source>
+                    <target>23</target>
+                    <release>23</release>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>

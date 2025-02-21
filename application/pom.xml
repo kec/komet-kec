@@ -181,8 +181,8 @@
                     <execution>
                         <!-- Default configuration for running -->
                         <id>default-cli</id>
-                        <phase>package</phase>
-                        <!-- <phase>none</phase> -->
+<!--                        <phase>package</phase>-->
+                         <phase>none</phase>
                         <goals>
                             <goal>jlink</goal>
                         </goals>
@@ -206,8 +206,8 @@
                     <execution>
                         <!-- Configuration for debugging -->
                         <id>debug</id>
-                        <phase>package</phase>
-                        <!--                        <phase>none</phase>-->
+<!--                        <phase>package</phase>-->
+                                                <phase>none</phase>
                         <goals>
                             <goal>jlink</goal>
                         </goals>
@@ -234,8 +234,8 @@
                     <execution>
                         <!-- Configuration for profiling -->
                         <id>profile</id>
-                        <phase>package</phase>
-                        <!--                        <phase>none</phase>-->
+<!--                        <phase>package</phase>-->
+                                                <phase>none</phase>
                         <goals>
                             <goal>jlink</goal>
                         </goals>
