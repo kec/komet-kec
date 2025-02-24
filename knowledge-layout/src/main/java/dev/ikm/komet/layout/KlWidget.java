@@ -103,6 +103,56 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
     }
 
     /**
+     * Retrieves a GridLayout instance with the current configuration.
+     *
+     * @return a configured GridLayout object with the specified column index,
+     *         row index, colspan, rowspan, grow priorities, alignments, margins,
+     *         and size constraints.
+     */
+    default GridLayout getGridLayout() {
+        return new GridLayout(
+                getColumnIndex(),
+                getRowIndex(),
+                getColspan(),
+                getRowspan(),
+                getHgrow(),
+                getVgrow(),
+                getHalignment(),
+                getValignment(),
+                getMargins(),
+                getMaxHeight(),
+                getMaxWidth(),
+                getPrefHeight(),
+                getPrefWidth(),
+                getFillHeight(),
+                getFillWidth()
+        );
+    }
+
+    /**
+     * Configures the grid layout properties for a component based on the given GridLayout object.
+     *
+     * @param gridLayout the GridLayout object containing the layout configuration
+     */
+    default void setGridLayout(GridLayout gridLayout) {
+        setColumnIndex(gridLayout.columnIndex());
+        setRowIndex(gridLayout.rowIndex());
+        setColspan(gridLayout.columnSpan());
+        setRowspan(gridLayout.rowSpan());
+        setHgrow(gridLayout.hGrow());
+        setVgrow(gridLayout.vGrow());
+        setHalignment(gridLayout.hAlignment());
+        setValignment(gridLayout.vAlignment());
+        setMargins(gridLayout.margin());
+        setMaxHeight(gridLayout.maxHeight());
+        setMaxWidth(gridLayout.maxWidth());
+        setPrefHeight(gridLayout.preferredHeight());
+        setPrefWidth(gridLayout.preferredWidth());
+        setFillHeight(gridLayout.fillHeight());
+        setFillWidth(gridLayout.fillWidth());
+    }
+
+    /**
      * Sets the column index for the pane in the GridPane layout.
      *
      * @param columnIndex the column index to set for the pane

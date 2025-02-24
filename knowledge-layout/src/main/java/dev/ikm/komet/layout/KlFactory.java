@@ -26,8 +26,26 @@ public interface KlFactory<KL extends KlObject> {
      * @param preferencesFactory an instance of KlPreferencesFactory used to provide
      *                           necessary preferences for creating the object.
      * @return an instance of type T created using the given preferencesFactory.
+     * @deprecated Use {@code create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) }
      */
+    @Deprecated
     KL create(KlPreferencesFactory preferencesFactory);
+
+
+    /**
+     * Creates an instance of type KL using the provided KlPreferencesFactory and
+     * GridLayoutForComponentFactory. This method delegates the creation process
+     * to the {@code create} method with a single KlPreferencesFactory parameter.
+     *
+     * @param preferencesFactory an instance of KlPreferencesFactory used to provide
+     *                           the necessary preferences for creating the object.
+     * @param gridLayoutForComponentFactory an instance of GridLayoutForComponentFactory,
+     *                                       though it is not utilized in this implementation.
+     * @return an instance of type KL created using the given KlPreferencesFactory.
+     */
+    default KL create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) {
+        return create(preferencesFactory);
+    }
 
     /**
      * Creates an instance of type T using the provided KlPreferencesFactory
