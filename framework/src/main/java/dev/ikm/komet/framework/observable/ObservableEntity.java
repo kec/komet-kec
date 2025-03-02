@@ -77,7 +77,7 @@ public abstract sealed class ObservableEntity<O extends ObservableVersion<V>, V 
 
     protected abstract O wrap(V version);
 
-    public abstract ImmutableMap<ComponentField, ObservableField> getObservableFields();
+    public abstract ImmutableMap<FieldCategory, ObservableField> getObservableFields();
 
     public static <OE extends ObservableEntity<OV, EV>, OV extends ObservableVersion<EV>, EV extends EntityVersion>
     ObservableEntitySnapshot<OE, OV, EV> getSnapshot(int nid, ViewCalculator calculator) {

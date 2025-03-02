@@ -25,5 +25,5 @@ package dev.ikm.komet.framework.observable;
  * for specific component behaviors.
  */
 public sealed interface ObservableComponent
-        permits ObservableEntity, ObservableVersion, ObservableField, ObservableFieldDefinition {
+        permits ObservableEntity, ObservableVersion {
 }

@@ -25,46 +25,32 @@ import java.util.UUID;
 public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
 
     /**
-     * Enumeration representing layout preferences for a {@code KlWidget}.
-     * Each enum constant defines a specific preference key tied to layout
-     * and configuration settings used within the {@code KlWidget} or related
-     * components. Preferences include layout indices, spans, grow priorities,
-     * alignments, and margins.
-     * <p>
-     * Each preference key has an associated default value, which can be retrieved
-     * using the {@code defaultValue()} method. These preferences are specifically
-     * designed to work within a {@code GridPane}-based layout.
-     * <p>
-     * Enum Constants:
-     * <p>- COLUMN_INDEX: Represents the column index with a default value of 0.
-     * <p>- ROW_INDEX: Represents the row index with a default value of 0.
-     * <p>- COLUMN_SPAN: Represents the number of columns spanned, defaulting to 1.
-     * <p>- ROW_SPAN: Represents the number of rows spanned, defaulting to 1.
-     * <p>- H_GROW: Indicates the horizontal growth priority using {@code Priority}.
-     * <p>- V_GROW: Indicates the vertical growth priority using {@code Priority}.
-     * <p>- H_ALIGNMENT: Specifies the horizontal alignment using {@code Pos}.
-     * <p>- V_ALIGNMENT: Specifies the vertical alignment using {@code Pos}.
-     * <p>- MARGIN: Defines the layout margins using {@code Insets}.
-     * <p>NOTE: these values are stored in the ObservableMap of the {@code klWidget().properties()},
-     * If future KlWidget needs dictate keys not associated with this ObservableMap, they may be accomidated
-     * in a separate enumeration class and added to save and restore independently.
+     * Enumeration for defining preference keys used in a GridLayout configuration. Each key is
+     * associated with a default value, which can be used when the specific property is not explicitly set.
+     *
+     * This enum implements the PropertyWithDefault interface, allowing for retrieval of default values
+     * associated with each specific preference key.
+     *
+     * The keys and their defaults represent different layout properties such as column index, row index,
+     * column and row spans, growth behavior, alignments, margins, dimensions, and fill behaviors,
+     * commonly used in grid-based layouts.
      */
     enum PreferenceKeys implements PropertyWithDefault {
-        COLUMN_INDEX(0),
-        ROW_INDEX(0),
-        COLUMN_SPAN(1),
-        ROW_SPAN(1),
-        H_GROW(Priority.NEVER.name()),
-        V_GROW(Priority.NEVER.name()),
-        H_ALIGNMENT(HPos.LEFT.name()),
-        V_ALIGNMENT(VPos.TOP.name()),
-        MARGIN(Insets.EMPTY),
-        MAX_HEIGHT(Double.MAX_VALUE),
-        MAX_WIDTH(Double.MAX_VALUE),
-        PREFERRED_HEIGHT(Region.USE_COMPUTED_SIZE),
-        PREFERRED_WIDTH(Region.USE_COMPUTED_SIZE),
-        FILL_HEIGHT(true),
-        FILL_WIDTH(true);
+        COLUMN_INDEX(GridLayout.DEFAULT.columnIndex()),
+        ROW_INDEX(GridLayout.DEFAULT.rowIndex()),
+        COLUMN_SPAN(GridLayout.DEFAULT.columnSpan()),
+        ROW_SPAN(GridLayout.DEFAULT.rowSpan()),
+        H_GROW(GridLayout.DEFAULT.hGrow()),
+        V_GROW(GridLayout.DEFAULT.vGrow()),
+        H_ALIGNMENT(GridLayout.DEFAULT.hAlignment()),
+        V_ALIGNMENT(GridLayout.DEFAULT.vAlignment()),
+        MARGIN(GridLayout.DEFAULT.margin()),
+        MAX_HEIGHT(GridLayout.DEFAULT.maxHeight()),
+        MAX_WIDTH(GridLayout.DEFAULT.maxWidth()),
+        PREFERRED_HEIGHT(GridLayout.DEFAULT.preferredHeight()),
+        PREFERRED_WIDTH(GridLayout.DEFAULT.preferredWidth()),
+        FILL_HEIGHT(GridLayout.DEFAULT.fillHeight()),
+        FILL_WIDTH(GridLayout.DEFAULT.fillWidth());
 
         final Object defaultValue;
         PreferenceKeys(Object defaultValue) {

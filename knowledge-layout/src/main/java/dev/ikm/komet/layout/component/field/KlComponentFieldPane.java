@@ -4,16 +4,17 @@ import dev.ikm.tinkar.entity.Entity;
 import javafx.scene.Parent;
 
 /**
- * Represents a pane in the Knowledge Layout framework that is associated with component-related fields.
- * This interface extends {@code KlFieldPane}, parameterized with an entity type {@code E} and a parent type {@code P}.
- * It provides specialized support for handling and interacting with fields tied to component entities.
+ * Defines a pane for managing field components in the Knowledge Layout framework.
+ * This non-sealed interface builds upon the functionality provided by {@code KlFieldPane},
+ * specializing it for fields associated with components and entities.
  *
- * This interface serves as a specialization of {@code KlFieldPane<E, P>} to support integration with
- * field panes specifically designed for managing component-related data.
+ * The {@code KlComponentFieldPane} supports interaction with specific entity field types
+ * and their associated UI representation. It uses generics to ensure type safety for
+ * both the entity type and the parent UI node type.
  *
- * @param <E> the type of the entity associated with this component field pane
- * @param <P> the type of the parent node associated with this pane
+ * @param <E>  the type of entity managed within this field pane, extending {@code Entity}
+ * @param <FX> the type of parent UI node associated with this field pane, extending {@code Parent}
  */
-public non-sealed interface KlComponentFieldPane<E extends Entity, P extends Parent>
-        extends KlFieldPane<E, P> {
+public non-sealed interface KlComponentFieldPane<E extends Entity, FX extends Parent>
+        extends KlFieldPane<E, FX> {
 }

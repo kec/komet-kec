@@ -6,6 +6,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 
 /**
  * Represents a layout record that defines grid-based layout constraints and properties.
@@ -31,10 +32,53 @@ public record GridLayout(
         Double preferredHeight,
         Double preferredWidth,
         boolean fillHeight,
-        boolean fillWidth) implements Encodable {
+        boolean fillWidth) implements Encodable, GridLayoutBuilder.With {
 
     private static final int marshalVersion = 1;
 
+    public static final GridLayout DEFAULT = new GridLayout();
+
+    /**
+     * Constructs an instance of {@code GridLayout} with default column and row indices
+     * set to 0, as well as default configurations for other properties.
+     * <p>
+     * This constructor initializes a {@code GridLayout} with:
+     * <p> - Column index: 0
+     * <p> - Row index: 0
+     * <p> - Column span: 1
+     * <p> - Row span: 1
+     * <p> - Horizontal grow priority: {@code Priority.NEVER}
+     * <p> - Vertical grow priority: {@code Priority.NEVER}
+     * <p> - Horizontal alignment: {@code HPos.LEFT}
+     * <p> - Vertical alignment: {@code VPos.TOP}
+     * <p> - Margins: {@code new Insets(0)}
+     * <p> - Maximum height: {@code Double.MAX_VALUE}
+     * <p> - Maximum width: {@code Double.MAX_VALUE}
+     * <p> - Preferred height: {@code Region.USE_COMPUTED_SIZE}
+     * <p> - Preferred width: {@code Region.USE_COMPUTED_SIZE}
+     * <p> - Fill height: true
+     * <p> - Fill width: true
+     */
+    private GridLayout() {
+        this(0, 0);
+    }
+
+    /**
+     * Constructs a {@code GridLayout} with specified column and row indices.
+     * Default values for other properties are applied, including column span, row span,
+     * alignment, and grow priorities.
+     *
+     * @param columnIndex the index of the column where the layout begins
+     * @param rowIndex the index of the row where the layout begins
+     */
+    public GridLayout(int columnIndex, int rowIndex) {
+        this(columnIndex, rowIndex, 1, 1,
+                Priority.NEVER, Priority.NEVER, HPos.LEFT, VPos.TOP,
+                new Insets(0),
+                Double.MAX_VALUE, Double.MAX_VALUE,
+                Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE,
+                true, true);
+    }
 
     /**
      * Encodes the properties of the layout record into the given {@code EncoderOutput}.

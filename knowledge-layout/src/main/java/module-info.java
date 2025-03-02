@@ -2,6 +2,7 @@ module dev.ikm.komet.layout {
 
     requires dev.ikm.komet.framework;
     requires dev.ikm.jpms.recordbuilder.core;
+    requires java.compiler;
 
     exports dev.ikm.komet.layout;
     exports dev.ikm.komet.layout.action;

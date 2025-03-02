@@ -92,12 +92,12 @@ public final class ObservableSemantic
     }
 
     @Override
-    public ImmutableMap<ComponentField, ObservableField> getObservableFields() {
-        MutableMap<ComponentField, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableMap<FieldCategory, ObservableField> getObservableFields() {
+        MutableMap<FieldCategory, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (ComponentField field: ComponentField.conceptFields()) {
+        for (FieldCategory field: FieldCategorySet.semanticFields()) {
             switch (field) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...

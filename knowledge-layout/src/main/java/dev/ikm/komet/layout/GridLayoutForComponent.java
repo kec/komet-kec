@@ -1,7 +1,6 @@
 package dev.ikm.komet.layout;
 
-import dev.ikm.komet.framework.observable.ComponentField;
-import dev.ikm.komet.framework.observable.ComponentFieldSpecification;
+import dev.ikm.komet.framework.observable.FieldLocator;
 import dev.ikm.tinkar.common.binary.*;
 import dev.ikm.tinkar.common.service.PluggableService;
 import org.slf4j.Logger;
@@ -10,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
-import java.util.OptionalInt;
 
-public record GridLayoutForComponent(String fieldFactoryName, ComponentFieldSpecification componentFieldSpecification,
+public record GridLayoutForComponent(String fieldFactoryName, FieldLocator fieldLocator,
                                      GridLayout gridLayout)
         implements Encodable {
         private static final Logger LOG = LoggerFactory.getLogger(GridLayoutForComponent.class);
@@ -36,13 +34,13 @@ public record GridLayoutForComponent(String fieldFactoryName, ComponentFieldSpec
     @Override
     public void encode(EncoderOutput out) {
         out.writeString(fieldFactoryName);
-        componentFieldSpecification.encode(out);
+        fieldLocator.encode(out);
         gridLayout.encode(out);
     }
 
     @Decoder
     public static GridLayoutForComponent decode(DecoderInput in) {
         return new GridLayoutForComponent(in.readString(),
-                ComponentFieldSpecification.decode(in), GridLayout.decode(in));
+                FieldLocator.decode(in), GridLayout.decode(in));
     }
 }
