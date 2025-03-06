@@ -47,7 +47,7 @@ public class FieldLocatorListElementForVersion {
                     ObservableField observableField = new ObservableField(fieldRecord);
                     yield observableField;
                 }
-                case PUBLIC_ID_FIELD, COMPONENT_VERSIONS_FIELD, VERSION_STAMP_FIELD, PATTERN_MEANING_FIELD,
+                case PUBLIC_ID_FIELD, COMPONENT_VERSIONS_LIST, VERSION_STAMP_FIELD, PATTERN_MEANING_FIELD,
                      PATTERN_PURPOSE_FIELD, PATTERN_FIELD_DEFINITION_LIST,
                      SEMANTIC_PATTERN_FIELD, SEMANTIC_REFERENCED_COMPONENT_FIELD, SEMANTIC_FIELD_LIST,
                      SEMANTIC_FIELD, STATUS_FIELD, TIME_FIELD, AUTHOR_FIELD, MODULE_FIELD, PATH_FIELD ->

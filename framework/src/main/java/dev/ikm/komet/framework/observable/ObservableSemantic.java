@@ -151,7 +151,7 @@ public final class ObservableSemantic
                     fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
 
-                case COMPONENT_VERSIONS_FIELD -> {
+                case COMPONENT_VERSIONS_LIST -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.
                     Object value = this.versions();
