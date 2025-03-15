@@ -14,7 +14,7 @@ import javafx.scene.layout.Region;
  * @param <FX> The JavaFX {@link Region} subclass associated with the field pane.
  * @param <KL> The {@link KlFieldArea} implementation managed by this factory.
  */
-public interface KlFieldPaneArea<DT, FX extends Region, KL extends KlFieldArea<DT, FX>>
+public interface KlFieldAreaFactory<DT, FX extends Region, KL extends KlFieldArea<DT, FX>>
         extends KlFactory<KL> {
 
 }

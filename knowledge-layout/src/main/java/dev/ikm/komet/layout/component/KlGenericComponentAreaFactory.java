@@ -4,19 +4,20 @@ import dev.ikm.komet.framework.observable.ObservableEntity;
 import javafx.scene.layout.Pane;
 
 /**
- * A non-sealed factory interface for creating instances of {@code KlComponentPane}
- * associated with generic {@code ObservableEntity} types. This interface specializes
- * in constructing and initializing {@code JavaFX Pane}-based UI components
- * tied to observable entities. It extends the {@code KlComponentPaneFactory}
- * with additional flexibility, allowing implementation by any class.
+ * A non-sealed interface representing a factory for creating instances of {@code KlGenericComponentArea}
+ * associated with observable entities of type {@code ObservableEntity}.
  *
- * The {@code KlGenericComponentPaneFactory} interface is used in scenarios where
- * generic or non-specialized {@code Pane} and {@code ObservableEntity} pairings
- * are required. It provides a means to produce component panes dynamically bound
- * to observable data models.
+ * This factory provides a generic mechanism for creating component areas that manage observable entities
+ * and their versions. It extends {@code KlComponentAreaFactory}, inheriting its functionality while
+ * specializing it for {@code KlGenericComponentArea}.
  *
- * @param <FX> the type of JavaFX {@code Pane} created by this factory
+ * Implementations of this factory are responsible for the creation and initialization of
+ * generic component areas, associating these areas with specific observable entities and
+ * configuring their components based on provided preferences.
+ *
+ * @see KlComponentAreaFactory
+ * @see KlGenericComponentArea
  */
-public non-sealed interface KlGenericComponentAreaFactory<FX extends Pane>
-        extends KlComponentAreaFactory<FX, KlComponentArea<ObservableEntity, FX>, ObservableEntity> {
+public non-sealed interface KlGenericComponentAreaFactory
+        extends KlComponentAreaFactory<KlGenericComponentArea, ObservableEntity> {
 }

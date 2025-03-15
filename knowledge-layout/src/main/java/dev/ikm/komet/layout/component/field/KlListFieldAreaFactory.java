@@ -9,7 +9,7 @@ import java.util.List;
  * {@link KlListFieldArea}, which is a specialized field pane in the Knowledge Layout
  * framework that supports handling of list-based data structures.
  *<p>
- * This interface extends {@link KlFieldPaneArea} to provide additional
+ * This interface extends {@link KlFieldAreaFactory} to provide additional
  * type parameters and capabilities for managing {@code List}-based field panes,
  * enabling support for lists of specific data types.
  *
@@ -17,6 +17,6 @@ import java.util.List;
  * @param <L>  the list type managed within the field pane, containing elements of type {@code DT}
  * @param <FX> the type of the parent UI element associated with this pane, extending {@link Region}
  */
-public interface KlListFieldPaneAreaFactory<DT, L extends List<DT>, FX extends Region> extends
-        KlFieldPaneArea<L, FX, KlFieldArea<L, FX>> {
+public interface KlListFieldAreaFactory<DT, L extends List<DT>, FX extends Region> extends
+        KlFieldAreaFactory<L, FX, KlFieldArea<L, FX>> {
 }

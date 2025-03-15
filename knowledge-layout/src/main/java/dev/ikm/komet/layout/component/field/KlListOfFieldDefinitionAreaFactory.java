@@ -12,7 +12,7 @@ import java.util.List;
  * creation and management for scenarios where a collection of field definitions needs
  * to be represented and interacted with in the form of a list.
  * <p>
- * This interface extends {@link KlListFieldPaneAreaFactory}, inheriting its type-safe
+ * This interface extends {@link KlListFieldAreaFactory}, inheriting its type-safe
  * operations and capabilities for managing list-based field panes. Implementations
  * of this factory interface may provide additional functionality or customization
  * for dealing with specific types of field definitions within a list structure.
@@ -22,5 +22,5 @@ import java.util.List;
  * @param <FX> the type of the parent UI element associated with the pane, extending {@link Region}
  */
 public interface KlListOfFieldDefinitionAreaFactory<DT extends FieldDefinition, L extends List<DT>, FX extends Region>
-        extends KlListFieldPaneAreaFactory<DT, L, FX> {
+        extends KlListFieldAreaFactory<DT, L, FX> {
 }

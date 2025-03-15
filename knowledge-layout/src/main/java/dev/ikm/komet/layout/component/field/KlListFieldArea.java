@@ -1,29 +1,42 @@
 package dev.ikm.komet.layout.component.field;
 
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Region;
 
-import java.util.List;
-
 /**
- * Represents a specialized field pane in the Knowledge Layout framework that is designed
- * for managing and interacting with fields of type {@code List<DT>}. This interface extends
- * {@link KlFieldArea}, parameterized with a list data structure, enabling support for a
- * collection of field values.
- * <p>
- * The {@code KlListFieldPane} serves as a base structure to define field panes handling
- * lists of data, providing type-safe operations and integration with the parent UI elements.
- * Specific implementations of this interface may provide additional semantics or behavior
- * for managing various field types within a list structure.
- * <p>
- * This sealed interface has three permitted subtypes:
- *<p> - {@code KlListOfFieldDefinitionPane}: Manages fields defined as a list of definitions.
- *<p> - {@code KlListOfFieldPane}: Operates with fields representing a list of objects.
- *<p> - {@code KlListOfVersionsFieldPane}: Handles fields representing a list of entity versions.
+ * Represents a sealed interface within the Knowledge Layout framework for managing
+ * and interacting with fields containing observable lists. This interface provides
+ * type-safe operations and data-binding capabilities for observable lists and their
+ * parent UI components.
  *
- * @param <L>  the list type managed within the field pane, containing elements of type {@code DT}
- * @param <DT> the data type of the elements in the list managed within the field pane
- * @param <FX> the type of the parent UI element associated with this pane, extending {@link Region}
+ * This interface is extended by specific implementations, such as {@code KlListOfFieldDefinitionArea},
+ * {@code KlListOfFieldArea}, and {@code KlListOfVersionsFieldArea}, each dealing with specific types
+ * of list structures. It supports manipulation and observation of both lists and selected items.
+ *
+ * @param <DT> the type of the observable list managed by the field area, extending {@code ObservableList}
+ * @param <LE> the type of elements contained within the managed list
+ * @param <FX> the type of the parent UI element associated with this field area, extending {@code Region}
  */
-public sealed interface KlListFieldArea<L extends List<DT>, DT, FX extends Region> extends KlFieldArea<L, FX>
+public sealed interface KlListFieldArea<DT extends ObservableList<LE>, LE, FX extends Region>
+        extends KlFieldArea<DT, FX>
         permits KlListOfFieldDefinitionArea, KlListOfFieldArea, KlListOfVersionsFieldArea {
+
+    /**
+     * Retrieves the observable list of elements managed by the field area.
+     * The list represents the data elements of type {@code LE} contained within
+     * the associated field.
+     *
+     * @return an {@code ObservableList} of elements of type {@code LE} representing the managed list
+     */
+    default ObservableList<LE> list() {
+        return getField().value();
+    }
+
+    /**
+     * Retrieves the observable list of selected elements managed by the field area.
+     * The returned list represents the currently selected elements of type {@code LE}.
+     *
+     * @return an {@code ObservableList} of elements of type {@code LE}, representing the selected items
+     */
+    ObservableList<LE> selectedItems();
 }

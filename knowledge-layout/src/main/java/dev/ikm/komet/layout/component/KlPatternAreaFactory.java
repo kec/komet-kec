@@ -4,20 +4,20 @@ import dev.ikm.komet.framework.observable.ObservablePattern;
 import javafx.scene.layout.Pane;
 
 /**
- * An interface for creating instances of {@link KlPatternArea} associated with an {@link ObservablePattern}.
- * It extends the {@link KlComponentAreaFactory} interface, specializing in creating component panes
- * that interact with observable patterns in JavaFX applications.
+ * The {@code KlPatternAreaFactory} interface represents a specialized factory for creating
+ * instances of {@code KlPatternArea}, which are associated with {@code ObservablePattern} entities.
+ * It extends the {@code KlComponentAreaFactory} interface to provide additional focus
+ * on component areas dealing specifically with observable patterns in a JavaFX application.
  *
- * This factory allows for the dynamic binding of {@link ObservablePattern} entities to JavaFX panes,
- * facilitating the creation and initialization of UI components representing pattern-related data.
- * It ensures a consistent interface for managing and presenting pattern-related observable entities
- * within the Komet framework.
+ * This factory is used to construct {@code KlPatternArea} instances, initialize them using appropriate
+ * preferences, and associate them with specific {@code ObservablePattern} entities. The {@code KlPatternArea}
+ * produced by this factory is specifically designed to interact with the lifecycle of observable patterns
+ * and their derivatives.
  *
- * @param <FX> the type of JavaFX {@code Pane} created by this factory.
+ * @see KlComponentAreaFactory
  * @see KlPatternArea
  * @see ObservablePattern
- * @see KlComponentAreaFactory
  */
-public non-sealed interface KlPatternAreaFactory<FX extends Pane>
-        extends KlComponentAreaFactory<FX, KlPatternArea<FX>, ObservablePattern> {
+public non-sealed interface KlPatternAreaFactory
+        extends KlComponentAreaFactory<KlPatternArea, ObservablePattern> {
 }

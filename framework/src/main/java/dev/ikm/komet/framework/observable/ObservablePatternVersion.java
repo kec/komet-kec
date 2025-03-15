@@ -131,13 +131,14 @@ public final class ObservablePatternVersion
 
 
     @Override
-    public ImmutableMap<FieldCategory, ObservableField> getObservableFields() {
-        MutableMap<FieldCategory, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
+        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory field : FieldCategorySet.patternVersionFields()) {
-            switch (field) {
+        for (FieldCategory fieldCategory : FieldCategorySet.patternVersionFields()) {
+            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
+            switch (fieldCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.
@@ -153,15 +154,15 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
-                case STATUS_FIELD -> {
+                case VERSION_STAMP_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.state();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.COMPONENT_FOR_SEMANTIC.nid();
-                    int meaningNid = TinkarTerm.COMPONENT_FOR_SEMANTIC.nid();
+                    Object value = this.publicId();
+                    int dataTypeNid = TinkarTerm.NID.nid();
+                    int purposeNid = TinkarTerm.STAMP_PATTERN.nid();
+                    int meaningNid = TinkarTerm.STAMP_PATTERN.nid();
                     Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
                     int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
                     int patternNid = TinkarTerm.STAMP_PATTERN.nid();
@@ -170,76 +171,7 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
-                }
-                case TIME_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.time();
-                    int dataTypeNid = TinkarTerm.LONG_FIELD.nid();
-                    int purposeNid = TinkarTerm.TIME_FOR_VERSION.nid();
-                    int meaningNid = TinkarTerm.TIME_FOR_VERSION.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 1;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
-                }
-                case AUTHOR_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.authorNid();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.AUTHOR_FOR_VERSION.nid();
-                    int meaningNid = TinkarTerm.AUTHOR_FOR_VERSION.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 2;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
-
-                }
-                case MODULE_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.moduleNid();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.MODULE_FOR_VERSION.nid();
-                    int meaningNid = TinkarTerm.MODULE_FOR_VERSION.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 3;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
-                }
-                case PATH_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.pathNid();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.PATH_FOR_VERSION.nid();
-                    int meaningNid = TinkarTerm.PATH_FOR_VERSION.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 4;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
 
                 case PATTERN_FIELD_DEFINITION_LIST -> {
@@ -257,7 +189,7 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
             }
         }

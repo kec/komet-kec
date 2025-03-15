@@ -8,7 +8,7 @@ import javafx.scene.layout.Region;
  * {@link KlConceptFieldArea}, a specialized implementation of {@link KlFieldArea}
  * designed for handling fields associated with {@link ConceptEntity}.
  *
- * This interface extends {@link KlFieldPaneArea}, parameterized with
+ * This interface extends {@link KlFieldAreaFactory}, parameterized with
  * {@link ConceptEntity} for data binding, a specific JavaFX {@link Region} subclass for UI representation,
  * and {@link KlComponentFieldArea} for component-specific functionality. It provides methods and
  * mechanisms to generate and manage field panes that integrate concept-related data
@@ -17,6 +17,6 @@ import javafx.scene.layout.Region;
  * @param <FX> The JavaFX {@link Region} subclass associated with the field pane.
  */
 public interface KlConceptFieldAreaFactory<FX extends Region> extends
-        KlFieldPaneArea<ConceptEntity, FX, KlComponentFieldArea<ConceptEntity, FX>> {
+        KlFieldAreaFactory<ConceptEntity, FX, KlComponentFieldArea<ConceptEntity, FX>> {
 
 }

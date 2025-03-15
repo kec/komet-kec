@@ -44,6 +44,7 @@ public interface KlFactory<KL extends KlObject> {
      * @return an instance of type KL created using the given KlPreferencesFactory.
      */
     default KL create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) {
+        // Override, and remove default in future revisions.
         return create(preferencesFactory);
     }
 

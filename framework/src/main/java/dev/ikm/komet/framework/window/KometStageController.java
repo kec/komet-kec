@@ -15,6 +15,7 @@
  */
 package dev.ikm.komet.framework.window;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -215,6 +216,20 @@ public class KometStageController implements SaveState {
 
     private List<MenuItem> getTaskMenuItems() {
         ArrayList<MenuItem> items = new ArrayList<>();
+        MenuItem reindex = new MenuItem("Recreate Lucene index");
+        reindex.setOnAction((ActionEvent event) -> {
+            TinkExecutor.threadPool().submit(() -> {
+                LOG.info("Recreating Lucene index...");
+                try {
+                    PrimitiveData.get().recreateLuceneIndex();
+                    LOG.info("Index complete...");
+                } catch (Exception e) {
+                    LOG.error("Error recreating Lucene index", e);
+                    throw new RuntimeException(e);
+                }
+            });
+        });
+        items.add(reindex);
         return items;
     }
 

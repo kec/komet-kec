@@ -8,6 +8,7 @@ import dev.ikm.komet.layout.context.KlContextProvider;
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
 import javafx.scene.Parent;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 
 /**
@@ -163,5 +164,28 @@ public non-sealed interface KlFxWindow extends KlGadget<Window>, KlStateCommands
      */
     default KlContext context() {
         return KlGadget.super.context();
+    }
+
+    /**
+     * Sets the title of the window if it is a {@link Stage}.
+     *
+     * This method operates based on the encapsulated JavaFX object associated with the instance.
+     * If the object is a {@code Stage}, the title is updated to the specified value.
+     * If the object is a {@code Window} that does not support titles, no operation is performed.
+     *
+     * @param title The new title to be set for the window. This value is applied only if the
+     *              associated FX object is a {@code Stage}.
+     */
+    default void setTitle(String title) {
+        switch (this.fxObject()) {
+            case Stage stage -> stage.setTitle(title);
+            case Window _ -> {/* no title at Window level */}
+        }
+    }
+    default String getTitle() {
+        return switch (this.fxObject()) {
+            case Stage stage -> stage.getTitle();
+            case Window _ -> "";
+        };
     }
 }

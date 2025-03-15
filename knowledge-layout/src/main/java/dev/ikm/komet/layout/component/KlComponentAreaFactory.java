@@ -1,33 +1,38 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
+import dev.ikm.komet.framework.observable.ObservableVersion;
 import dev.ikm.komet.layout.KlEntityType;
 import dev.ikm.komet.layout.KlFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
+import dev.ikm.tinkar.entity.EntityVersion;
 import javafx.scene.layout.Pane;
 
-/**
- * A sealed factory interface for creating instances of {@code KlComponentPane}
- * that are associated with specific {@code ObservableEntity} types. This interface
- * provides a template for constructing and initializing UI components that are dynamically
- * bound to observable JavaFX entities. The core functionality includes creating panes
- * with specified observable entities and applying user preferences.
- *
- * The {@code KlComponentPaneFactory} interface integrates with the type system to restrict
- * implementers to a predefined set of specific pane factories, ensuring the implementation
- * of agreed-upon behavior across different types of observable data components.
- *
- * This interface extends the {@code KlEntityType} interface for obtaining runtime information
- * about the observable entity type and the {@code KlFactory} interface for creating specific UI components.
- *
- * @param <FX> the type of JavaFX pane created by this factory
- * @param <KL> the type of {@code KlComponentPane} created, which is tied to both {@code FX}
- *             and {@code OE}
- * @param <OE> the type of {@code ObservableEntity} associated with the created {@code KlComponentPane}
- * @see KlEntityType
- * @see KlFactory
- */
-public sealed interface KlComponentAreaFactory<FX extends Pane, KL extends KlComponentArea<OE, FX>, OE extends ObservableEntity>
+/// A sealed factory interface for creating instances of `KlComponentArea` associated with
+/// observable entities of type `ObservableEntity`. This interface is extended by several
+/// specialized factories that cater to specific types of component areas and observable entities.
+/// The purpose of this factory is to provide a consistent mechanism for creating instances
+/// of `KlComponentArea`, initializing them using a `KlPreferencesFactory`,
+/// and associating them with specific observable entities through their component properties.
+/// The predefined subtypes of this sealed interface include:
+/// - `KlConceptAreaFactory` for concept-related components
+/// - `KlGenericComponentAreaFactory` for generic components
+/// - `KlPatternAreaFactory` for pattern-related components
+/// - `KlSemanticAreaFactory` for semantic-related components
+/// - `KlStampAreaFactory` for stamp-related components
+/// This factory leverages the `KlEntityType` and `KlFactory` interfaces to
+/// ensure proper type management of entities and components.
+///
+/// @param <KL> the type of `KlComponentArea` created by this factory
+/// @param <OE> the type of `ObservableEntity` associated with the created `KlComponentArea`
+/// @see KlEntityType
+/// @see KlFactory
+/// @see KlConceptAreaFactory
+/// @see KlGenericComponentAreaFactory
+/// @see KlPatternAreaFactory
+/// @see KlSemanticAreaFactory
+/// @see KlStampAreaFactory
+public sealed interface KlComponentAreaFactory<KL extends KlComponentArea, OE extends ObservableEntity>
         extends KlEntityType<OE>, KlFactory<KL>
         permits KlConceptAreaFactory, KlGenericComponentAreaFactory, KlPatternAreaFactory, KlSemanticAreaFactory, KlStampAreaFactory {
     /**

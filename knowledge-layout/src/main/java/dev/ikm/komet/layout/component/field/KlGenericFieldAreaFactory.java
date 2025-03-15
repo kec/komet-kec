@@ -8,12 +8,12 @@ import javafx.scene.layout.Region;
  * This factory specializes in handling field panes parameterized with {@code Object} as the
  * data type and a JavaFX {@link Region} as the parent UI component type.
  *
- * This interface extends {@link KlFieldPaneArea}, specifying the data type as {@code Object},
+ * This interface extends {@link KlFieldAreaFactory}, specifying the data type as {@code Object},
  * offering support for creating and managing generic field panes without restricting the type
  * of data associated with those panes.
  *
  * @param <FX> the type of the JavaFX {@link Region} subclass associated with the field pane
  */
-public interface KlGenericFieldAreaFactory<FX extends Region> extends KlFieldPaneArea<Object, FX, KlGenericFieldArea<FX>> {
+public interface KlGenericFieldAreaFactory<FX extends Region> extends KlFieldAreaFactory<Object, FX, KlGenericFieldArea<FX>> {
 
 }

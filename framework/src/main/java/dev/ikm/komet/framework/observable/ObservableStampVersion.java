@@ -125,13 +125,14 @@ public final class ObservableStampVersion
         return Lists.immutable.of(fieldArray);
     }
     @Override
-    public ImmutableMap<FieldCategory, ObservableField> getObservableFields() {
-        MutableMap<FieldCategory, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
+        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory field : FieldCategorySet.stampVersionFields()) {
-            switch (field) {
+        for (FieldCategory fieldCategory : FieldCategorySet.stampVersionFields()) {
+            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
+            switch (fieldCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.
@@ -147,7 +148,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
                 case STATUS_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -164,7 +165,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
                 case TIME_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -181,7 +182,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
                 case AUTHOR_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -198,7 +199,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
 
                 }
                 case MODULE_FIELD -> {
@@ -216,7 +217,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
                 case PATH_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -233,7 +234,7 @@ public final class ObservableStampVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(field, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
                 }
             }
         }

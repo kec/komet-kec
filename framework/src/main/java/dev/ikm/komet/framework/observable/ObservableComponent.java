@@ -1,5 +1,7 @@
 package dev.ikm.komet.framework.observable;
 
+import org.eclipse.collections.api.map.ImmutableMap;
+
 /**
  * ObservableComponent defines a sealed interface that represents a
  * foundational construct for components in a system. This interface
@@ -26,4 +28,7 @@ package dev.ikm.komet.framework.observable;
  */
 public sealed interface ObservableComponent
         permits ObservableEntity, ObservableVersion {
+
+    ImmutableMap<FieldLocator, ObservableField> getObservableFields();
+
 }

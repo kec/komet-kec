@@ -21,6 +21,6 @@ import javafx.scene.layout.Pane;
  * @see KlComponentAreaFactory
  * @see ObservableConcept
  */
-public non-sealed interface KlConceptAreaFactory<FX extends Pane, KL extends KlComponentArea<OE, FX>, OE extends ObservableConcept>
-        extends KlComponentAreaFactory<FX, KL, OE> {
+public non-sealed interface KlConceptAreaFactory<KL extends KlConceptArea, OE extends ObservableConcept>
+        extends KlComponentAreaFactory<KL, OE> {
 }

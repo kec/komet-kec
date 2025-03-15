@@ -29,5 +29,5 @@ public interface KlMultiComponentArea<OE extends ObservableEntity, P extends Pan
      *
      * @return an ObservableList of KlComponentPane objects, representing the individual component panes contained within this multi-component pane.
      */
-    ObservableList<KlComponentArea<OE, P>> klComponents();
+    ObservableList<KlComponentArea> klComponents();
 }

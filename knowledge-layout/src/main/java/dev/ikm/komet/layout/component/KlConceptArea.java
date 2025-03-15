@@ -1,25 +1,30 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableConcept;
+import dev.ikm.komet.framework.observable.ObservableConceptVersion;
+import dev.ikm.tinkar.entity.ConceptVersionRecord;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
 /**
- * Represents a pane bound to an observable concept within a JavaFX application.
+ * Represents a specialized component area designed to handle observable concepts within a JavaFX application.
  *
- * KlConceptPane is a specialized interface that extends the {@code KlComponentPane} interface,
- * specifically associating its observable component with an {@code ObservableConcept}.
- * This allows the pane to manage and present an observable concept while supporting properties
- * and features that enable observation and modification of its state.
+ * The KlConceptArea interface extends the functional capabilities of {@code KlComponentArea}
+ * by focusing specifically on observable concept entities. It provides methods for accessing
+ * and working with the observable concept and its associated properties.
  *
- * The {@code P} generic parameter defines the type of JavaFX {@code Pane} associated
- * with this interface.
+ * This interface helps in managing and observing changes to concept-related entities and their
+ * versions in a structured manner, enabling efficient updates and interactions in JavaFX-based
+ * user interfaces.
  *
- * @param <P> the type of JavaFX {@code Pane} for this component.
+ * @param <FX> the type of the JavaFX {@code Pane} represented by this concept area
  * @see KlComponentArea
  * @see ObservableConcept
+ * @see ObservableConceptVersion
+ * @see ConceptVersionRecord
  */
-public non-sealed interface KlConceptArea<P extends Pane> extends KlComponentArea<ObservableConcept, P> {
+public non-sealed interface KlConceptArea<FX extends Pane>
+        extends KlComponentArea<ObservableConcept, ObservableConceptVersion, FX> {
     /**
      * Retrieves the observable concept associated with this pane.
      *

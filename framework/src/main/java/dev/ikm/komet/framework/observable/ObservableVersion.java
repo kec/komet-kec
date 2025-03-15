@@ -51,7 +51,7 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
         addListeners();
     }
 
-    public abstract ImmutableMap<FieldCategory, ObservableField> getObservableFields();
+    public abstract ImmutableMap<FieldLocator, ObservableField> getObservableFields();
 
     protected void addListeners() {
         stateProperty.addListener((observable, oldValue, newValue) -> {

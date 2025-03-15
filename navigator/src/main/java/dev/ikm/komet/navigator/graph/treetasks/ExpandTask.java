@@ -99,11 +99,15 @@ public class ExpandTask extends TrackingCallable<Void> {
         Platform.runLater(() -> {
             multiParentGraphViewController.getTreeView().getRoot().getChildren().add(newTreeTop);
             newTreeTop.setExpanded(true);
-            MultiParentVertexImpl vertexToSelect = pathParentList.get(pathParentList.size() - 1);
-            multiParentGraphViewController.getTreeView().getSelectionModel().select(vertexToSelect);
-            multiParentGraphViewController.getTreeView().getSelectionModel().getSelectedItems().getFirst().setExpanded(true);
-            int selectedIndex = multiParentGraphViewController.getTreeView().getSelectionModel().getSelectedIndex();
-            multiParentGraphViewController.getTreeView().scrollTo(selectedIndex);
+            if (pathParentList.size() == 0) {
+                LOG.error("No parent found for " + expansionPath);
+            } else {
+                MultiParentVertexImpl vertexToSelect = pathParentList.get(pathParentList.size() - 1);
+                multiParentGraphViewController.getTreeView().getSelectionModel().select(vertexToSelect);
+                multiParentGraphViewController.getTreeView().getSelectionModel().getSelectedItems().getFirst().setExpanded(true);
+                int selectedIndex = multiParentGraphViewController.getTreeView().getSelectionModel().getSelectedIndex();
+                multiParentGraphViewController.getTreeView().scrollTo(selectedIndex);
+            }
         });
         return null;
     }

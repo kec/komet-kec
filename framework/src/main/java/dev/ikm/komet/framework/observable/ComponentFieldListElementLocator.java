@@ -39,4 +39,22 @@ public record ComponentFieldListElementLocator(FieldCategory category,
         int index = in.readInt();
         return new ComponentFieldListElementLocator(category, index);
     }
+
+    /**
+     * Compares this {@code FieldLocator} instance with another {@code FieldLocator} instance to determine their order.
+     * The comparison is based on the specific type of {@code FieldLocator} and additional attributes, if applicable.
+     *
+     * @param locator the {@code FieldLocator} instance to compare against
+     * @return a positive integer if this instance should be ordered after the specified {@code FieldLocator},
+     *         a negative integer if this instance should be ordered before, or zero if they are equal
+     */
+    public int compareTo(FieldLocator locator) {
+        return switch (locator) {
+            case ComponentFieldLocator _ -> 1;
+            case ComponentFieldListElementLocator componentFieldListElementLocator ->
+                    Integer.compare(this.index, componentFieldListElementLocator.index());
+            case AssociatedComponentField _ -> -1;
+            case AssociatedComponentFieldListElement _  -> -1;
+        };
+    }
 }

@@ -20,5 +20,5 @@ import java.util.List;
  * @param <FX> the type of the parent UI element associated with this pane, extending {@code Region}
  */
 public interface KlListOfVersionsFieldAreaFactory<DT extends EntityVersion, L extends List<DT>, FX extends Region>
-        extends KlListFieldPaneAreaFactory<DT, L, FX> {
+        extends KlListFieldAreaFactory<DT, L, FX> {
 }

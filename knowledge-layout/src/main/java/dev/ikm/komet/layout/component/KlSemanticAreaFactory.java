@@ -4,22 +4,20 @@ import dev.ikm.komet.framework.observable.ObservableSemantic;
 import javafx.scene.layout.Pane;
 
 /**
- * A non-sealed factory interface for creating instances of {@code KlSemanticPane}.
- * This factory is designed to produce JavaFX panes specifically associated with
- * semantic-related observable entities of type {@code ObservableSemantic}.
+ * A factory interface for creating instances of {@code KlSemanticArea} associated with
+ * observable semantic entities of type {@code ObservableSemantic}.
  *
- * The {@code KlSemanticPaneFactory} extends the {@code KlComponentPaneFactory} interface,
- * providing specialized functionality for creating and managing panes that represent
- * semantic components in a user interface.
+ * This non-sealed interface extends the {@code KlComponentAreaFactory} interface, specifically
+ * for semantic-related components. It provides a mechanism for initializing and associating
+ * semantic-based JavaFX panes with observable semantics through their component properties.
  *
- * Implementations of this interface can ensure the proper initialization and integration
- * of semantic components and their associated observable data.
+ * The purpose of this factory is to enable the creation of semantic-specific component areas
+ * that are tailored for integrating semantic entities and patterns into user interface components.
  *
- * @param <FX> the type of JavaFX {@code Pane} created by this factory
- * @see KlComponentAreaFactory
  * @see KlSemanticArea
+ * @see KlComponentAreaFactory
  * @see ObservableSemantic
  */
-public non-sealed interface KlSemanticAreaFactory<FX extends Pane>
-        extends KlComponentAreaFactory<FX, KlSemanticArea<FX>, ObservableSemantic> {
+public non-sealed interface KlSemanticAreaFactory
+        extends KlComponentAreaFactory<KlSemanticArea, ObservableSemantic> {
 }

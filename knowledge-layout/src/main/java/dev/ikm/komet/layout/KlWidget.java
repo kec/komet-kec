@@ -2,6 +2,7 @@ package dev.ikm.komet.layout;
 
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableMap;
 import javafx.geometry.*;
@@ -50,7 +51,8 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         PREFERRED_HEIGHT(GridLayout.DEFAULT.preferredHeight()),
         PREFERRED_WIDTH(GridLayout.DEFAULT.preferredWidth()),
         FILL_HEIGHT(GridLayout.DEFAULT.fillHeight()),
-        FILL_WIDTH(GridLayout.DEFAULT.fillWidth());
+        FILL_WIDTH(GridLayout.DEFAULT.fillWidth()),
+        VISIBLE(GridLayout.DEFAULT.visible());
 
         final Object defaultValue;
         PreferenceKeys(Object defaultValue) {
@@ -69,7 +71,9 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
      * Retrieves the widget representation for this KlWidget.
      *
      * @return The widget instance, represented by the specific implementation of the KlWidget.
+     * @deprecated use {@code fxObject} to prevent overloaded use of gadget...
      */
+    @Deprecated
     default FX fxGadget() {
         return klWidget();
     }
@@ -79,9 +83,15 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
      *
      * @param <SGN> The type of the scene graph node extending {@code Node}.
      * @return The scene graph node instance.
+     * @deprecated use {@code fxObject} to prevent overloaded use of gadget...
      */
+    @Deprecated
     default <SGN extends Parent> SGN klWidget() {
         return (SGN) this;
+    }
+
+    default FX fxObject() {
+        return klWidget();
     }
 
     default ObservableMap<Object, Object> properties() {
@@ -111,7 +121,8 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
                 getPrefHeight(),
                 getPrefWidth(),
                 getFillHeight(),
-                getFillWidth()
+                getFillWidth(),
+                getVisible()
         );
     }
 
@@ -136,6 +147,7 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         setPrefWidth(gridLayout.preferredWidth());
         setFillHeight(gridLayout.fillHeight());
         setFillWidth(gridLayout.fillWidth());
+        setVisible(gridLayout.visible());
     }
 
     /**
@@ -281,6 +293,25 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
      */
     default VPos getValignment() {
         return GridPane.getValignment(klWidget());
+    }
+
+    /**
+     * Determines the visibility status of the associated FX Gadget.
+     *
+     * @return true if the FX Gadget is visible; false otherwise.
+     */
+    default boolean getVisible() {
+        return fxGadget().isVisible();
+    }
+
+    /**
+     * Sets the visibility of the object.
+     *
+     * @param visible a boolean value where true makes the object visible,
+     *                and false makes it invisible.
+     */
+    default void setVisible(boolean visible) {
+        fxGadget().setVisible(visible);
     }
 
     /**
@@ -494,6 +525,16 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         }
         return Optional.empty();
     }
+
+    /**
+     * Returns a property that represents the visibility state of the Fx objects.
+     *
+     * @return a BooleanProperty that holds the visibility state. If true, the object is visible; otherwise, it is not.
+     */
+    default BooleanProperty visibleProperty() {
+        return fxObject().visibleProperty();
+    }
+
 
     /**
      * Sets the preferred width for the associated region of this widget if the underlying

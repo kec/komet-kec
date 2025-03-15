@@ -1,25 +1,29 @@
 package dev.ikm.komet.layout.component;
 
+import dev.ikm.komet.framework.observable.ObservableSemantic;
+import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
 import dev.ikm.komet.framework.observable.ObservableStamp;
+import dev.ikm.komet.framework.observable.ObservableStampVersion;
+import dev.ikm.tinkar.entity.SemanticVersionRecord;
+import dev.ikm.tinkar.entity.StampVersionRecord;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
 /**
- * Represents a pane bound to an observable stamp within a JavaFX application.
+ * The KlStampArea interface represents a specific type of component area within a JavaFX application
+ * that is associated with observable stamps. This interface extends the KlComponentArea interface,
+ * parameterized for observable stamps and their versions, providing specialized behavior and properties
+ * related to stamp management in a user interface.
  *
- * KlStampPane is a specialized interface that extends the {@code KlComponentPane} interface,
- * specifically associating its observable component with an {@code ObservableStamp}.
- * This allows the pane to manage and present an observable stamp while supporting properties
- * and features that enable observation and modification of its state.
+ * It provides mechanisms to access and manage the observable stamp and its associated
+ * JavaFX ObjectProperty, facilitating interaction and binding within application UIs.
  *
- * The {@code FX} generic parameter defines the type of JavaFX {@code Pane} associated
- * with this interface.
- *
- * @param <FX> the type of JavaFX {@code Pane} for this component.
+ * @param <FX> the type of the JavaFX {@code Pane} used by this component area
  * @see KlComponentArea
  * @see ObservableStamp
  */
-public non-sealed interface KlStampArea<FX extends Pane> extends KlComponentArea<ObservableStamp, FX> {
+public non-sealed interface KlStampArea<FX extends Pane>
+        extends KlComponentArea<ObservableStamp, ObservableStampVersion, FX> {
 
     /**
      * Retrieves the observable stamp associated with this pane.

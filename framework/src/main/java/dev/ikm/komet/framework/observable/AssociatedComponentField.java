@@ -36,4 +36,32 @@ public record AssociatedComponentField(int associatedComponentNid, FieldCategory
         FieldCategory category = FieldCategory.valueOf(in.readString());
         return new AssociatedComponentField(associatedComponentNid, category);
     }
+    /**
+     * Compares this {@code FieldLocator} with the specified {@code FieldLocator} for order.
+     * This comparison is primarily based on the implementation type of the provided {@code FieldLocator}.
+     * If both locators are instances of {@code FieldLocatorForAssociatedComponent}, a further comparison is
+     * performed based on the associated component's native identifier (nid) and, if necessary, the field category.
+     *
+     * @param fieldLocator the {@code FieldLocator} instance to be compared against this locator.
+     *                     Must be a non-null instance of {@code FieldLocator}.
+     * @return a negative integer, zero, or a positive integer as this locator is less than, equal to,
+     *         or greater than the specified {@code fieldLocator}. Specifically:
+     *         - Returns {@code 1} if the provided locator is an instance of {@code FieldLocatorForComponent}.
+     *         - Returns the result of comparing the associated component nids if both locators are instances
+     *           of {@code FieldLocatorForAssociatedComponent}, or
+     *         - Returns the result of comparing the field categories in case the nids are equal.
+     */
+    @Override
+    public int compareTo(FieldLocator fieldLocator) {
+        return switch (fieldLocator) {
+            case FieldLocatorForComponent _ -> 1;
+            case FieldLocatorForAssociatedComponent locator -> {
+                if (locator.associatedComponentNid() == this.associatedComponentNid) {
+                    yield this.category.compareTo(locator.category());
+                }
+                yield Integer.compare(this.associatedComponentNid, locator.associatedComponentNid());
+            }
+        };
+    }
+
 }

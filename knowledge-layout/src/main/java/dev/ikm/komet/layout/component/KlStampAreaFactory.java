@@ -4,20 +4,21 @@ import dev.ikm.komet.framework.observable.ObservableStamp;
 import javafx.scene.layout.Pane;
 
 /**
- * A factory interface for creating instances of {@code KlStampPane} that associate
- * with {@code ObservableStamp}. This interface extends the {@code KlComponentPaneFactory}
- * to specialize its functionality for stamp-related panes. The {@code KlStampPaneFactory}
- * is responsible for dynamically constructing JavaFX panes tied to observable stamp entities.
+ * The {@code KlStampAreaFactory} interface defines a non-sealed factory for creating
+ * instances of {@link KlStampArea}, which are specialized UI components for managing
+ * and displaying {@link ObservableStamp} entities. It extends the {@link KlComponentAreaFactory}
+ * to provide stamp-specific functionality while maintaining compatibility with the broader
+ * component-area framework.
  *
- * This factory provides the mechanisms essential for managing and initializing
- * stamp-specific UI components, enabling dynamic binding, user preferences integration,
- * and other features that support the display and interaction with {@code ObservableStamp} instances.
+ * This factory supports the creation, initialization, and configuration of {@code KlStampArea}
+ * instances using observable stamp entities and preferences. By leveraging the
+ * {@code KlComponentAreaFactory}, it ensures consistent management of the UI components
+ * across the application.
  *
- * @param <FX> the type of JavaFX {@code Pane} used in the {@code KlStampPane} implementation
  * @see KlComponentAreaFactory
  * @see KlStampArea
  * @see ObservableStamp
  */
-public non-sealed interface KlStampAreaFactory<FX extends Pane>
-        extends KlComponentAreaFactory<FX, KlStampArea<FX>, ObservableStamp> {
+public non-sealed interface KlStampAreaFactory
+        extends KlComponentAreaFactory<KlStampArea, ObservableStamp> {
 }

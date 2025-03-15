@@ -33,4 +33,21 @@ public record ComponentFieldLocator(FieldCategory category) implements FieldLoca
         FieldCategory category = FieldCategory.valueOf(in.readString());
         return new ComponentFieldLocator(category);
     }
+
+    /**
+     * Compares this {@code FieldLocator} instance with another {@code FieldLocator} instance to determine their order.
+     * The comparison logic depends on the specific implementation of the {@code FieldLocator}.
+     *
+     * @param locator the other {@code FieldLocator} instance to compare with
+     * @return a negative integer if this instance is less than the specified {@code FieldLocator};
+     *         zero if they are equal; or a positive integer if this instance is greater
+     */
+    public int compareTo(FieldLocator locator) {
+        return switch (locator) {
+            case ComponentFieldLocator componentFieldLocator -> this.category.compareTo(componentFieldLocator.category());
+            case ComponentFieldListElementLocator _ -> -1;
+            case AssociatedComponentField _ -> -1;
+            case AssociatedComponentFieldListElement _  -> -1;
+         };
+    }
 }

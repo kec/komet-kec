@@ -4,7 +4,7 @@ import dev.ikm.tinkar.common.binary.*;
 import dev.ikm.tinkar.common.service.PluggableService;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 
-public sealed interface FieldLocator extends Encodable
+public sealed interface FieldLocator extends Encodable, Comparable<FieldLocator>
         permits FieldLocatorForAssociatedComponent, FieldLocatorForComponent {
 
     enum PermittedImplementation {

@@ -40,4 +40,28 @@ public record AssociatedComponentFieldListElement(int associatedComponentNid,
         int index = in.readInt();
         return new AssociatedComponentFieldListElement(associatedComponentNid, category, index);
     }
+
+    /**
+     * Compares this {@code AssociatedComponentFieldListElement} instance with another instance of {@code FieldLocator}.
+     * The comparison is performed based on the type of the provided {@code FieldLocator} and, if applicable,
+     * specific properties of the {@code AssociatedComponentFieldListElement}.
+     *
+     * @param locator the {@code FieldLocator} instance to compare this object to
+     * @return a negative integer, zero, or a positive integer as this instance is less than,
+     *         equal to, or greater than the specified {@code FieldLocator} instance
+     */
+    @Override
+    public int compareTo(FieldLocator locator) {
+        return switch (locator) {
+            case ComponentFieldLocator _ -> 1;
+            case ComponentFieldListElementLocator _ -> 1;
+            case AssociatedComponentField _ -> 1;
+            case AssociatedComponentFieldListElement associatedComponentFieldListElement -> {
+                if (associatedComponentFieldListElement.associatedComponentNid() == this.associatedComponentNid) {
+                    yield this.category.compareTo(associatedComponentFieldListElement.category());
+                }
+                yield Integer.compare(this.associatedComponentNid, associatedComponentFieldListElement.associatedComponentNid());
+            }
+         };
+    }
 }

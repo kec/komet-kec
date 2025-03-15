@@ -29,7 +29,7 @@ import javafx.scene.layout.Region;
 @ParentProxy(parentName = "Komet panels (SOLOR)",
         parentPublicId = @PublicIdAnnotation(@UuidAnnotation("b3d1cdf6-27a5-502d-8f16-ed026a7b9d15")))
 public sealed interface KlFieldArea<DT, FX extends Region> extends KlWidget<FX>, ClassConceptBinding
-        permits KlBooleanFieldArea, KlComponentFieldArea, KlConceptFieldArea, KlGenericFieldArea, KlListFieldArea {
+        permits KlBooleanFieldArea, KlComponentFieldArea, KlConceptFieldArea, KlGenericFieldArea, KlListFieldArea, KlPublicIdFieldArea {
     /**
      * Retrieves the value associated with the field pane by accessing the value
      * of the underlying {@code ObservableField} instance.

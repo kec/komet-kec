@@ -157,7 +157,7 @@
             <plugins>
                 <plugin>
                     <groupId>org.openjfx</groupId>
-                    <artifactId>javafx-maven-plugin</artifactId>
+                        <artifactId>javafx-maven-plugin</artifactId>
                     <configuration>
                         <mainClass>dev.ikm.komet.application/dev.ikm.komet.app.App</mainClass>
                         <stripDebug>false</stripDebug>

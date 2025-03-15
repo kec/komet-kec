@@ -41,8 +41,21 @@ public sealed interface KlGadget<FX> extends KlContextSensitiveComponent, KlObje
      * Provides an instance of the generic type T JavaFx gadget associated with the knowledge layout component.
      *
      * @return an instance of type T, representing a specific knowledge layout gadget.
+     * @deprecated use {@code fxObject} to prevent overloaded use of gadget...
      */
-    FX fxGadget();
+    @Deprecated
+    default FX fxGadget() {
+        return fxObject();
+    }
+
+    /**
+     * Provides the encpsulated JavaFx object.
+     *
+     * @return a JavaFx object
+     */
+    default FX fxObject() {
+        return (FX) this;
+    }
 
     @Override
     default ObservableMap<Object, Object> properties() {

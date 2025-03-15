@@ -32,7 +32,8 @@ public record GridLayout(
         Double preferredHeight,
         Double preferredWidth,
         boolean fillHeight,
-        boolean fillWidth) implements Encodable, GridLayoutBuilder.With {
+        boolean fillWidth,
+        boolean visible) implements Encodable, GridLayoutBuilder.With {
 
     private static final int marshalVersion = 1;
 
@@ -47,7 +48,7 @@ public record GridLayout(
      * <p> - Row index: 0
      * <p> - Column span: 1
      * <p> - Row span: 1
-     * <p> - Horizontal grow priority: {@code Priority.NEVER}
+     * <p> - Horizontal grow priority: {@code Priority.SOMETIMES}
      * <p> - Vertical grow priority: {@code Priority.NEVER}
      * <p> - Horizontal alignment: {@code HPos.LEFT}
      * <p> - Vertical alignment: {@code VPos.TOP}
@@ -73,11 +74,11 @@ public record GridLayout(
      */
     public GridLayout(int columnIndex, int rowIndex) {
         this(columnIndex, rowIndex, 1, 1,
-                Priority.NEVER, Priority.NEVER, HPos.LEFT, VPos.TOP,
+                Priority.SOMETIMES, Priority.NEVER, HPos.LEFT, VPos.TOP,
                 new Insets(0),
                 Double.MAX_VALUE, Double.MAX_VALUE,
                 Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE,
-                true, true);
+                true, true, true);
     }
 
     /**
@@ -107,6 +108,7 @@ public record GridLayout(
         out.writeDouble(preferredWidth);
         out.writeBoolean(fillHeight);
         out.writeBoolean(fillWidth);
+        out.writeBoolean(visible);
     }
 
     /**
@@ -142,7 +144,8 @@ public record GridLayout(
                     in.readDouble(), // Double preferredHeight,
                     in.readDouble(), // Double preferredWidth
                     in.readBoolean(), // boolean fillHeight
-                    in.readBoolean() // boolean fillWidth
+                    in.readBoolean(), // boolean fillWidth
+                    in.readBoolean()
              );
         } else {
             throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);

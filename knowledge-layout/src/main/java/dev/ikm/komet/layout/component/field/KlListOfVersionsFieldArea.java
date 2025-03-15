@@ -1,28 +1,27 @@
 package dev.ikm.komet.layout.component.field;
 
 import dev.ikm.tinkar.entity.EntityVersion;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Region;
 
 import java.util.List;
 
 /**
- * Represents a specialized field pane in the Knowledge Layout framework designed
- * to manage and interact with fields containing a list of entity versions. This
- * interface extends {@code KlListFieldPane}, parameterized with {@code List<DT>},
- * where {@code DT} is a subtype of {@code EntityVersion}.
- * <p>
- * The {@code KlListOfVersionsFieldPane} interface defines the contract for field
- * panes that handle collections of entity versions, offering support for type-safe
- * operations and integration with the parent UI components. This interface enables
- * the manipulation of lists containing versions of entities, facilitating their
- * display, management, and observation within the user interface.
+ * Represents a non-sealed interface within the Knowledge Layout framework for managing
+ * and interacting with fields containing observable lists of versioned entities. This
+ * interface extends {@code KlListFieldArea} and is specifically tailored for handling
+ * lists of versioned entities and their associated UI components.
  *
- * @param <L>  the type of the list managed within the field pane, containing elements of type {@code DT}
- * @param <DT> the data type of the elements in the list managed within the field pane, extending {@code EntityVersion}
- * @param <FX> the type of the parent UI element associated with this pane, extending {@code Region}
+ * This interface provides type-safe operations to manage and observe both the list
+ * of versioned entities and their selected items, enabling fine-grained interaction
+ * with structured versioned data and its visualization in the user interface.
+ *
+ * @param <DT> the type of the observable list managed by the field area, extending {@code ObservableList}
+ * @param <LE> the type of elements contained within the managed list, extending {@code EntityVersion}
+ * @param <FX> the type of the parent UI element associated with this field area, extending {@code Region}
  */
-public non-sealed interface KlListOfVersionsFieldArea<L extends List<DT>,
-        DT extends EntityVersion,
+public non-sealed interface KlListOfVersionsFieldArea<DT extends ObservableList<LE>,
+        LE extends EntityVersion,
         FX extends Region>
-        extends KlListFieldArea<L, DT, FX> {
+        extends KlListFieldArea<DT, LE, FX> {
 }
