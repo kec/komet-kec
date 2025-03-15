@@ -3,24 +3,21 @@ package dev.ikm.komet.layout.component.field;
 import dev.ikm.tinkar.component.FieldDefinition;
 import javafx.scene.layout.Region;
 
-import java.util.List;
-
 /**
- * Represents a factory interface for creating instances of {@link KlListFieldArea},
- * specifically designed for handling fields defined as a list of {@link FieldDefinition}
- * elements. This interface supports the Knowledge Layout framework's specialized pane
- * creation and management for scenarios where a collection of field definitions needs
- * to be represented and interacted with in the form of a list.
- * <p>
- * This interface extends {@link KlListFieldAreaFactory}, inheriting its type-safe
- * operations and capabilities for managing list-based field panes. Implementations
- * of this factory interface may provide additional functionality or customization
- * for dealing with specific types of field definitions within a list structure.
+ * Represents a factory interface in the Knowledge Layout framework for creating and managing
+ * instances of field areas specifically designed to handle fields containing definitions
+ * of data types. This interface extends {@link KlListFieldAreaFactory}, inheriting
+ * its type constraints and functionality while specializing it for areas managing
+ * field definitions.
  *
- * @param <DT> the data type representing the field definition elements in the list
- * @param <L>  the type of the list containing elements of type {@code DT}
- * @param <FX> the type of the parent UI element associated with the pane, extending {@link Region}
+ * The type parameters allow defining the type of field definitions in the list and the JavaFX node type
+ * that this factory produces and associates with the field areas. It supports the
+ * generation of UI components tailored to handle lists of field definitions with enhanced
+ * configurability and type safety.
+ *
+ * @param <LE> the type of field definitions managed by the field areas created by this factory
+ * @param <FX> the type of JavaFX region used as the parent UI element for the field areas
  */
-public interface KlListOfFieldDefinitionAreaFactory<DT extends FieldDefinition, L extends List<DT>, FX extends Region>
-        extends KlListFieldAreaFactory<DT, L, FX> {
+public interface KlListOfFieldDefinitionAreaFactory<LE extends FieldDefinition, FX extends Region>
+        extends KlListFieldAreaFactory<LE, FX> {
 }

@@ -20,8 +20,16 @@ import java.util.List;
  * @param <LE> the type of elements contained within the managed list, extending {@code EntityVersion}
  * @param <FX> the type of the parent UI element associated with this field area, extending {@code Region}
  */
-public non-sealed interface KlListOfVersionsFieldArea<DT extends ObservableList<LE>,
+public non-sealed interface KlListOfVersionsFieldArea<
         LE extends EntityVersion,
         FX extends Region>
-        extends KlListFieldArea<DT, LE, FX> {
+        extends KlListFieldArea<ObservableList<LE>, LE, FX> {
+
+    /**
+     * Retrieves the observable list of currently selected elements managed by the field area.
+     * The list represents the selected items of type {@code LE} within the associated observable list.
+     *
+     * @return an {@code ObservableList} of elements of type {@code LE}, representing the selected items
+     */
+    ObservableList<LE> selectedItems();
 }

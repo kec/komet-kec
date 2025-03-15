@@ -1,22 +1,19 @@
 package dev.ikm.komet.layout.component.field;
 
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Region;
 
 import java.util.List;
 
 /**
- * Represents a factory interface for creating and managing instances of
- * {@link KlListFieldArea}, which is a specialized field pane in the Knowledge Layout
- * framework that supports handling of list-based data structures.
- *<p>
- * This interface extends {@link KlFieldAreaFactory} to provide additional
- * type parameters and capabilities for managing {@code List}-based field panes,
- * enabling support for lists of specific data types.
+ * Represents a factory interface for creating and managing instances of {@link KlFieldArea}
+ * specifically designed for handling fields containing an {@link ObservableList} of elements.
+ * This interface builds upon {@link KlFieldAreaFactory}, providing additional type constraints
+ * and functionality tailored for list-based field areas within the Knowledge Layout framework.
  *
- * @param <DT> the data type of the elements contained in the list managed by the field pane
- * @param <L>  the list type managed within the field pane, containing elements of type {@code DT}
- * @param <FX> the type of the parent UI element associated with this pane, extending {@link Region}
+ * @param <LE> the type of elements managed within the {@link ObservableList}
+ * @param <FX> the type of the JavaFX {@link Region} parent element associated with this field area
  */
-public interface KlListFieldAreaFactory<DT, L extends List<DT>, FX extends Region> extends
-        KlFieldAreaFactory<L, FX, KlFieldArea<L, FX>> {
+public interface KlListFieldAreaFactory<LE, FX extends Region> extends
+        KlFieldAreaFactory<ObservableList<LE>, FX, KlFieldArea<ObservableList<LE>, FX>> {
 }
