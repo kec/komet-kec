@@ -2,8 +2,8 @@ package dev.ikm.komet.kview.klfields.componentlistfield;
 
 import dev.ikm.komet.framework.observable.ObservableField;
 import dev.ikm.komet.framework.view.ObservableView;
-import dev.ikm.komet.layout.component.version.field.KlField;
-import dev.ikm.komet.layout.component.version.field.KlFieldFactory;
+import dev.ikm.komet.layout.version.field.KlField;
+import dev.ikm.komet.layout.version.field.KlFieldFactory;
 import dev.ikm.tinkar.common.id.IntIdList;
 
 public class KlComponentListFieldFactory implements KlFieldFactory<IntIdList> {

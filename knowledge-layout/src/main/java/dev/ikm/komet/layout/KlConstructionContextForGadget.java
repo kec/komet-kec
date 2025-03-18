@@ -1,6 +1,7 @@
 package dev.ikm.komet.layout;
 
 import dev.ikm.komet.framework.observable.FieldLocator;
+import dev.ikm.komet.layout.area.KlForFieldArea;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.coordinate.view.ViewCoordinate;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -37,7 +38,7 @@ public interface KlConstructionContextForGadget {
      * @param componentFieldSpecifications
      * @return
      */
-    ImmutableMap<FieldLocator, GridLayoutForComponent>
+    ImmutableMap<FieldLocator, KlForFieldArea>
         createLayout(ImmutableList<FieldLocator> componentFieldSpecifications);
 
     /**

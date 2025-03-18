@@ -1,5 +1,6 @@
 package dev.ikm.komet.layout;
 
+import dev.ikm.komet.layout.area.GridLayout;
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
 import javafx.beans.property.BooleanProperty;

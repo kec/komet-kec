@@ -5,7 +5,7 @@ import dev.ikm.komet.framework.view.ObservableView;
 import dev.ikm.komet.kview.controls.KLReadOnlyDataTypeControl;
 import dev.ikm.komet.kview.controls.KLStringControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
-import dev.ikm.komet.layout.component.version.field.KlStringField;
+import dev.ikm.komet.layout.version.field.KlStringField;
 import javafx.scene.Parent;
 
 public class DefaultKlStringField extends BaseDefaultKlField<String> implements KlStringField {

@@ -1,5 +1,6 @@
 package dev.ikm.komet.layout;
 
+import dev.ikm.komet.layout.area.GridLayout;
 import dev.ikm.komet.layout.context.KlContextFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import dev.ikm.komet.preferences.KometPreferences;
@@ -46,6 +47,12 @@ public interface KlFactory<KL extends KlObject> {
     default KL create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) {
         // Override, and remove default in future revisions.
         return create(preferencesFactory);
+    }
+
+    default KL create(KlPreferencesFactory preferencesFactory, GridLayout gridLayoutForArea) {
+        // Override, and remove default in future revisions.
+        throw new UnsupportedOperationException("Not yet implemented");
+        //return create(preferencesFactory);
     }
 
     /**

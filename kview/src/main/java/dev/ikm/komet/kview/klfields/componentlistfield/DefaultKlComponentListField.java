@@ -7,7 +7,7 @@ import dev.ikm.komet.kview.controls.ComponentItem;
 import dev.ikm.komet.kview.controls.KLComponentListControl;
 import dev.ikm.komet.kview.controls.KLReadOnlyComponentListControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
-import dev.ikm.komet.layout.component.version.field.KlComponentListField;
+import dev.ikm.komet.layout.version.field.KlComponentListField;
 import dev.ikm.tinkar.common.id.IntIdList;
 import dev.ikm.tinkar.terms.EntityProxy;
 import javafx.beans.property.ObjectProperty;

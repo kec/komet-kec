@@ -7,7 +7,7 @@ import dev.ikm.komet.kview.controls.ComponentItem;
 import dev.ikm.komet.kview.controls.KLComponentSetControl;
 import dev.ikm.komet.kview.controls.KLReadOnlyComponentSetControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
-import dev.ikm.komet.layout.component.version.field.KlComponentSetField;
+import dev.ikm.komet.layout.version.field.KlComponentSetField;
 import dev.ikm.tinkar.common.id.IntIdSet;
 import dev.ikm.tinkar.terms.EntityProxy;
 import javafx.scene.image.Image;

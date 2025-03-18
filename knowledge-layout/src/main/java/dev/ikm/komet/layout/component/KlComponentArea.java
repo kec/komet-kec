@@ -2,6 +2,7 @@ package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.framework.observable.ObservableVersion;
+import dev.ikm.komet.layout.area.KlArea;
 import dev.ikm.tinkar.entity.EntityVersion;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;

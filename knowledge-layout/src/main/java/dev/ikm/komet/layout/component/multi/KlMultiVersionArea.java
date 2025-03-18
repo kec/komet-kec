@@ -2,7 +2,7 @@ package dev.ikm.komet.layout.component.multi;
 
 import dev.ikm.komet.framework.observable.ObservableVersion;
 import dev.ikm.komet.layout.KlWidget;
-import dev.ikm.komet.layout.component.version.KlVersionArea;
+import dev.ikm.komet.layout.version.KlVersionArea;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 

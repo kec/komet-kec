@@ -2,7 +2,7 @@ package dev.ikm.komet.kview.klfields;
 
 import dev.ikm.komet.framework.observable.ObservableField;
 import dev.ikm.komet.framework.view.ObservableView;
-import dev.ikm.komet.layout.component.version.field.KlField;
+import dev.ikm.komet.layout.version.field.KlField;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Parent;

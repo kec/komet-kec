@@ -5,7 +5,7 @@ import dev.ikm.komet.framework.view.ObservableView;
 import dev.ikm.komet.kview.controls.KLBooleanControl;
 import dev.ikm.komet.kview.controls.KLReadOnlyDataTypeControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
-import dev.ikm.komet.layout.component.version.field.KlBooleanField;
+import dev.ikm.komet.layout.version.field.KlBooleanField;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Parent;
 
