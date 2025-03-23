@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
  * @see ObservableEntity
  * @see KlComponentArea
  */
-public interface KlMultiComponentArea<OE extends ObservableEntity, P extends Pane> extends KlWidget<P> {
+public interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pane> extends KlWidget<FX> {
     /**
      * Retrieves the list of observable entities associated with this pane.
      *

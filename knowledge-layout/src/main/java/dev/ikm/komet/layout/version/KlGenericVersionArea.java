@@ -20,10 +20,10 @@ import javafx.scene.layout.Pane;
  *   involving generic pane types and entity versions.
  * <p>
  * Type Parameters:
- * @param <P> the type of the JavaFX Pane this version pane manages
+ * @param <FX> the type of the JavaFX Pane this version pane manages
  *
  * @see KlVersionArea
  * @see ObservableVersion
  */
-public non-sealed interface KlGenericVersionArea<P extends Pane> extends KlVersionArea<ObservableVersion, P> {
+public non-sealed interface KlGenericVersionArea<FX extends Pane> extends KlVersionArea<ObservableVersion, FX> {
 }

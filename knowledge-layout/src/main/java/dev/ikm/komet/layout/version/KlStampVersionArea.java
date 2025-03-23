@@ -19,12 +19,12 @@ import javafx.scene.layout.Pane;
  *   convenience wrappers specific to stamp versions.
  * <p>
  * Type Parameters:
- * @param <P> the type of JavaFX {@link Pane} managed by this interface
+ * @param <FX> the type of JavaFX {@link Pane} managed by this interface
  *
  * @see KlVersionArea
  * @see ObservableStampVersion
  */
-public non-sealed interface KlStampVersionArea<P extends Pane> extends KlVersionArea<ObservableStampVersion, P> {
+public non-sealed interface KlStampVersionArea<FX extends Pane> extends KlVersionArea<ObservableStampVersion, FX> {
 
      default ObservableStampVersion stampVersion() {
         return KlVersionArea.super.version();

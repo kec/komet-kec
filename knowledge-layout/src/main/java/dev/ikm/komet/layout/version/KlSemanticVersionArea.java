@@ -15,12 +15,12 @@ import javafx.scene.layout.Pane;
  * It provides methods to access and interact with versions of semantic entities
  * in the context of a JavaFX UI component.
  *
- * @param <P> the type of the Pane that the interface works with
+ * @param <FX> the type of the Pane that the interface works with
  *
  * @see KlVersionArea
  * @see ObservableSemanticVersion
  */
-public non-sealed interface KlSemanticVersionArea<P extends Pane> extends KlVersionArea<ObservableSemanticVersion, P> {
+public non-sealed interface KlSemanticVersionArea<FX extends Pane> extends KlVersionArea<ObservableSemanticVersion, FX> {
     default ObservableSemanticVersion semanticVersion() {
         return KlVersionArea.super.version();
     }

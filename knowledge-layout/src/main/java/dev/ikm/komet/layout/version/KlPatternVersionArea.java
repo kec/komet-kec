@@ -11,12 +11,12 @@ import javafx.scene.layout.Pane;
  * It extends the generic {@code KlVersionPane} to provide specific functionality for handling pattern
  * version-related entities while maintaining compatibility with the broader version pane framework.
  *
- * @param <P> the type of the JavaFX {@link Pane} that is used in this pane
+ * @param <FX> the type of the JavaFX {@link Pane} that is used in this pane
  *
  * @see ObservablePatternVersion
  * @see KlVersionArea
  */
-public non-sealed interface KlPatternVersionArea<P extends Pane> extends KlVersionArea<ObservablePatternVersion, P> {
+public non-sealed interface KlPatternVersionArea<FX extends Pane> extends KlVersionArea<ObservablePatternVersion, FX> {
     /**
      * Returns the observable pattern version associated with this pane.
      * The method retrieves the version by delegating to the {@code version()} method

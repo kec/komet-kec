@@ -15,9 +15,9 @@ import org.eclipse.collections.api.list.ImmutableList;
  * requirements for observable version management, contextual view configuration, and user preference settings.
  *
  * @param <OV> the type of {@link ObservableVersion} that this factory operates on
- * @param <P>  the type of {@link Pane} used as the visual container for the versions
+ * @param <FX>  the type of {@link Pane} used as the visual container for the versions
  */
-public interface KlMultiVersionAreaFactory<OV extends ObservableVersion, P extends Pane>
+public interface KlMultiVersionAreaFactory<OV extends ObservableVersion, FX extends Pane>
         extends KlFactory<KlWidget>, KlVersionType<OV> {
 
     /**
@@ -30,7 +30,7 @@ public interface KlMultiVersionAreaFactory<OV extends ObservableVersion, P exten
      * @param preferences the user preference settings used to further configure the pane's behavior and appearance
      * @return a new instance of {@link KlMultiVersionArea} configured with the given observable versions, view, and preferences
      */
-    KlMultiVersionArea<OV, P> create(ImmutableList<OV> observableVersions,
-                                     ObservableView observableView,
-                                     KometPreferences preferences);
+    KlMultiVersionArea<OV, FX> create(ImmutableList<OV> observableVersions,
+                                      ObservableView observableView,
+                                      KometPreferences preferences);
 }

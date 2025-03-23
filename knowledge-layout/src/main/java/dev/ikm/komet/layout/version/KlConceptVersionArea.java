@@ -17,7 +17,7 @@ import javafx.scene.layout.Pane;
  * @see KlVersionArea
  * @see ObservableConceptVersion
  */
-public non-sealed interface KlConceptVersionArea<P extends Pane> extends KlVersionArea<ObservableConceptVersion, P> {
+public non-sealed interface KlConceptVersionArea<FX extends Pane> extends KlVersionArea<ObservableConceptVersion, FX> {
     /**
      * Returns the observable concept version associated with this pane.
      * This method provides a convenience wrapper for getting the version

@@ -12,7 +12,7 @@ import javafx.scene.layout.Pane;
  *
  * @see ObservableVersion
  */
-public sealed interface KlVersionArea<OV extends ObservableVersion, P extends Pane> extends KlArea<P>
+public sealed interface KlVersionArea<OV extends ObservableVersion, FX extends Pane> extends KlArea<FX>
         permits KlConceptVersionArea, KlGenericVersionArea, KlPatternVersionArea, KlSemanticVersionArea, KlStampVersionArea {
     /**
      * Returns the version of the observable entity associated with this pane.

@@ -16,9 +16,9 @@ import org.eclipse.collections.api.list.ImmutableList;
  *
  * @param <OE> the type of observable entity that extends {@link ObservableEntity}; represents the entities
  *             managed and rendered by the pane created by this factory
- * @param <P> the type of pane used within the {@code KlMultiComponentPane}; typically extends {@link Pane}
+ * @param <FX> the type of pane used within the {@code KlMultiComponentPane}; typically extends {@link Pane}
  */
-public interface KlMultiComponentAreaFactory<OE extends ObservableEntity, P extends Pane> extends KlFrameFactory, KlEntityType<OE> {
+public interface KlMultiComponentAreaFactory<OE extends ObservableEntity, FX extends Pane> extends KlFrameFactory, KlEntityType<OE> {
 
     /**
      * Creates an instance of {@code KlMultiComponentPane}, which is used to display and manage multiple
@@ -33,7 +33,7 @@ public interface KlMultiComponentAreaFactory<OE extends ObservableEntity, P exte
      *                           of the created pane
      * @return an instance of {@code KlMultiComponentPane} configured according to the provided parameters
      */
-    KlMultiComponentArea<OE, P> create(ImmutableList<OE> observableEntities,
-                                       ObservableView observableView,
-                                       KometPreferences preferences);
+    KlMultiComponentArea<OE, FX> create(ImmutableList<OE> observableEntities,
+                                        ObservableView observableView,
+                                        KometPreferences preferences);
 }
