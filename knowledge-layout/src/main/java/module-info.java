@@ -9,7 +9,6 @@ module dev.ikm.komet.layout {
     exports dev.ikm.komet.layout.area;
 
     exports dev.ikm.komet.layout.component;
-    exports dev.ikm.komet.layout.component.multi;
     exports dev.ikm.komet.layout.field;
     exports dev.ikm.komet.layout.version.field;
     exports dev.ikm.komet.layout.version;
