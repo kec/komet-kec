@@ -22,11 +22,11 @@ public interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pa
      *
      * @return an ObservableList of ObservableEntity objects, representing the entities and their versions contained within this pane.
      */
-    ObservableList<OE> entities();
+    ObservableList<OE> observableEntities();
     /**
      * Retrieves the list of single pane components associated with this multi-component pane.
      *
      * @return an ObservableList of KlComponentPane objects, representing the individual component panes contained within this multi-component pane.
      */
-    ObservableList<KlComponentArea> klComponents();
+    ObservableList<KlComponentArea> klComponentAreas();
 }
