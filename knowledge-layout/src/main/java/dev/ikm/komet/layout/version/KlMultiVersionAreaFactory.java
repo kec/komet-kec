@@ -1,4 +1,4 @@
-package dev.ikm.komet.layout.component.multi;
+package dev.ikm.komet.layout.version;
 
 import dev.ikm.komet.framework.observable.ObservableVersion;
 import dev.ikm.komet.framework.view.ObservableView;

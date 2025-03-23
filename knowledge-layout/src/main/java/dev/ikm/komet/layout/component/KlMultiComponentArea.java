@@ -1,8 +1,7 @@
-package dev.ikm.komet.layout.component.multi;
+package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.layout.KlWidget;
-import dev.ikm.komet.layout.component.KlComponentArea;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 
