@@ -8,7 +8,8 @@ import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 
-public record KlForArea(String areaFactoryName, GridLayout gridLayout, ImmutableList<KlAreaSpecifier> children) implements KlAreaSpecifier{
+public record KlSpecifierForArea(String areaFactoryName, GridLayout gridLayout, ImmutableList<KlAreaSpecifier> children)
+        implements KlAreaSpecifier {
 
     @Encoder
     @Override
@@ -22,12 +23,12 @@ public record KlForArea(String areaFactoryName, GridLayout gridLayout, Immutable
     }
 
     @Decoder
-    public static KlForArea decode(DecoderInput in) {
+    public static KlSpecifierForArea decode(DecoderInput in) {
         int childCount = in.readInt();
         MutableList<KlAreaSpecifier> children = Lists.mutable.ofInitialCapacity(childCount);
         for (int i = 0; i < childCount; i++) {
             children.add(in.decode());
         }
-        return new KlForArea(in.readString(),
+        return new KlSpecifierForArea(in.readString(),
                 in.decode(), children.toImmutable());
     }}

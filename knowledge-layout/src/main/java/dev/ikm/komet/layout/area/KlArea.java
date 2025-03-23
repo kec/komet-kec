@@ -1,26 +1,31 @@
 package dev.ikm.komet.layout.area;
 
 import dev.ikm.komet.layout.KlWidget;
+import dev.ikm.komet.layout.component.KlComponentArea;
+import dev.ikm.komet.layout.field.KlFieldArea;
+import dev.ikm.komet.layout.version.KlVersionArea;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 /**
- * The {@code KlPane} interface represents a widget that integrates with a JavaFX {@code Pane}.
- * It provides access to the underlying JavaFX {@code Pane} used for layout and display purposes.
- * This interface is typically extended to create more specialized pane implementations.
- *
- * @param <FX> the type of JavaFX {@code Pane} associated with the implementation of this interface
+ * The {@code KlArea} interface represents a fundamental building block within
+ * the Knowledge Layout framework, intended for managing and organizing user interface
+ * regions. This sealed interface defines the contract for various specialized
+ * pane or area types, enabling structured, type-safe layouts and interactions
+ * within the framework.
+ * <p>
+ * Implementations of this interface can serve distinct purposes, such as managing
+ * components, versions, fields, or supplemental layouts. By leveraging a type-safe
+ * hierarchy, the {@code KlArea} interface ensures consistent and extensible design
+ * across different areas of the framework.
+ * <p>
+ * @param <FX> the type of JavaFX {@code Region} that serves as the base node for this area
+ * <p>
+ * @see KlComponentArea
+ * @see KlVersionArea
+ * @see KlFieldArea
+ * @see KlSupplementalArea
  */
-public interface KlArea<FX extends Pane> extends KlWidget<FX> {
-
-    /**
-     * Returns the JavaFX {@code Pane} associated with this version pane.
-     *
-     * Exposes the layout panes which need to expose the children list as
-     * public so that users of the subclass can freely add/remove children.
-     *
-     * @return the JavaFX {@code Pane} used to display content
-     */
-    default Pane pane() {
-        return klWidget();
-    }
+public sealed interface KlArea<FX extends Region> extends KlWidget<FX>
+        permits KlComponentArea, KlVersionArea, KlFieldArea, KlSupplementalArea {
 }

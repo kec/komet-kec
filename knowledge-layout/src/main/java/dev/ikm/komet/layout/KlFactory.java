@@ -45,14 +45,16 @@ public interface KlFactory<KL extends KlObject> {
      * @return an instance of type KL created using the given KlPreferencesFactory.
      */
     default KL create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) {
-        // Override, and remove default in future revisions.
+        // Override, and remove default in future revisions. TODO: not sure this method is right.
         return create(preferencesFactory);
     }
 
     default KL create(KlPreferencesFactory preferencesFactory, GridLayout gridLayoutForArea) {
-        // Override, and remove default in future revisions.
-        throw new UnsupportedOperationException("Not yet implemented");
-        //return create(preferencesFactory);
+        KL kl = create(preferencesFactory);
+        if (kl instanceof KlWidget klWidget) {
+            klWidget.setGridLayout(gridLayoutForArea);
+        }
+        return kl;
     }
 
     /**

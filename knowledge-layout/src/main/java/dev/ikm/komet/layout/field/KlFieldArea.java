@@ -2,6 +2,7 @@ package dev.ikm.komet.layout.field;
 
 import dev.ikm.komet.framework.observable.ObservableField;
 import dev.ikm.komet.layout.KlWidget;
+import dev.ikm.komet.layout.area.KlArea;
 import dev.ikm.tinkar.common.bind.ClassConceptBinding;
 import dev.ikm.tinkar.common.bind.annotations.axioms.ParentProxy;
 import dev.ikm.tinkar.common.bind.annotations.names.FullyQualifiedName;
@@ -28,7 +29,7 @@ import javafx.scene.layout.Region;
 @RegularName("Field pane")
 @ParentProxy(parentName = "Komet panels (SOLOR)",
         parentPublicId = @PublicIdAnnotation(@UuidAnnotation("b3d1cdf6-27a5-502d-8f16-ed026a7b9d15")))
-public sealed interface KlFieldArea<DT, FX extends Region> extends KlWidget<FX>, ClassConceptBinding
+public sealed interface KlFieldArea<DT, FX extends Region> extends KlWidget<FX>, ClassConceptBinding, KlArea<FX>
         permits KlBooleanFieldArea, KlComponentFieldArea, KlConceptFieldArea, KlGenericFieldArea, KlListFieldArea, KlPublicIdFieldArea {
     /**
      * Retrieves the value associated with the field pane by accessing the value

@@ -8,10 +8,10 @@ import org.eclipse.collections.api.list.MutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public record KlForFieldArea(String areaFactoryName, FieldLocator fieldLocator,
-                             GridLayout gridLayout, ImmutableList<KlAreaSpecifier> children)
+public record KlSpecifierForFieldArea(String areaFactoryName, FieldLocator fieldLocator,
+                                      GridLayout gridLayout, ImmutableList<KlAreaSpecifier> children)
         implements Encodable, KlAreaSpecifier {
-        private static final Logger LOG = LoggerFactory.getLogger(KlForFieldArea.class);
+        private static final Logger LOG = LoggerFactory.getLogger(KlSpecifierForFieldArea.class);
 
     @Encoder
     @Override
@@ -26,13 +26,13 @@ public record KlForFieldArea(String areaFactoryName, FieldLocator fieldLocator,
     }
 
     @Decoder
-    public static KlForFieldArea decode(DecoderInput in) {
+    public static KlSpecifierForFieldArea decode(DecoderInput in) {
         int childCount = in.readInt();
         MutableList<KlAreaSpecifier> children = Lists.mutable.ofInitialCapacity(childCount);
         for (int i = 0; i < childCount; i++) {
             children.add(in.decode());
         }
-        return new KlForFieldArea(in.readString(),
+        return new KlSpecifierForFieldArea(in.readString(),
                 in.decode(), in.decode(), children.toImmutable());
     }
 }

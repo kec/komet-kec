@@ -6,8 +6,11 @@ module dev.ikm.komet.layout {
 
     exports dev.ikm.komet.layout;
     exports dev.ikm.komet.layout.action;
+    exports dev.ikm.komet.layout.area;
+
     exports dev.ikm.komet.layout.component;
     exports dev.ikm.komet.layout.component.multi;
+    exports dev.ikm.komet.layout.field;
     exports dev.ikm.komet.layout.version.field;
     exports dev.ikm.komet.layout.version;
     exports dev.ikm.komet.layout.context;
@@ -21,8 +24,6 @@ module dev.ikm.komet.layout {
 
     opens dev.ikm.komet.layout to javafx.fxml;
     opens dev.ikm.layout.app to javafx.fxml;
-    exports dev.ikm.komet.layout.field;
-    exports dev.ikm.komet.layout.area;
     opens dev.ikm.komet.layout.area to javafx.fxml;
 
 }

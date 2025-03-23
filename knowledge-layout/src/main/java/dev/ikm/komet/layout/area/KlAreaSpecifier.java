@@ -2,8 +2,10 @@ package dev.ikm.komet.layout.area;
 
 import dev.ikm.komet.layout.KlFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
+import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.common.binary.Encodable;
 import dev.ikm.tinkar.common.service.PluggableService;
+import javafx.scene.layout.GridPane;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public sealed interface KlAreaSpecifier
         extends Encodable
-        permits KlForArea, KlForFieldArea {
+        permits KlSpecifierForArea, KlSpecifierForFieldArea {
 
     Logger LOG = LoggerFactory.getLogger(KlAreaSpecifier.class);
 
@@ -23,20 +25,42 @@ public sealed interface KlAreaSpecifier
 
     ImmutableList<KlAreaSpecifier> children();
 
-    default
-    <KL extends KlArea> KlFactory<KL> makeFactory() {
+    default Class factoryClass() {
         if (areaFactoryName() == null || areaFactoryName().isBlank()) {
             throw new IllegalArgumentException("areaFactoryName is null or blank");
         }
         try {
-            Class factoryClass = PluggableService.forName(areaFactoryName());
-            Constructor constructor = factoryClass.getConstructor();
+            return PluggableService.forName(areaFactoryName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    default
+    <KL extends KlArea> KlFactory<KL> makeFactory() {
+        try {
+            Constructor constructor = factoryClass().getConstructor();
             KlFactory<KL> factory = (KlFactory<KL>) constructor.newInstance();
             return factory;
-        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             LOG.error("Constructing: {}", areaFactoryName(), e);
             throw new IllegalArgumentException("Unable to construct factory for: " + areaFactoryName(), e);
         }
+    }
+
+    default
+    <KL extends KlArea> KL makeAreaInParentAndAddToGrid(GridPane gridPane, KometPreferences parentPreferences) {
+        KL klArea = makeAreaInParent(parentPreferences);
+        klArea.setGridLayout(gridLayout());
+        gridPane.getChildren().add(klArea.fxObject());
+        return klArea;
+    }
+
+    default
+    <KL extends KlArea> KL makeAreaInParent(KometPreferences parentPreferences) {
+        KlPreferencesFactory preferencesFactory =
+                KlPreferencesFactory.create(parentPreferences, factoryClass());
+        return makeArea(preferencesFactory);
     }
 
     default

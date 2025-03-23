@@ -1,5 +1,7 @@
 package dev.ikm.komet.layout.area;
 
+import dev.ikm.komet.framework.observable.FieldLocator;
+import dev.ikm.komet.layout.GridLayoutForComponentFactory;
 import dev.ikm.tinkar.common.binary.*;
 import io.soabase.recordbuilder.core.RecordBuilder;
 import javafx.geometry.HPos;
@@ -7,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import org.eclipse.collections.api.list.ImmutableList;
 
 /**
  * Represents a layout record that defines grid-based layout constraints and properties.
@@ -150,6 +153,5 @@ public record GridLayout(
         } else {
             throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
         }
-
     }
 }
