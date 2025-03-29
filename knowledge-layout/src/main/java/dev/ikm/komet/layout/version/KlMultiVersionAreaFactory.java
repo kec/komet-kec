@@ -18,19 +18,6 @@ import org.eclipse.collections.api.list.ImmutableList;
  * @param <FX>  the type of {@link Pane} used as the visual container for the versions
  */
 public interface KlMultiVersionAreaFactory<OV extends ObservableVersion, FX extends Pane>
-        extends KlFactory<KlWidget>, KlVersionType<OV> {
+        extends KlFactory<KlMultiVersionArea<OV, FX>>, KlVersionType<OV> {
 
-    /**
-     * Creates an instance of {@link KlMultiVersionArea}, which is a component for managing and visually
-     * representing multiple observable versions of a specified type. This method integrates the provided
-     * observable versions, the contextual view configuration, and user preference settings.
-     *
-     * @param observableVersions the list of observable versions to be managed and displayed within the created pane
-     * @param observableView the contextual view configuration that defines how the versions are interpreted and displayed
-     * @param preferences the user preference settings used to further configure the pane's behavior and appearance
-     * @return a new instance of {@link KlMultiVersionArea} configured with the given observable versions, view, and preferences
-     */
-    KlMultiVersionArea<OV, FX> create(ImmutableList<OV> observableVersions,
-                                      ObservableView observableView,
-                                      KometPreferences preferences);
 }

@@ -5,7 +5,7 @@ import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 public class FieldLocatorForVersion {
 
     static <T> ObservableField<T> locate(ObservableVersion observableVersion,
-                                         ComponentFieldLocator componentFieldLocator,
+                                         DirectSingularAttributeLocator componentFieldLocator,
                                          StampCalculator stampCalculator) {
         return switch (observableVersion) {
             case ObservableConceptVersion observableConceptVersion ->
@@ -20,27 +20,27 @@ public class FieldLocatorForVersion {
     }
 
     private static <T> ObservableField<T> locateFieldOnStampVersion(ObservableStampVersion observableStampVersion,
-                                                                    ComponentFieldLocator componentFieldLocator,
+                                                                    DirectSingularAttributeLocator componentFieldLocator,
                                                                     StampCalculator stampCalculator) {
-        return observableStampVersion.getObservableFields().get(componentFieldLocator.category());
+        return observableStampVersion.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnSemanticVersion(ObservableSemanticVersion observableSemanticVersion,
-                                                                       ComponentFieldLocator componentFieldLocator,
+                                                                       DirectSingularAttributeLocator componentFieldLocator,
                                                                        StampCalculator stampCalculator) {
-        return observableSemanticVersion.getObservableFields().get(componentFieldLocator.category());
+        return observableSemanticVersion.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnPatternVersion(ObservablePatternVersion observablePatternVersion,
-                                                                      ComponentFieldLocator componentFieldLocator,
+                                                                      DirectSingularAttributeLocator componentFieldLocator,
                                                                       StampCalculator stampCalculator) {
-        return observablePatternVersion.getObservableFields().get(componentFieldLocator.category());
+        return observablePatternVersion.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnConceptVersion(ObservableConceptVersion observableConceptVersion,
-                                                                      ComponentFieldLocator componentFieldLocator,
+                                                                      DirectSingularAttributeLocator componentFieldLocator,
                                                                       StampCalculator stampCalculator) {
-        return observableConceptVersion.getObservableFields().get(componentFieldLocator.category());
+        return observableConceptVersion.getObservableAttributes().get(componentFieldLocator.category());
     }
 
 

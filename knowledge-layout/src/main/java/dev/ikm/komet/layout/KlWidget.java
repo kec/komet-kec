@@ -1,19 +1,26 @@
 package dev.ikm.komet.layout;
 
 import dev.ikm.komet.layout.area.GridLayout;
+import dev.ikm.komet.layout.context.KnowledgeBaseContext;
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
+import dev.ikm.tinkar.common.service.PluggableService;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableMap;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.Window;
 
 import java.util.Optional;
 import java.util.UUID;
+
+import static dev.ikm.komet.layout.KlObject.PropertyKeys.KL_LAYOUT_COMPUTER;
 
 /**
  * The {@code KlWidget} interface defines a contract for a customizable widget
@@ -99,6 +106,21 @@ public non-sealed interface KlWidget<FX extends Parent> extends KlGadget<FX> {
         return klWidget().getProperties();
     }
 
+
+    default LayoutComputer layoutComputer() {
+        return  layoutComputer(this.fxObject());
+    }
+
+    static LayoutComputer layoutComputer(Node node) {
+        if (node.hasProperties() && node.getProperties().containsKey(KL_LAYOUT_COMPUTER)) {
+            return (LayoutComputer) node.getProperties().get(KL_LAYOUT_COMPUTER);
+        }
+        Node parent = node.getParent();
+        if (parent != null) {
+            return layoutComputer(parent);
+        }
+        return PluggableService.first(LayoutComputer.class);
+    }
     /**
      * Retrieves a GridLayout instance with the current configuration.
      *

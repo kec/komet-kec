@@ -57,6 +57,11 @@ public final class ObservableStampVersion
         super(stampVersion);
     }
 
+    @Override
+    public ObservableStamp getObservableEntity() {
+        return ObservableEntity.get(nid());
+    }
+
     protected void addListeners() {
         stateProperty.addListener((observable, oldValue, newValue) -> {
             versionProperty.set(version().withStateNid(newValue.nid()));
@@ -125,14 +130,14 @@ public final class ObservableStampVersion
         return Lists.immutable.of(fieldArray);
     }
     @Override
-    public ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
-        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
+        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory fieldCategory : FieldCategorySet.stampVersionFields()) {
-            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
-            switch (fieldCategory) {
+        for (AttributeCategory attributeCategory : AttributeCategorySet.stampVersionFields()) {
+            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
+            switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.

@@ -1,7 +1,7 @@
 package dev.ikm.komet.layout;
 
-import dev.ikm.komet.framework.observable.FieldLocator;
-import dev.ikm.komet.layout.area.KlSpecifierForFieldArea;
+import dev.ikm.komet.framework.observable.AttributeLocator;
+import dev.ikm.komet.layout.area.factory.KlAttributeAreaFactory;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.coordinate.view.ViewCoordinate;
 import org.eclipse.collections.api.list.ImmutableList;
@@ -38,8 +38,8 @@ public interface KlConstructionContextForGadget {
      * @param componentFieldSpecifications
      * @return
      */
-    ImmutableMap<FieldLocator, KlSpecifierForFieldArea>
-        createLayout(ImmutableList<FieldLocator> componentFieldSpecifications);
+    ImmutableMap<AttributeLocator, KlAttributeAreaFactory>
+        createLayout(ImmutableList<AttributeLocator> componentFieldSpecifications);
 
     /**
      * If the gadget calls factories to create subcomponents, this method provides

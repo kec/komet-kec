@@ -45,6 +45,17 @@ public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
          * and persistence of associated contextual data if needed.
          */
         KL_CONTEXT,
+
+        /**
+         * Represents a property key used within the property system of JavaFX {@code Nodes}
+         * and {@code Window} objects to manage layout computations. The {@code KL_LAYOUT_COMPUTER}
+         * key facilitates the association of layout-related behaviors or computation objects
+         * that dynamically determine the layout configurations of components. It supports
+         * advanced layout functionalities, ensuring flexibility and efficiency in layout handling
+         * within the JavaFX scene graph. The management and persistence of associated objects
+         * are handled as part of the gadget framework.
+         */
+        KL_LAYOUT_COMPUTER
     }
 
 

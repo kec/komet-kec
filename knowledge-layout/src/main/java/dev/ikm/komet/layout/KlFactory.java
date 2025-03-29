@@ -40,11 +40,11 @@ public interface KlFactory<KL extends KlObject> {
      *
      * @param preferencesFactory an instance of KlPreferencesFactory used to provide
      *                           the necessary preferences for creating the object.
-     * @param gridLayoutForComponentFactory an instance of GridLayoutForComponentFactory,
+     * @param layoutComputer an instance of GridLayoutForComponentFactory,
      *                                       though it is not utilized in this implementation.
      * @return an instance of type KL created using the given KlPreferencesFactory.
      */
-    default KL create(KlPreferencesFactory preferencesFactory, GridLayoutForComponentFactory gridLayoutForComponentFactory) {
+    default KL create(KlPreferencesFactory preferencesFactory, LayoutComputer layoutComputer) {
         // Override, and remove default in future revisions. TODO: not sure this method is right.
         return create(preferencesFactory);
     }

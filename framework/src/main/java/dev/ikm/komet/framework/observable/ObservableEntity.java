@@ -122,14 +122,14 @@ public abstract sealed class ObservableEntity<OV extends ObservableVersion<? ext
 
 
     @Override
-    public final ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
-        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public final ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
+        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory fieldCategory: FieldCategorySet.conceptFields()) {
-            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
-            switch (fieldCategory) {
+        for (AttributeCategory attributeCategory : AttributeCategorySet.conceptFields()) {
+            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
+            switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.
@@ -176,7 +176,7 @@ public abstract sealed class ObservableEntity<OV extends ObservableVersion<? ext
         return fieldMap.toImmutable();
     }
 
-    protected abstract void addAdditionalFields(MutableMap<FieldLocator, ObservableField> fieldMap);
+    protected abstract void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap);
 
     public static <OE extends ObservableEntity> OE get(int nid) {
         return get(Entity.getFast(nid));

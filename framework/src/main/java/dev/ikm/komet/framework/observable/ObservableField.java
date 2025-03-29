@@ -16,13 +16,7 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.tinkar.component.FieldDataType;
-import dev.ikm.tinkar.entity.Entity;
-import dev.ikm.tinkar.entity.Field;
-import dev.ikm.tinkar.entity.FieldRecord;
-import dev.ikm.tinkar.entity.SemanticRecord;
-import dev.ikm.tinkar.entity.SemanticVersionRecord;
-import dev.ikm.tinkar.entity.StampEntity;
-import dev.ikm.tinkar.entity.StampRecord;
+import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -31,49 +25,37 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.MutableList;
 
-public final class ObservableField<T> implements Field<T> {
+public final class ObservableField<DT> extends ObservableAttribute<DT> implements Field<DT> {
 
-    SimpleObjectProperty<FieldRecord<T>> fieldProperty = new SimpleObjectProperty<>();
-    SimpleObjectProperty<T> valueProperty = new SimpleObjectProperty<>();
-
-    public final BooleanProperty refreshProperties = new SimpleBooleanProperty(false);
-    public final boolean writeOnEveryChange;
-
-    public ObservableField(FieldRecord<T> fieldRecord, boolean writeOnEveryChange) {
-        this.writeOnEveryChange = writeOnEveryChange;
-        fieldProperty.set(fieldRecord);
-        if (fieldRecord != null) {
-            valueProperty.set(fieldRecord.value());
-        }
-        valueProperty.addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                handleValueChange(newValue);
-                fieldProperty.set(field().withValue(newValue));
-            }
-        });
-        refreshProperties.addListener((observable, oldValue, newValue) -> {
-            if(!newValue){
-                writeToDataBase();
-            }
-        });
-
-    }
-    public ObservableField(FieldRecord<T> fieldRecord) {
-        this(fieldRecord, true);
+    public ObservableField(Attribute<DT> attribute, boolean writeOnEveryChange) {
+        super(attribute, writeOnEveryChange);
     }
 
-    private void handleValueChange(Object newValue) {
-        if (writeOnEveryChange && !refreshProperties.get()) {
-            writeToDatabase(newValue);
-        }
+    public ObservableField(Attribute<DT> attribute) {
+        super(attribute);
     }
 
-    public void writeToDataBase() {
-        this.writeToDatabase(value());
+    @Override
+    public Attribute<DT> with(DT value) {
+        return field().withValue(value);
+    }
+
+    public FieldRecord<DT> field() {
+        return (FieldRecord<DT>) attributeProperty.get();
+    }
+
+    @Override
+    public FieldDataType fieldDataType() {
+        return field().fieldDataType();
+    }
+
+    @Override
+    public int fieldIndex() {
+        return field().fieldIndex();
     }
 
     public void writeToDatabase(Object newValue) {
-        StampRecord stamp = Entity.getStamp(fieldProperty.get().versionStampNid());
+        StampRecord stamp = Entity.getStamp(field().versionStampNid());
         // Get current version
         SemanticVersionRecord version = Entity.getVersionFast(field().nid(), field().versionStampNid());
         SemanticRecord semantic = Entity.getFast(field().nid());
@@ -87,7 +69,7 @@ public final class ObservableField<T> implements Field<T> {
             // newStamp already written to the entity store.
             StampEntity newStamp = t.getStampForEntities(stamp.state(), stamp.authorNid(), stamp.moduleNid(), stamp.pathNid(), version.entity());
 
-            // Create new version...
+            // Create a new version.
             SemanticVersionRecord newVersion = version.with().fieldValues(fieldsForNewVersion.toImmutable()).stampNid(newStamp.nid()).build();
 
             SemanticRecord analogue = semantic.with(newVersion).build();
@@ -102,48 +84,6 @@ public final class ObservableField<T> implements Field<T> {
             // Entity provider will broadcast the nid of the changed entity.
             Entity.provider().putEntity(analogue);
         }
-    }
-
-    public FieldRecord<T> field() {
-        return fieldProperty.get();
-    }
-
-    @Override
-    public T value() {
-        return field().value();
-    }
-
-    @Override
-    public FieldDataType fieldDataType() {
-        return field().fieldDataType();
-    }
-
-    @Override
-    public int meaningNid() {
-        return field().meaningNid();
-    }
-
-    @Override
-    public int purposeNid() {
-        return field().purposeNid();
-    }
-
-    @Override
-    public int dataTypeNid() {
-        return field().dataTypeNid();
-    }
-
-    @Override
-    public int fieldIndex() {
-        return field().fieldIndex();
-    }
-
-    public ObjectProperty<T> valueProperty() {
-        return valueProperty;
-    }
-
-    public ObjectProperty<FieldRecord<T>> fieldProperty() {
-        return fieldProperty;
     }
 
 }

@@ -2,9 +2,8 @@ package dev.ikm.komet.layout.area;
 
 import dev.ikm.komet.layout.KlWidget;
 import dev.ikm.komet.layout.component.KlComponentArea;
-import dev.ikm.komet.layout.field.KlFieldArea;
+import dev.ikm.komet.layout.attribute.KlAttributeArea;
 import dev.ikm.komet.layout.version.KlVersionArea;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 /**
@@ -23,9 +22,9 @@ import javafx.scene.layout.Region;
  * <p>
  * @see KlComponentArea
  * @see KlVersionArea
- * @see KlFieldArea
+ * @see KlAttributeArea
  * @see KlSupplementalArea
  */
 public sealed interface KlArea<FX extends Region> extends KlWidget<FX>
-        permits KlComponentArea, KlVersionArea, KlFieldArea, KlSupplementalArea {
+        permits KlComponentArea, KlVersionArea, KlAttributeArea, KlSupplementalArea {
 }

@@ -20,8 +20,6 @@ import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.terms.TinkarTerm;
-import org.eclipse.collections.api.factory.Maps;
-import org.eclipse.collections.api.map.ImmutableMap;
 import org.eclipse.collections.api.map.MutableMap;
 
 import java.util.Optional;
@@ -92,13 +90,13 @@ public final class ObservableSemantic
     }
 
     @Override
-    protected void addAdditionalFields(MutableMap<FieldLocator, ObservableField> fieldMap) {
+    protected void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap) {
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory fieldCategory: FieldCategorySet.semanticFields()) {
-            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
-            switch (fieldCategory) {
+        for (AttributeCategory attributeCategory : AttributeCategorySet.semanticFields()) {
+            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
+            switch (attributeCategory) {
                 case SEMANTIC_PATTERN_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.

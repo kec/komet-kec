@@ -36,15 +36,21 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
     public ConceptVersionRecord getVersionRecord() {
         return version();
     }
+
     @Override
-    public ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
-        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public ObservableConcept getObservableEntity() {
+        return ObservableEntity.get(nid());
+    }
+
+    @Override
+    public ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
+        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory fieldCategory : FieldCategorySet.conceptVersionFields()) {
-            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
-            switch (fieldCategory) {
+        for (AttributeCategory attributeCategory : AttributeCategorySet.conceptVersionFields()) {
+            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
+            switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.

@@ -93,6 +93,7 @@ public sealed interface KlGadget<FX> extends KlContextSensitiveComponent, KlObje
         return false;
     }
 
+
     /**
      * Retrieves an immutable list of KlContext objects associated with the instance.
      * The method populates the list by recursively adding contexts from the fxGadget.

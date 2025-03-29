@@ -48,6 +48,10 @@ public final class ObservablePatternVersion
         }
         this.observableFieldDefinitions = mutableFieldDefinitions.toImmutable();
     }
+    @Override
+    public ObservablePattern getObservableEntity() {
+        return ObservableEntity.get(nid());
+    }
 
     private void purposeChanged(ObservableValue<? extends EntityFacade> observableValue, EntityFacade oldValue, EntityFacade newValue) {
         handleChange(FIELDS.PURPOSE, observableValue, newValue);
@@ -131,14 +135,14 @@ public final class ObservablePatternVersion
 
 
     @Override
-    public ImmutableMap<FieldLocator, ObservableField> getObservableFields() {
-        MutableMap<FieldLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
+        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
-        for (FieldCategory fieldCategory : FieldCategorySet.patternVersionFields()) {
-            ComponentFieldLocator fieldLocator = new ComponentFieldLocator(fieldCategory);
-            switch (fieldCategory) {
+        for (AttributeCategory attributeCategory : AttributeCategorySet.patternVersionFields()) {
+            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
+            switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
                     //TODO get right starter set entities. Temporary incorrect codes for now.

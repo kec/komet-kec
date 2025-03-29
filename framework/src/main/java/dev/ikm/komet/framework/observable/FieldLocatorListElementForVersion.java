@@ -8,7 +8,7 @@ import dev.ikm.tinkar.entity.PatternEntityVersion;
 
 public class FieldLocatorListElementForVersion {
     static <T> ObservableField<T> locate(ObservableVersion observableVersion,
-                                         ComponentFieldListElementLocator componentFieldListElementLocator,
+                                         DirectListElementAttributeLocator componentFieldListElementLocator,
                                          StampCalculator stampCalculator) {
         return switch (observableVersion) {
             case ObservableConceptVersion observableConceptVersion -> locateFieldListElementOnConceptVersion(observableConceptVersion, componentFieldListElementLocator, stampCalculator);
@@ -19,13 +19,13 @@ public class FieldLocatorListElementForVersion {
     }
 
     static <T> ObservableField<T> locateFieldListElementOnStampVersion(ObservableStampVersion stampVersion,
-                                                                       ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                       DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                        StampCalculator stampCalculator) {
         throw new IllegalStateException("There are no list element fields on a stamp version");
     }
 
     static <T> ObservableField<T> locateFieldListElementOnSemanticVersion(ObservableSemanticVersion semanticVersion,
-                                                                          ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                          DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                           StampCalculator stampCalculator) {
         Latest<PatternEntityVersion> latestPatternVersion = stampCalculator.latestPatternEntityVersion(semanticVersion.patternNid());
         if (latestPatternVersion.isPresent()) {
@@ -37,7 +37,7 @@ public class FieldLocatorListElementForVersion {
 
 
     static <T> ObservableField<T> locateFieldListElementOnPatternVersion(ObservablePatternVersion patternVersion,
-                                                                         ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                         DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                          StampCalculator stampCalculator) {
             return  switch(componentFieldListElementLocator.category()) {
                 case PATTERN_FIELD_DEFINITION -> {
@@ -47,17 +47,17 @@ public class FieldLocatorListElementForVersion {
                     ObservableField observableField = new ObservableField(fieldRecord);
                     yield observableField;
                 }
-                case PUBLIC_ID_FIELD, COMPONENT_VERSIONS_LIST, VERSION_STAMP_FIELD, PATTERN_MEANING_FIELD,
-                     PATTERN_PURPOSE_FIELD, PATTERN_FIELD_DEFINITION_LIST,
-                     SEMANTIC_PATTERN_FIELD, SEMANTIC_REFERENCED_COMPONENT_FIELD, SEMANTIC_FIELD_LIST,
-                     SEMANTIC_FIELD, STATUS_FIELD, TIME_FIELD, AUTHOR_FIELD, MODULE_FIELD, PATH_FIELD ->
+                case PUBLIC_ID_FIELD, COMPONENT_VERSIONS_LIST, COMPONENT_VERSION, VERSION_STAMP_FIELD,
+                     PATTERN_VERSION, PATTERN_MEANING_FIELD, PATTERN_PURPOSE_FIELD, PATTERN_FIELD_DEFINITION_LIST,
+                     SEMANTIC_VERSION, SEMANTIC_PATTERN_FIELD, SEMANTIC_REFERENCED_COMPONENT_FIELD, SEMANTIC_FIELD_LIST, SEMANTIC_FIELD,
+                     STAMP_VERSION, STATUS_FIELD, TIME_FIELD, AUTHOR_FIELD, MODULE_FIELD, PATH_FIELD ->
                         throw new IllegalStateException("There are no fields of type "  + componentFieldListElementLocator.category()
                                 + " a semantic version: " + patternVersion);
             };
     }
 
     static <T> ObservableField<T> locateFieldListElementOnConceptVersion(ObservableConceptVersion conceptVersion,
-                                                                         ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                         DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                          StampCalculator stampCalculator) {
         throw new IllegalStateException("There are no list element fields on a stamp version");
     }

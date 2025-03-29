@@ -5,7 +5,7 @@ import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 public class FieldLocatorListElementForEntity {
 
     static <T> ObservableField<T> locate(ObservableEntity observableEntity,
-                                         ComponentFieldListElementLocator componentFieldListElementLocator,
+                                         DirectListElementAttributeLocator componentFieldListElementLocator,
                                          StampCalculator stampCalculator) {
         return switch (observableEntity) {
             case ObservableConcept observableConcept -> locateFieldListElementOnConcept(observableConcept, componentFieldListElementLocator, stampCalculator);
@@ -16,26 +16,26 @@ public class FieldLocatorListElementForEntity {
     }
 
     private static <T> ObservableField<T> locateFieldListElementOnStamp(ObservableStamp observableStamp,
-                                                                        ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                        DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                         StampCalculator stampCalculator) {
-        return observableStamp.getObservableFields().get(componentFieldListElementLocator.category());
+        return observableStamp.getObservableAttributes().get(componentFieldListElementLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldListElementOnSemantic(ObservableSemantic observableSemantic,
-                                                                           ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                           DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                            StampCalculator stampCalculator) {
-        return observableSemantic.getObservableFields().get(componentFieldListElementLocator.category());
+        return observableSemantic.getObservableAttributes().get(componentFieldListElementLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldListElementOnPattern(ObservablePattern observablePattern,
-                                                                          ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                          DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                           StampCalculator stampCalculator) {
-        return observablePattern.getObservableFields().get(componentFieldListElementLocator.category());
+        return observablePattern.getObservableAttributes().get(componentFieldListElementLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldListElementOnConcept(ObservableConcept observableConcept,
-                                                                          ComponentFieldListElementLocator componentFieldListElementLocator,
+                                                                          DirectListElementAttributeLocator componentFieldListElementLocator,
                                                                           StampCalculator stampCalculator) {
-        return observableConcept.getObservableFields().get(componentFieldListElementLocator.category());
+        return observableConcept.getObservableAttributes().get(componentFieldListElementLocator.category());
     }
 }

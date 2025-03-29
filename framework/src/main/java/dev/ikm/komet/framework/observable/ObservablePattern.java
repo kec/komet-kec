@@ -39,7 +39,7 @@ public final class ObservablePattern
     }
 
     @Override
-    protected void addAdditionalFields(MutableMap<FieldLocator, ObservableField> fieldMap) {
+    protected void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap) {
         // nothing to add...
     }
 }

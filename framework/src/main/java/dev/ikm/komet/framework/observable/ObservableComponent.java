@@ -29,6 +29,6 @@ import org.eclipse.collections.api.map.ImmutableMap;
 public sealed interface ObservableComponent
         permits ObservableEntity, ObservableVersion {
 
-    ImmutableMap<FieldLocator, ObservableField> getObservableFields();
+    <OA extends ObservableAttribute> ImmutableMap<AttributeLocator, OA> getObservableAttributes();
 
 }

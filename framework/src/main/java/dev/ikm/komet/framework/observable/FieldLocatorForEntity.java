@@ -5,7 +5,7 @@ import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 public class FieldLocatorForEntity {
 
     static <T> ObservableField<T> locate(ObservableEntity observableEntity,
-                                         ComponentFieldLocator componentFieldLocator,
+                                         DirectSingularAttributeLocator componentFieldLocator,
                                          StampCalculator stampCalculator){
         return switch (observableEntity) {
             case ObservableConcept observableConcept -> locateFieldOnConcept(observableConcept, componentFieldLocator, stampCalculator);
@@ -16,27 +16,27 @@ public class FieldLocatorForEntity {
     }
 
     private static <T> ObservableField<T> locateFieldOnStamp(ObservableStamp observableStamp,
-                                                             ComponentFieldLocator componentFieldLocator,
+                                                             DirectSingularAttributeLocator componentFieldLocator,
                                                              StampCalculator stampCalculator) {
-        return observableStamp.getObservableFields().get(componentFieldLocator.category());
+        return observableStamp.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnSemantic(ObservableSemantic observableSemantic,
-                                                                ComponentFieldLocator componentFieldLocator,
+                                                                DirectSingularAttributeLocator componentFieldLocator,
                                                                 StampCalculator stampCalculator) {
-        return observableSemantic.getObservableFields().get(componentFieldLocator.category());
+        return observableSemantic.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnPattern(ObservablePattern observablePattern,
-                                                               ComponentFieldLocator componentFieldLocator,
+                                                               DirectSingularAttributeLocator componentFieldLocator,
                                                                StampCalculator stampCalculator) {
-        return observablePattern.getObservableFields().get(componentFieldLocator.category());
+        return observablePattern.getObservableAttributes().get(componentFieldLocator.category());
     }
 
     private static <T> ObservableField<T> locateFieldOnConcept(ObservableConcept observableConcept,
-                                                               ComponentFieldLocator componentFieldLocator,
+                                                               DirectSingularAttributeLocator componentFieldLocator,
                                                                StampCalculator stampCalculator) {
-        return observableConcept.getObservableFields().get(componentFieldLocator.category());
+        return observableConcept.getObservableAttributes().get(componentFieldLocator.category());
     }
 
 }
