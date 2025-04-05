@@ -280,7 +280,7 @@ public class EditDescriptionFormController implements BasicController {
 
         StampEntity stampEntity = latestEntityVersion.get().stamp();
 
-        // populate the other name text field (e.g. 'Chronic lung disease')
+        // populate the other name text attribute (e.g. 'Chronic lung disease')
         String otherName = viewCalculator.getDescriptionText(nid).get();
         this.otherNameTextField.setText(otherName);
 

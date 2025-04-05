@@ -10,12 +10,12 @@ import dev.ikm.tinkar.common.bind.annotations.publicid.UuidAnnotation;
 import javafx.scene.Parent;
 
 /**
- * Represents an observable field in the Komet framework.
+ * Represents an observable attribute in the Komet framework.
  * <p>
  * This interface is parameterized with the type of the value. It extends the
- * KlWidget interface, providing a method to access the underlying field.
+ * KlWidget interface, providing a method to access the underlying attribute.
  *
- * @param <DT> The data type of the field's value.
+ * @param <DT> The data type of the attribute's value.
  */
 @RegularName("Knowledge Layout Field")
 @ParentProxy(parentName = "Komet panels (SOLOR)",

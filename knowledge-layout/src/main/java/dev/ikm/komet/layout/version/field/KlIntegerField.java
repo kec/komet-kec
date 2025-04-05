@@ -4,7 +4,7 @@ import dev.ikm.tinkar.common.bind.annotations.axioms.ParentConcept;
 import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 
 /**
- * Represents a field that holds an Integer value.
+ * Represents a attribute that holds an Integer value.
  *
  * This interface extends KlField parameterized with an Integer type.
  */

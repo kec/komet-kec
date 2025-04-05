@@ -251,7 +251,7 @@ public class LoginUTestFX {
     }
 
     /**
-     * Test to verify that the sign-in button is disabled when either the username or password field is empty.
+     * Test to verify that the sign-in button is disabled when either the username or password attribute is empty.
      * The sign-in button should only be enabled when both fields have text.
      */
     @Test
@@ -261,11 +261,11 @@ public class LoginUTestFX {
         assertTrue(signInButton.isDisabled(), "Sign-in button should be disabled when fields are empty.");
 
         enterUsername("test123");
-        assertTrue(signInButton.isDisabled(), "Sign-in button should be disabled when password field is empty.");
+        assertTrue(signInButton.isDisabled(), "Sign-in button should be disabled when password attribute is empty.");
 
         robot.clickOn(USERNAME_TEXTFIELD_ID).eraseText(7);
         enterPassword("test123");
-        assertTrue(signInButton.isDisabled(), "Sign-in button should be disabled when username field is empty.");
+        assertTrue(signInButton.isDisabled(), "Sign-in button should be disabled when username attribute is empty.");
 
         enterUsername("test123");
         assertFalse(signInButton.isDisabled(), "Sign-in button should be enabled when both fields have text.");
@@ -273,7 +273,7 @@ public class LoginUTestFX {
 
     /**
      * Test to verify that no error is displayed for a valid email.
-     * This test enters a valid email in the username field and checks
+     * This test enters a valid email in the username attribute and checks
      * that the username error label is empty.
      */
     @Test
@@ -294,8 +294,8 @@ public class LoginUTestFX {
      *
      * @param username the username to test
      * @param password the password to test
-     * @param expectedUsernameError the expected error message for the username field
-     * @param expectedPasswordError the expected error message for the password field
+     * @param expectedUsernameError the expected error message for the username attribute
+     * @param expectedPasswordError the expected error message for the password attribute
      * @param expectedAuthError the expected error message for authentication
      */
     @ParameterizedTest
@@ -374,7 +374,7 @@ public class LoginUTestFX {
     }
 
     /**
-     * Helper method to enter username in the username field.
+     * Helper method to enter username in the username attribute.
      *
      * @param username the username to enter
      */
@@ -384,7 +384,7 @@ public class LoginUTestFX {
     }
 
     /**
-     * Helper method to enter password in the password field.
+     * Helper method to enter password in the password attribute.
      *
      * @param password the password to enter
      */

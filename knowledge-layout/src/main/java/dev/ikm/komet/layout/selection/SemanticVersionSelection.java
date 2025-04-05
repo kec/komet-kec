@@ -23,7 +23,7 @@ import java.util.Optional;
  *
  * @param stampPublicId           the public identifier of the version's stamp.
  * @param selectedStampElements     an immutable list of fields selected for the version's stamp.
- * @param selectedFieldIndexes    an immutable list of field indexes selected for this semantic version.
+ * @param selectedFieldIndexes    an immutable list of attribute indexes selected for this semantic version.
  */
 public record SemanticVersionSelection(PublicId componentPublicId, PublicId stampPublicId,
                                        ImmutableList<StampElement> selectedStampElements,

@@ -15,12 +15,13 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.komet.framework.observable.locators.DirectSingularAttributeLocator;
 import dev.ikm.tinkar.coordinate.logic.PremiseType;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.terms.TinkarTerm;
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.list.MutableList;
 
 import java.util.Optional;
 
@@ -90,7 +91,7 @@ public final class ObservableSemantic
     }
 
     @Override
-    protected void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap) {
+    protected void addAdditionalFields(MutableList<ObservableAttributeWithLocator> attributesWithLocators) {
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
@@ -112,7 +113,8 @@ public final class ObservableSemantic
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid,  indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
                 case SEMANTIC_REFERENCED_COMPONENT_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -129,10 +131,9 @@ public final class ObservableSemantic
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid,  indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
-
-
             }
         }
     }

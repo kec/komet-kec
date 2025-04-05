@@ -203,7 +203,7 @@ public class DescrNameViewModel extends FormViewModel {
                 theSemantic.referencedComponentNid(), versions);
 
         // we are grabbing the form data
-        // populating the field values for the new version we are writing
+        // populating the attribute values for the new version we are writing
         MutableList<Object> descriptionFields = Lists.mutable.empty();
         descriptionFields.add(getValue(LANGUAGE));
         descriptionFields.add(getValue(NAME_TEXT));
@@ -278,7 +278,7 @@ public class DescrNameViewModel extends FormViewModel {
                 theSemantic.referencedComponentNid(), versions);
 
         // we grabbing the form data
-        // populating the field values for the new version we are writing
+        // populating the attribute values for the new version we are writing
         MutableList<Object> descriptionFields = Lists.mutable.empty();
         descriptionFields.add(getValue(LANGUAGE));
         descriptionFields.add(getValue(NAME_TEXT));

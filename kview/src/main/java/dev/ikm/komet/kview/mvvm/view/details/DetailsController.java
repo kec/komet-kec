@@ -48,7 +48,10 @@ import dev.ikm.komet.framework.events.AxiomChangeEvent;
 import dev.ikm.komet.framework.events.EvtBus;
 import dev.ikm.komet.framework.events.EvtBusFactory;
 import dev.ikm.komet.framework.events.Subscriber;
+import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.framework.observable.ObservableField;
+import dev.ikm.komet.framework.observable.ObservableSemantic;
+import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
 import dev.ikm.komet.framework.propsheet.KometPropertySheet;
 import dev.ikm.komet.framework.propsheet.SheetItem;
 import dev.ikm.komet.framework.view.ViewProperties;
@@ -1041,7 +1044,7 @@ public class DetailsController  {
     /**
      * Returns a list of description semantics. This currently returns two specific semantics
      * Case significance & Language preferred. E.g. (Case-sensitive | English)
-     * @return Map<Integer, List<String>> Map of nids to a List of strings containing field's values.
+     * @return Map<Integer, List<String>> Map of nids to a List of strings containing attribute's values.
      */
     private Map<SemanticEntityVersion, List<String>> latestDescriptionSemantics(final ViewCalculator viewCalculator, EntityFacade conceptFacade) {
         Map<SemanticEntityVersion, List<String>> descriptionSemanticsMap = new HashMap<>();
@@ -1058,7 +1061,7 @@ public class DetailsController  {
         //Update UI via the descriptionRegularName function on the
         viewCalculator.getDescriptionsForComponent(conceptFacade).stream()
                 .filter(semanticEntity -> {
-                    // semantic -> semantic version -> pattern version(index meaning field from DESCR_Type)
+                    // semantic -> semantic version -> pattern version(index meaning attribute from DESCR_Type)
                     Latest<SemanticEntityVersion> semanticVersion = viewCalculator.latest(semanticEntity);
 
                     PatternEntity<PatternEntityVersion> patternEntity = semanticEntity.pattern();
@@ -1076,7 +1079,7 @@ public class DetailsController  {
                     }
                     return false;
                 }).forEach(semanticEntity -> {
-                    // Each description obtain the latest semantic version, pattern version and their field values based on index
+                    // Each description obtain the latest semantic version, pattern version and their attribute values based on index
                     Latest<SemanticEntityVersion> semanticVersion = viewCalculator.latest(semanticEntity);
                     PatternEntity<PatternEntityVersion> patternEntity = semanticEntity.pattern();
                     PatternEntityVersion patternEntityVersion = viewCalculator.latest(patternEntity).get();
@@ -1103,10 +1106,10 @@ public class DetailsController  {
     }
 
     /**
-     * Returns a list of fields with their values (FieldRecord) based on the latest pattern (field definitions).
+     * Returns a list of fields with their values (FieldRecord) based on the latest pattern (attribute definitions).
      * @param semanticEntityVersion - the latest semantic version
      * @param patternVersion - the latest pattern version
-     * @return a list of fields with their values (FieldRecord) based on the latest pattern (field definitions).
+     * @return a list of fields with their values (FieldRecord) based on the latest pattern (attribute definitions).
      */
     private static ImmutableList<ObservableField> fields(SemanticEntityVersion semanticEntityVersion, PatternEntityVersion patternVersion) {
 
@@ -1116,7 +1119,13 @@ public class DetailsController  {
             FieldDefinitionForEntity fieldDef = patternVersion.fieldDefinitions().get(indexInPattern);
             FieldDefinitionRecord fieldDefinitionRecord = new FieldDefinitionRecord(fieldDef.dataTypeNid(),
                     fieldDef.purposeNid(), fieldDef.meaningNid(), patternVersion.stampNid(), patternVersion.nid(), indexInPattern);
-            fieldArray[indexInPattern] = new ObservableField(new FieldRecord(value, semanticEntityVersion.nid(), semanticEntityVersion.stampNid(), fieldDefinitionRecord));
+
+            //TODO: Pass in observable semantic version instead of semanticEntityVersionLatest
+            //TODO: Remove this workaround
+            ObservableSemantic observableSemantic = ObservableEntity.get(semanticEntityVersion.nid());
+            ObservableSemanticVersion observableSemanticVersion = observableSemantic.getVersionFast(semanticEntityVersion.stampNid());
+
+            fieldArray[indexInPattern] = new ObservableField(new FieldRecord(value, semanticEntityVersion.nid(), semanticEntityVersion.stampNid(), fieldDefinitionRecord), observableSemanticVersion);
         }
         return Lists.immutable.of(fieldArray);
     }

@@ -25,11 +25,11 @@ public class KlComponentListFieldFactory implements KlFieldFactory<IntIdList> {
 
     @Override
     public String getName() {
-        return "Component list field factory";
+        return "Component list attribute factory";
     }
 
     @Override
     public String getDescription() {
-        return "A Component list field";
+        return "A Component list attribute";
     }
 }

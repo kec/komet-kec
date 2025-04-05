@@ -23,11 +23,11 @@ public sealed interface VersionSelection
      * specify aspects of a version stamp within the versioning system.
      *
      * It includes the following constants:
-     * - STATUS: Represents the status field of a version stamp.
-     * - TIME: Represents the time field of a version stamp.
-     * - AUTHOR: Represents the author field of a version stamp.
-     * - MODULE: Represents the module field of a version stamp.
-     * - PATH: Represents the path field of a version stamp.
+     * - STATUS: Represents the status attribute of a version stamp.
+     * - TIME: Represents the time attribute of a version stamp.
+     * - AUTHOR: Represents the author attribute of a version stamp.
+     * - MODULE: Represents the module attribute of a version stamp.
+     * - PATH: Represents the path attribute of a version stamp.
      */
     enum StampElement implements ConceptEnumerationFacade<StampElement> {
         STATUS(TinkarTerm.STATUS_FOR_VERSION),

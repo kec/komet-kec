@@ -29,6 +29,6 @@ public class KlImageFieldFactory implements KlFieldFactory<byte[]> {
 
     @Override
     public String getDescription() {
-        return "An Image field";
+        return "An Image attribute";
     }
 }

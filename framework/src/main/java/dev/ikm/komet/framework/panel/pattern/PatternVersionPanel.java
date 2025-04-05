@@ -49,22 +49,22 @@ public class PatternVersionPanel extends ComponentVersionIsFinalPanel<Observable
                 "The purpose of a semantic with this pattern",
                 "Semantic purpose ", version);
         propertySheet.getItems().add(SheetItem.make(semanticPurposeField, SEMANTIC_INFO, viewProperties));
-        // Add the field definitions.
+        // Add the attribute definitions.
 
         int i = 1;
         for (ObservableFieldDefinition fieldDef : version.fieldDefinitions()) {
             String categoryName = "Field " + i + ": " + viewProperties.calculator().getPreferredDescriptionTextWithFallbackOrNid(fieldDef.meaning());
 
             FieldDefinitionRecord fieldDataTypeField = new FieldDefinitionRecord(fieldDef.dataTypeProperty(),
-                    "Specify the data type of this field for semantics of this pattern",
+                    "Specify the data type of this attribute for semantics of this pattern",
                     "Data type", version);
             propertySheet.getItems().add(SheetItem.make(fieldDataTypeField, categoryName, viewProperties));
             FieldDefinitionRecord fieldPurposeField = new FieldDefinitionRecord(fieldDef.purposeProperty(),
-                    "Specify the purpose of this field for semantics of this pattern",
+                    "Specify the purpose of this attribute for semantics of this pattern",
                     "Purpose", version);
             propertySheet.getItems().add(SheetItem.make(fieldPurposeField, categoryName, viewProperties));
             FieldDefinitionRecord fieldMeaningField = new FieldDefinitionRecord(fieldDef.meaningProperty(),
-                    "Specify the meaning of this field for semantics of this pattern",
+                    "Specify the meaning of this attribute for semantics of this pattern",
                     "Meaning", version);
             propertySheet.getItems().add(SheetItem.make(fieldMeaningField, categoryName, viewProperties));
             i++;

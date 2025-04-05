@@ -46,7 +46,7 @@ public abstract class BaseDefaultKlField<T> implements KlField<T> {
     public ObjectProperty<Runnable> onEditActionProperty() { return onEditAction; }
     public void setOnEditAction(Runnable onEditAction) { this.onEditAction.set(onEditAction); }
 
-    // -- field
+    // -- attribute
     @Override
     public ObservableField<T> field() {
         return observableField;

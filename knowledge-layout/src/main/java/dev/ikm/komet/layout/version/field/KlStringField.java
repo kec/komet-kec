@@ -4,7 +4,7 @@ import dev.ikm.tinkar.common.bind.annotations.axioms.ParentConcept;
 import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 
 /**
- * Represents a field that holds a String value.
+ * Represents a attribute that holds a String value.
  *
  * This interface extends KlField parameterized with a String type.
  */

@@ -274,7 +274,7 @@ public class GenEditingDetailsController {
                             // readonly integer value 1, editable integer value 5 do update
                             // readonly IntIdSet value [1,2] editable IntIdSet value [1,2] don't update
                             // Should we check if the value is different before updating? (blindly updating now).
-                            //if (!field.value().equals(updatedField.valueProperty())) {
+                            //if (!attribute.value().equals(updatedField.valueProperty())) {
                                 field.valueProperty().setValue(updatedField.valueProperty().getValue());
                             //}
                         }

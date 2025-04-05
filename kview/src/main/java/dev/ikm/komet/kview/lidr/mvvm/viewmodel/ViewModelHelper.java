@@ -176,7 +176,7 @@ public class ViewModelHelper {
             IntIdSet allowableResultsNids = allowableResults.size() == 0 ? IntIds.set.empty() : IntIds.set.of(allowableResults,
                     (entityFacade) -> entityFacade.nid());
 
-            // Create pattern's field definitions
+            // Create pattern's attribute definitions
             MutableList<Object> allowableFields = Lists.mutable.empty();
             allowableFields.add(allowableResultsNids);
             return allowableFields;

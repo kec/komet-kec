@@ -5,7 +5,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.component.location.SpatialPoint;
 
 /**
- * Represents a field that holds a SpatialPoint value.
+ * Represents a attribute that holds a SpatialPoint value.
  *
  * This interface extends KlField parameterized with a SpatialPoint type.
  */

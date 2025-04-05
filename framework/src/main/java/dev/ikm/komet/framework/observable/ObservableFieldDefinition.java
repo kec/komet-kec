@@ -15,6 +15,7 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.tinkar.component.FieldDataType;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import org.eclipse.collections.api.factory.Lists;
@@ -24,16 +25,20 @@ import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import dev.ikm.tinkar.terms.EntityFacade;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class ObservableFieldDefinition
-        implements FieldDefinitionForEntity {
+        implements ObservableAttribute<Void>, FieldDefinitionForEntity  {
+
+    final ObservableComponent containingComponent;
     final AtomicReference<FieldDefinitionRecord> fieldDefinitionReference;
     final SimpleObjectProperty<EntityFacade> dataTypeProperty = new SimpleObjectProperty<>(this, "Field data type");
     final SimpleObjectProperty<EntityFacade> purposeProperty = new SimpleObjectProperty<>(this, "Field purpose");
     final SimpleObjectProperty<EntityFacade> meaningProperty = new SimpleObjectProperty<>(this, "Field meaning");
 
-    public ObservableFieldDefinition(FieldDefinitionRecord fieldDefinitionRecord) {
+    public ObservableFieldDefinition(FieldDefinitionRecord fieldDefinitionRecord, ObservableComponent containingComponent) {
+        this.containingComponent = containingComponent;
         fieldDefinitionReference = new AtomicReference<>(fieldDefinitionRecord);
         dataTypeProperty.set(Entity.getFast(fieldDefinitionRecord.dataTypeNid()));
         dataTypeProperty.addListener(this::dataTypeChanged);
@@ -41,6 +46,26 @@ public final class ObservableFieldDefinition
         purposeProperty.addListener(this::purposeChanged);
         meaningProperty.set(Entity.getFast(fieldDefinitionRecord.meaningNid()));
         meaningProperty.addListener(this::meaningChanged);
+    }
+
+    @Override
+    public ObservableComponent containingComponent() {
+        return containingComponent;
+    }
+
+    @Override
+    public ConceptEntity dataType() {
+        return FieldDefinitionForEntity.super.dataType();
+    }
+
+    @Override
+    public ConceptEntity purpose() {
+        return FieldDefinitionForEntity.super.purpose();
+    }
+
+    @Override
+    public ConceptEntity meaning() {
+        return FieldDefinitionForEntity.super.meaning();
     }
 
     private void dataTypeChanged(ObservableValue<? extends EntityFacade> observableDataType, EntityFacade oldDataType, EntityFacade newDataType) {
@@ -149,8 +174,24 @@ public final class ObservableFieldDefinition
     }
 
     @Override
+    public int fieldIndex() {
+        //TODO consider renaming to fieldIndexInPattern.
+        return fieldDefinitionReference.get().indexInPattern();
+    }
+
+    @Override
     public int purposeNid() {
         return purposeProperty.get().nid();
+    }
+
+    @Override
+    public Optional optionalValue() {
+        return Optional.empty();
+    }
+
+    @Override
+    public FieldDataType attributeDataType() {
+        return ObservableAttribute.super.attributeDataType();
     }
 
     @Override

@@ -22,7 +22,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
 import dev.ikm.tinkar.collection.ConcurrentReferenceHashMap;
 import dev.ikm.tinkar.common.id.PublicId;
@@ -31,8 +30,7 @@ import dev.ikm.tinkar.common.util.broadcast.Subscriber;
 import dev.ikm.tinkar.component.FieldDataType;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.*;
-import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.list.MutableList;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -122,13 +120,12 @@ public abstract sealed class ObservableEntity<OV extends ObservableVersion<? ext
 
 
     @Override
-    public final ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
-        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public final ImmutableList<ObservableAttributeWithLocator> getObservableAttributes() {
+        MutableList<ObservableAttributeWithLocator> attributesWithLocators = Lists.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
         for (AttributeCategory attributeCategory : AttributeCategorySet.conceptFields()) {
-            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
             switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -149,7 +146,8 @@ public abstract sealed class ObservableEntity<OV extends ObservableVersion<? ext
                     }
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid,  indexInPattern);
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
                 case COMPONENT_VERSIONS_LIST -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -166,17 +164,18 @@ public abstract sealed class ObservableEntity<OV extends ObservableVersion<? ext
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid,  indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
             }
         }
 
-        addAdditionalFields(fieldMap);
+        addAdditionalFields(attributesWithLocators);
 
-        return fieldMap.toImmutable();
+        return attributesWithLocators.toImmutable();
     }
 
-    protected abstract void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap);
+    protected abstract void addAdditionalFields(MutableList<ObservableAttributeWithLocator> attributesWithLocators);
 
     public static <OE extends ObservableEntity> OE get(int nid) {
         return get(Entity.getFast(nid));

@@ -1,7 +1,11 @@
 package dev.ikm.komet.kview.klfields;
 
 import static dev.ikm.komet.kview.mvvm.model.DataModelHelper.obtainObservableField;
+
+import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.framework.observable.ObservableField;
+import dev.ikm.komet.framework.observable.ObservableSemantic;
+import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.kview.klfields.booleanfield.KlBooleanFieldFactory;
 import dev.ikm.komet.kview.klfields.componentfield.KlComponentFieldFactory;
@@ -52,7 +56,7 @@ public class KlFieldHelper {
 
 
     /**
-     * function to return the correct node given the semantic entity and field information
+     * function to return the correct node given the semantic entity and attribute information
      * @param fieldRecord
      * @param observableField
      * @param viewProperties
@@ -115,7 +119,7 @@ public class KlFieldHelper {
      * Returns a list of observable fields and displays editable controls on a Pane using the latest semantic entity version.
      * @param viewProperties View Properties
      * @param items list of JavaFX Nodes; each node is a custom UI control that is either read only or editable
-     * @param semanticEntityVersionLatest Semantic Entity Version object containing all field records and their field definitions & value
+     * @param semanticEntityVersionLatest Semantic Entity Version object containing all attribute records and their attribute definitions & value
      * @param editable flag for editable vs readonly
      * @return A list of observable fields
      */
@@ -125,7 +129,12 @@ public class KlFieldHelper {
         List<ObservableField<?>> observableFields = new ArrayList<>();
         Consumer<FieldRecord<Object>> generateConsumer = (fieldRecord) -> {
             ObservableField writeObservableField = obtainObservableField(viewProperties, semanticEntityVersionLatest, fieldRecord);
-            ObservableField observableField = new ObservableField(writeObservableField.field(), false);
+            //TODO: Pass in observable semantic version instead of semanticEntityVersionLatest
+            //TODO: Remove this workaround
+            ObservableSemantic observableSemantic = ObservableEntity.get(semanticEntityVersionLatest.get().nid());
+            ObservableSemanticVersion observableSemanticVersion = observableSemantic.getVersionFast(semanticEntityVersionLatest.get().stampNid());
+
+            ObservableField observableField = new ObservableField(writeObservableField.field(), observableSemanticVersion, false);
             observableFields.add(observableField);
 
             // TODO: this method below will be removed once the database has the capability to add and edit Image data types

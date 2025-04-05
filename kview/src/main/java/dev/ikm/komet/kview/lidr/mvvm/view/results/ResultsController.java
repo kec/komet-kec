@@ -231,7 +231,7 @@ public class ResultsController extends AbstractBasicController implements BasicC
         buttonRegion.getStyleClass().addAll("lidr-search-button-region", "icon");
         exampleUnitsSearchButton.setGraphic(buttonRegion);
 
-        // put the text field and the button in the HBox
+        // put the text attribute and the button in the HBox
         exampleUnitsSearchContainer.getChildren().addAll(exampleUnitsTextField, exampleUnitsSearchButton);
         VBox.setMargin(exampleUnitsSearchContainer, new Insets(0,0, 8,0));
 
@@ -286,7 +286,7 @@ public class ResultsController extends AbstractBasicController implements BasicC
         buttonRegion.getStyleClass().addAll("lidr-search-button-region", "icon");
         allowableResultSearchButton.setGraphic(buttonRegion);
 
-        // put the text field and the button in the HBox
+        // put the text attribute and the button in the HBox
         allowableSearchHbox.getChildren().addAll(allowableResultTextField, allowableResultSearchButton);
         StackPane.setMargin(allowableSearchHbox, new Insets(8));
 

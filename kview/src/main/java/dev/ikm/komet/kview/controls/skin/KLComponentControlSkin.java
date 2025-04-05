@@ -246,7 +246,7 @@ public class KLComponentControlSkin extends SkinBase<KLComponentControl> {
 
     private HBox createSearchBox() {
         TextField searchTextField = new TextField();
-        searchTextField.getStyleClass().add("concept-text-field");
+        searchTextField.getStyleClass().add("concept-text-attribute");
         searchTextField.setPromptText(getString("textfield.prompt.text"));
         searchTextField.onActionProperty().bind(getSkinnable().onSearchActionProperty());
         searchTextField.textProperty().subscribe(text -> getSkinnable().getProperties().put(SEARCH_TEXT_VALUE, text));

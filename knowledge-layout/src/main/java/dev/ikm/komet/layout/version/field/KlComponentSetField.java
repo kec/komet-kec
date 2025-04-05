@@ -4,7 +4,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.common.id.IntIdSet;
 
 /**
- * Represents a field that holds a set of component entities.
+ * Represents a attribute that holds a set of component entities.
  *
  * This interface is a specialization of KlSetField, parameterized with
  * a set of entities and their corresponding versions. It is designed to

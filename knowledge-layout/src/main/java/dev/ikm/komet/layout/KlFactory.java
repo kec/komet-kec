@@ -96,7 +96,7 @@ public interface KlFactory<KL extends KlObject> {
     /**
      * Retrieves the KlGadget interface of the KlGadget produced by the factory.
       *
-     * @return A {@link Class} object representing the class type of the field
+     * @return A {@link Class} object representing the class type of the attribute
      *         interface extending {@link KlWidget}.
      * @deprecated Use klGadgetInterfaces
      */

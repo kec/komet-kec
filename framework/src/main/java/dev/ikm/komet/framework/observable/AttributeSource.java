@@ -5,9 +5,9 @@ package dev.ikm.komet.framework.observable;
  * within the system. These sources represent the different types of components or data
  * structures to which fields can belong or be related.
  *
- * This enumeration is utilized in various contexts such as field definitions, component
- * data processing, and framework-related field operations. The constants allow for the
- * categorization and organization of field definitions based on their origin.
+ * This enumeration is utilized in various contexts such as attribute definitions, component
+ * data processing, and framework-related attribute operations. The constants allow for the
+ * categorization and organization of attribute definitions based on their origin.
  * <p>
  * The constants in this enumeration include:
  * <p>
@@ -17,7 +17,7 @@ package dev.ikm.komet.framework.observable;
  * <p> 4. PATTERN: Represents fields associated with a pattern. No additional fields are defined
  *    on a pattern beyond what is on a component.
  * <p> 5. PATTERN_VERSION: Represents fields specific to a version of a pattern.
- * <p> 6. PATTERN_FIELD_DEFINITION_LIST: Represents fields associated with a pattern's field
+ * <p> 6. PATTERN_FIELD_DEFINITION_LIST: Represents fields associated with a pattern's attribute
  *    definition list.
  * <p> 7. SEMANTIC: Represents fields that belong to a semantic. Additional fields may exist that
  *    are not present on the component.

@@ -41,14 +41,7 @@ import dev.ikm.tinkar.composer.template.USDialect;
 import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
-import dev.ikm.tinkar.entity.ConceptEntity;
-import dev.ikm.tinkar.entity.Entity;
-import dev.ikm.tinkar.entity.EntityService;
-import dev.ikm.tinkar.entity.EntityVersion;
-import dev.ikm.tinkar.entity.FieldDefinitionRecord;
-import dev.ikm.tinkar.entity.PatternVersionRecord;
-import dev.ikm.tinkar.entity.SemanticEntity;
-import dev.ikm.tinkar.entity.SemanticEntityVersion;
+import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.terms.ConceptFacade;
 import dev.ikm.tinkar.terms.EntityFacade;
 import dev.ikm.tinkar.terms.EntityProxy;
@@ -228,7 +221,7 @@ public class PatternViewModel extends FormViewModel {
             {
                 EntityVersion latest = (EntityVersion) viewCalculator.latest(fieldDefinitionForEntity.meaning()).get();
                 PatternField patternField = new PatternField(fieldDefinitionForEntity.meaning().description(), fieldDefinitionForEntity.dataType(),
-                        fieldDefinitionForEntity.purpose(), fieldDefinitionForEntity.meaning(), "", latest.stamp());
+                        fieldDefinitionForEntity.purpose(), fieldDefinitionForEntity.meaning(), "", latest.stamp().toProxy());
                 patternFieldObsList.add(patternField);
             });
 
@@ -345,7 +338,7 @@ public class PatternViewModel extends FormViewModel {
                                     .language(((EntityFacade)getPropertyValue(FQN_LANGUAGE)).toProxy())
                                     .text(getPropertyValue(FQN_DESCRIPTION_NAME_TEXT))
                                     .caseSignificance(((EntityFacade)getPropertyValue(FQN_CASE_SIGNIFICANCE)).toProxy()));
-            // add the field definitions
+            // add the attribute definitions
             for (int i = 0; i< fieldsProperty.size(); i++) {
                 PatternField patternField = fieldsProperty.get(i);
                 patternAssembler.fieldDefinition(patternField.meaning().toProxy(), patternField.purpose().toProxy(),
@@ -388,7 +381,7 @@ public class PatternViewModel extends FormViewModel {
 
         StampViewModel stampViewModel = getPropertyValue(STAMP_VIEW_MODEL);
 
-        Stamp stamp = stampCalculator.latest(patternFacade).get().stamp();
+        StampEntity stamp = stampCalculator.latest(patternFacade).get().stamp();
         stampViewModel.setPropertyValue(STATUS, stamp.state());
         stampViewModel.setPropertyValue(TIME, stamp.time());
         stampViewModel.setPropertyValue(AUTHOR, stamp.author());

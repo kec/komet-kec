@@ -41,7 +41,7 @@ public class GenEditingViewModel extends FormViewModel {
     public static String FIELD_INDEX = "fieldIndex";
 
     // for single semantic editing
-    public static String FIELD = "field";
+    public static String FIELD = "attribute";
 
     public GenEditingViewModel() {
         super();

@@ -61,7 +61,7 @@ Outgoing:
 
 Incoming:
         Drop allow|accept <selectedAttribute>
-        Context action list, responding to event ID, <component field>|<component focus>
+        Context action list, responding to event ID, <component attribute>|<component focus>
         Context suggestions:
             semantics to add|change
                 axioms to add|change,
@@ -69,7 +69,7 @@ Incoming:
                 membership to add|change
 
          Component actions:
-            Change field
+            Change attribute
             Commit version
             Cancel version
 

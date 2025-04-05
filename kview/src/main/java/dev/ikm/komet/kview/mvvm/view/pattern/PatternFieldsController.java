@@ -213,7 +213,7 @@ public class PatternFieldsController {
         ObservableList<Integer> fieldOrderOptions = patternFieldsViewModel.getObservableList(FIELD_ORDER_OPTIONS);
         // Clear list
         fieldOrderOptions.clear();
-        // Create a stream of integers from 1 to (total field + 1)
+        // Create a stream of integers from 1 to (total attribute + 1)
         IntStream.rangeClosed(1, totalFields+1)
                 .boxed() // Convert int to Integer
                 .forEach(fieldOrderOptions::add);
@@ -488,7 +488,7 @@ public class PatternFieldsController {
 
     @FXML
     private void clearView(ActionEvent actionEvent) {
-        //Reset the field order selection to the last value
+        //Reset the attribute order selection to the last value
         IntegerProperty totalFields = patternFieldsViewModel.getProperty(TOTAL_EXISTING_FIELDS);
         patternFieldsViewModel.setPropertyValue(FIELD_ORDER, (totalFields.get()+1));
         patternFieldsViewModel.setPropertyValue(DISPLAY_NAME, "");

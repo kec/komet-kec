@@ -204,7 +204,7 @@ public class PropertiesController {
         descriptionPane = descriptionNameControllerJFXNode.node();
 
         // +-----------------------------------
-        // ! Edit field(s) within a Pattern
+        // ! Edit attribute(s) within a Pattern
         // +-----------------------------------
         Config fieldsConfig = new Config(PATTERN_FIELDS_FXML_URL)
                 .updateViewModel("patternFieldsViewModel", (patternFieldsViewModel) ->
@@ -245,7 +245,7 @@ public class PropertiesController {
                     definitionViewModel.setPropertyValue(MEANING_ENTITY, patternDefinition.meaning());
                 });
             } else if (evt.getEventType() == SHOW_EDIT_FIELDS) {
-                //Set the field values for edit.
+                //Set the attribute values for edit.
                 Optional<ViewModel> viewModel = patternFieldsJFXNode.namedViewModels().stream().filter(namedVm -> namedVm.variableName().equals("patternFieldsViewModel")).map(NamedVm::viewModel).findAny();
                 viewModel.ifPresent(model -> {
                     PatternField patternField = evt.getPatternField();

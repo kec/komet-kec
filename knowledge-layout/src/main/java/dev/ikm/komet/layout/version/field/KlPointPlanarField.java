@@ -5,7 +5,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.component.location.PlanarPoint;
 
 /**
- * Represents a field that holds a PlanarPoint value.
+ * Represents a attribute that holds a PlanarPoint value.
  *
  * This interface extends KlField parameterized with a PlanarPoint type.
  */

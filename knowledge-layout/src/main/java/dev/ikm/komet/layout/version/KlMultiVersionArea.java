@@ -1,6 +1,8 @@
 package dev.ikm.komet.layout.version;
 
 import dev.ikm.komet.framework.observable.ObservableVersion;
+import dev.ikm.komet.layout.KlFactory;
+import dev.ikm.komet.layout.KlVersionType;
 import dev.ikm.komet.layout.KlWidget;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
@@ -28,4 +30,9 @@ public interface KlMultiVersionArea<OV extends ObservableVersion, FX extends Pan
      *         that handle and display single versions of the entity managed by this multi-version pane.
      */
     ObservableList<KlVersionArea<OV, FX>> klVersionAreas();
+
+    interface Factory<OV extends ObservableVersion, FX extends Pane>
+            extends KlFactory<KlMultiVersionArea<OV, FX>>, KlVersionType<OV> {
+
+    }
 }

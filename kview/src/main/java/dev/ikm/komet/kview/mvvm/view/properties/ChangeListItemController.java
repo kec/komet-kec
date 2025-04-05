@@ -166,7 +166,7 @@ public class ChangeListItemController {
         boolean isItAnAxiom = false;
         boolean newlyCreated = stampForChange.moduleNid() == PRIMORDIAL_MODULE.nid();
 
-        // Is the field a concept as a datatype.
+        // Is the attribute a concept as a datatype.
         Function<Integer, Boolean> isDataTypeConceptField = dataTypeNid ->
                 dataTypeNid == CONCEPT_FIELD.nid() || dataTypeNid == COMPONENT_FIELD.nid();
 
@@ -181,17 +181,17 @@ public class ChangeListItemController {
             // Indicate previous value was an unitialized entity.
             newlyCreated = priorFieldValue == State.PRIMORDIAL || UNINITIALIZED_COMPONENT.equals(priorFieldValue);
 
-            // detect if it's a field value of DiTreeEntity
+            // detect if it's a attribute value of DiTreeEntity
             isItAnAxiom = isItAnAxiom || currentFieldRecord.value() instanceof DiTreeEntity;
 
             // Current Field definition
             FieldDefinitionForEntity currentFieldDefinition = currentFieldRecord.fieldDefinition();
-            // Current value's field definition's datatype nid
+            // Current value's attribute definition's datatype nid
             int dataTypeNid = currentFieldDefinition.dataTypeNid();
-            // Current value's field definition's meaning nid
+            // Current value's attribute definition's meaning nid
             int meaningNid = currentFieldDefinition.meaningNid();
 
-            // Include field definition and value, otherwise skip to be ignored when displaying.
+            // Include attribute definition and value, otherwise skip to be ignored when displaying.
             boolean includeFieldDefinition = !(isItAConcept && EXCLUDE_CONCEPT_TERM_NIDS.contains(meaningNid)
                     || isItASemantic && EXCLUDE_SEMANTIC_TERM_NIDS.contains(meaningNid));
 

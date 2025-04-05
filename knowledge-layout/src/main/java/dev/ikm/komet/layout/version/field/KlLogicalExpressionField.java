@@ -5,7 +5,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.entity.graph.adaptor.axiom.LogicalExpression;
 
 /**
- * Represents a field that holds a logical expression as its value.
+ * Represents a attribute that holds a logical expression as its value.
  *
  * This interface extends KlField parameterized with a LogicalExpression type.
  *

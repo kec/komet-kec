@@ -15,6 +15,7 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.tinkar.component.AttributeDefinition;
 import dev.ikm.tinkar.component.FieldDataType;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
@@ -25,23 +26,62 @@ import javafx.beans.property.SimpleObjectProperty;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.MutableList;
 
-public final class ObservableField<DT> extends ObservableAttribute<DT> implements Field<DT> {
+import java.util.Optional;
 
-    public ObservableField(Attribute<DT> attribute, boolean writeOnEveryChange) {
-        super(attribute, writeOnEveryChange);
+public final class ObservableField<DT> implements ObservableAttribute<DT>, Field<DT>, AttributeDefinition {
+
+    private final SimpleObjectProperty<Field<DT>> fieldProperty = new SimpleObjectProperty<>();
+    public final BooleanProperty refreshProperties = new SimpleBooleanProperty(false);
+    private ObservableComponent containingComponent;
+    private SimpleObjectProperty<DT> valueProperty = new SimpleObjectProperty<>();
+    public final boolean writeOnEveryChange;
+
+    public ObservableField(Field<DT> attribute, ObservableComponent containingComponent, boolean writeOnEveryChange) {
+        this.containingComponent = containingComponent;
+        this.writeOnEveryChange = writeOnEveryChange;
+        this.fieldProperty.set(attribute);
+        if (attribute != null) {
+            attribute.optionalValue().ifPresent(value -> valueProperty.set(value));
+        }
+        valueProperty.addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                handleValueChange(newValue);
+                fieldProperty.set(field().with(newValue));
+            }
+        });
+        refreshProperties.addListener((observable, oldValue, newValue) -> {
+            if (!newValue) {
+                writeToDatabase(value());
+            }
+        });
     }
 
-    public ObservableField(Attribute<DT> attribute) {
-        super(attribute);
+    private void handleValueChange(Object newValue) {
+        if (writeOnEveryChange && !refreshProperties.get()) {
+            writeToDatabase(newValue);
+        }
+    }
+
+    public ObservableField(Field<DT> attribute, ObservableComponent containingComponent) {
+        this(attribute, containingComponent, true);
     }
 
     @Override
-    public Attribute<DT> with(DT value) {
-        return field().withValue(value);
+    public DT value() {
+        return valueProperty.getValue();
+    }
+
+    public ObjectProperty<DT> valueProperty() {
+        return valueProperty;
+    }
+
+    @Override
+    public Optional<DT> optionalValue() {
+        return Optional.ofNullable(valueProperty.get());
     }
 
     public FieldRecord<DT> field() {
-        return (FieldRecord<DT>) attributeProperty.get();
+        return (FieldRecord<DT>) fieldProperty.get();
     }
 
     @Override
@@ -52,6 +92,38 @@ public final class ObservableField<DT> extends ObservableAttribute<DT> implement
     @Override
     public int fieldIndex() {
         return field().fieldIndex();
+    }
+
+    public Attribute<DT> attribute() {
+        return fieldProperty.get();
+    }
+
+    public ObservableComponent containingComponent() {
+        return containingComponent;
+    }
+
+    @Override
+    public FieldDataType attributeDataType() {
+        return attribute().attributeDataType();
+    }
+
+    @Override
+    public int meaningNid() {
+        return attribute().meaningNid();
+    }
+
+    @Override
+    public int purposeNid() {
+        return attribute().purposeNid();
+    }
+
+    @Override
+    public int dataTypeNid() {
+        return attribute().dataTypeNid();
+    }
+
+    public ObjectProperty<Field<DT>> fieldProperty() {
+        return fieldProperty;
     }
 
     public void writeToDatabase(Object newValue) {
@@ -85,5 +157,4 @@ public final class ObservableField<DT> extends ObservableAttribute<DT> implement
             Entity.provider().putEntity(analogue);
         }
     }
-
 }

@@ -20,26 +20,26 @@ package dev.ikm.komet.framework.observable;
  * <p>
  * The constants in this enumeration include:
  * <p>
- * <p> - PUBLIC_ID_FIELD: Represents the public ID field linked to the COMPONENT source.
+ * <p> - PUBLIC_ID_FIELD: Represents the public ID attribute linked to the COMPONENT source.
  * <p> - COMPONENT_VERSIONS_LIST: Represents a list of component versions from the COMPONENT source.
  * <p> - COMPONENT_VERSION: Represents a specific component version from the COMPONENT_VERSION_LIST source.
  * <p> - VERSION_STAMP_FIELD: Represents a version stamp specific to a COMPONENT_VERSION.
  * <p> - PATTERN_VERSION: Represents a pattern version defined under the COMPONENT_VERSION_LIST source.
  * <p> - PATTERN_MEANING_FIELD: Represents the pattern meaning attribute from the PATTERN_VERSION source.
  * <p> - PATTERN_PURPOSE_FIELD: Represents the purpose of a pattern, originating from the PATTERN_VERSION.
- * <p> - PATTERN_FIELD_DEFINITION_LIST: Represents a list of field definitions associated with a pattern version.
- * <p> - PATTERN_FIELD_DEFINITION: Represents an individual field definition from the PATTERN_FIELD_DEFINITION_LIST source.
- * <p> - SEMANTIC_PATTERN_FIELD: Represents a field categorized under SEMANTIC.
+ * <p> - PATTERN_FIELD_DEFINITION_LIST: Represents a list of attribute definitions associated with a pattern version.
+ * <p> - PATTERN_FIELD_DEFINITION: Represents an individual attribute definition from the PATTERN_FIELD_DEFINITION_LIST source.
+ * <p> - SEMANTIC_PATTERN_FIELD: Represents a attribute categorized under SEMANTIC.
  * <p> - SEMANTIC_REFERENCED_COMPONENT_FIELD: Represents a referenced component in the SEMANTIC source.
  * <p> - SEMANTIC_VERSION: Represents a semantic version under the COMPONENT_VERSION_LIST source.
  * <p> - SEMANTIC_FIELD_LIST: Represents a list of fields specific to a SEMANTIC_VERSION.
- * <p> - SEMANTIC_FIELD: Represents an individual field in the SEMANTIC_FIELD_LIST source.
+ * <p> - SEMANTIC_FIELD: Represents an individual attribute in the SEMANTIC_FIELD_LIST source.
  * <p> - STAMP_VERSION: Represents a stamp version derived from the COMPONENT_VERSION_LIST source.
- * <p> - STATUS_FIELD: Represents the status field in a STAMP_VERSION.
- * <p> - TIME_FIELD: Represents the time field in a STAMP_VERSION.
- * <p> - AUTHOR_FIELD: Represents the author field in a STAMP_VERSION.
- * <p> - MODULE_FIELD: Represents the module field in a STAMP_VERSION.
- * <p> - PATH_FIELD: Represents the path field in a STAMP_VERSION.
+ * <p> - STATUS_FIELD: Represents the status attribute in a STAMP_VERSION.
+ * <p> - TIME_FIELD: Represents the time attribute in a STAMP_VERSION.
+ * <p> - AUTHOR_FIELD: Represents the author attribute in a STAMP_VERSION.
+ * <p> - MODULE_FIELD: Represents the module attribute in a STAMP_VERSION.
+ * <p> - PATH_FIELD: Represents the path attribute in a STAMP_VERSION.
  * <p>
  * Each constant includes a reference to its corresponding {@link AttributeSource}
  * via the {@code source} member, allowing for dynamic determination of

@@ -133,7 +133,7 @@ public class PatternViewModelTest {
         {
             EntityVersion latest = (EntityVersion) viewCalculator.latest(fieldDefinitionForEntity.meaning()).get();
             PatternField patternField = new PatternField(fieldDefinitionForEntity.meaning().description(), fieldDefinitionForEntity.dataType(),
-            fieldDefinitionForEntity.purpose(), fieldDefinitionForEntity.meaning(), "", latest.stamp());
+            fieldDefinitionForEntity.purpose(), fieldDefinitionForEntity.meaning(), "", latest.stamp().toProxy());
             LOG.info("Pattern FIELDS: " + patternField.displayName());
         });
 

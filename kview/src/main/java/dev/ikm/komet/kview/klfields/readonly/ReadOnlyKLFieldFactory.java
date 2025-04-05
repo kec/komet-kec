@@ -35,13 +35,13 @@ public class ReadOnlyKLFieldFactory {
     public Node createReadOnlyDiTree(ViewProperties viewProperties, FieldRecord<?> fieldRecord) {
         JFXNode<Node, Void> jfxNode = FXMLMvvmLoader.make(getResource("/dev/ikm/komet/kview/controls/read-only-ditree-field.fxml"));
         Node componentRow = jfxNode.node();
-        // update field's meaning title label
-        Label fieldMeaning = (Label) componentRow.lookup(".semantic-field-type-label");
+        // update attribute's meaning title label
+        Label fieldMeaning = (Label) componentRow.lookup(".semantic-attribute-type-label");
         fieldMeaning.setTooltip(new Tooltip(text(viewProperties, fieldRecord.purposeNid())));
         fieldMeaning.setText(text(viewProperties, fieldRecord.meaningNid()));
 
-        // update field's purpose
-        TextFlow fieldValue = (TextFlow) componentRow.lookup(".semantic-field-ditree-value");
+        // update attribute's purpose
+        TextFlow fieldValue = (TextFlow) componentRow.lookup(".semantic-attribute-ditree-value");
         DiTreeEntity value = (DiTreeEntity) fieldRecord.value();
         fieldValue.getChildren().add(new Text(value.toString()));
         return componentRow;

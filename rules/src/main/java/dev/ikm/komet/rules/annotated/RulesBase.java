@@ -42,7 +42,7 @@ import java.util.UUID;
 import static dev.ikm.komet.rules.evrete.EvreteRulesService.*;
 
 /**
- * The base rule class that contains utility methods and custom field definitions for rule facts.
+ * The base rule class that contains utility methods and custom attribute definitions for rule facts.
  */
 public abstract class RulesBase {
 

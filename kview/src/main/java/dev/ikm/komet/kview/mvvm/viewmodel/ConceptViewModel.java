@@ -235,7 +235,7 @@ public class ConceptViewModel extends FormViewModel {
                 conceptFacade.nid(), versions);
 
         // we are grabbing the form data
-        // populating the field values for the new version we are writing
+        // populating the attribute values for the new version we are writing
         MutableList<Object> descriptionFields = Lists.mutable.empty();
 
         // get these from the view model
@@ -279,7 +279,7 @@ public class ConceptViewModel extends FormViewModel {
                     conceptFacade.nid(), versions);
 
             // we are grabbing the form data
-            // populating the field values for the new version we are writing
+            // populating the attribute values for the new version we are writing
             MutableList<Object> descriptionFields = Lists.mutable.empty();
             descriptionFields.add(descrName.getLanguage());
             descriptionFields.add(descrName.getNameText());
@@ -333,7 +333,7 @@ public class ConceptViewModel extends FormViewModel {
                 conceptNid, versions);
 
         // we are grabbing the form data
-        // populating the field values for the new version we are writing
+        // populating the attribute values for the new version we are writing
         MutableList<Object> descriptionFields = Lists.mutable.empty();
         descriptionFields.add(otherName.getLanguage());
         descriptionFields.add(otherName.getNameText());

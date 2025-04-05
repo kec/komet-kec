@@ -5,7 +5,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.entity.graph.DiTreeEntity;
 
 /**
- * Represents a field whose value is a directed tree entity.
+ * Represents a attribute whose value is a directed tree entity.
  *
  * This interface extends the KlField interface, parameterized with a directed tree entity type.
  *

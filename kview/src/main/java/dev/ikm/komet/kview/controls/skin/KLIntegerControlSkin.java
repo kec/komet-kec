@@ -48,7 +48,7 @@ public class KLIntegerControlSkin extends SkinBase<KLIntegerControl> {
 
         textField = new TextField();
         textField.promptTextProperty().bind(control.promptTextProperty());
-        textField.getStyleClass().add("value-text-field");
+        textField.getStyleClass().add("value-text-attribute");
 
         errorLabel = new Label();
         errorLabel.visibleProperty().bind(control.showErrorProperty().and(

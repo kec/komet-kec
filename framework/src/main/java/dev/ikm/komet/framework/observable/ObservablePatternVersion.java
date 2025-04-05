@@ -20,14 +20,11 @@ import dev.ikm.tinkar.terms.TinkarTerm;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.factory.Maps;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import dev.ikm.tinkar.terms.EntityFacade;
-import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.api.map.MutableMap;
 
 public final class ObservablePatternVersion
         extends ObservableVersion<PatternVersionRecord>
@@ -44,7 +41,7 @@ public final class ObservablePatternVersion
         meaningProperty.addListener(this::meaningChanged);
         MutableList<ObservableFieldDefinition> mutableFieldDefinitions = Lists.mutable.ofInitialCapacity(patternVersionRecord.fieldDefinitions().size());
         for (FieldDefinitionRecord fieldDefinition : patternVersionRecord.fieldDefinitions()) {
-            mutableFieldDefinitions.add(new ObservableFieldDefinition(fieldDefinition));
+            mutableFieldDefinitions.add(new ObservableFieldDefinition(fieldDefinition, this));
         }
         this.observableFieldDefinitions = mutableFieldDefinitions.toImmutable();
     }
@@ -135,13 +132,12 @@ public final class ObservablePatternVersion
 
 
     @Override
-    public ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
-        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableList<ObservableAttributeWithLocator> getObservableAttributes() {
+        MutableList<ObservableAttributeWithLocator> attributesWithLocators = Lists.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
         for (AttributeCategory attributeCategory : AttributeCategorySet.patternVersionFields()) {
-            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
             switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -158,7 +154,8 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
                 case VERSION_STAMP_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -175,7 +172,8 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
 
                 case PATTERN_FIELD_DEFINITION_LIST -> {
@@ -193,12 +191,13 @@ public final class ObservablePatternVersion
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
             }
         }
 
-        return fieldMap.toImmutable();
+        return attributesWithLocators.toImmutable();
     }
 
 }

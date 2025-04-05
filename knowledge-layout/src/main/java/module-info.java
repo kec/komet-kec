@@ -27,6 +27,5 @@ module dev.ikm.komet.layout {
     exports dev.ikm.komet.layout.area.factory;
     opens dev.ikm.komet.layout.area.factory to javafx.fxml;
     exports dev.ikm.komet.layout.component.factory;
-    exports dev.ikm.komet.layout.attribute.factory;
 
 }

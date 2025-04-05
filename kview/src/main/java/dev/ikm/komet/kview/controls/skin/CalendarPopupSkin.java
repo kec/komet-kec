@@ -95,14 +95,14 @@ public class CalendarPopupSkin implements Skin<CalendarPopup> {
         LocalTime localTime = control.getLocalTime() != null ? control.getLocalTime() : LocalTime.now();
 
         TextField hourField = new TextField();
-        hourField.getStyleClass().add("hour-field");
+        hourField.getStyleClass().add("hour-attribute");
         hourField.setTextFormatter(new TextFormatter<>(new IntegerRangeStringConverter(0, 23), localTime.getHour()));
 
         Label colonLabel = new Label(":");
         colonLabel.getStyleClass().add("colon-label");
 
         TextField minuteField = new TextField();
-        minuteField.getStyleClass().add("minute-field");
+        minuteField.getStyleClass().add("minute-attribute");
         minuteField.setTextFormatter(new TextFormatter<>(new IntegerRangeStringConverter(0, 59), localTime.getMinute()));
 
         selectedLocalTimeProperty.bind(Bindings.createObjectBinding(

@@ -5,7 +5,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.common.id.IntIdList;
 
 /**
- * Represents a field that holds a list of component entities.
+ * Represents a attribute that holds a list of component entities.
  *
  * This interface extends KlListField, parameterized with a list of component entity types,
  * where the entities themselves are parameterized with their respective version types. It serves

@@ -25,7 +25,7 @@ import java.util.Optional;
  * @param stampPublicId the public identifier of the version's stamp.
  * @param selectedStampElements an immutable list of fields selected for the version's stamp.
  * @param selectedPatternAttributes an immutable list of attributes that further describe the selected pattern.
- * @param selectedFieldDefinitions an immutable list of field definitions that are selected for this pattern version.
+ * @param selectedFieldDefinitions an immutable list of attribute definitions that are selected for this pattern version.
  */
 public record PatternVersionSelection(PublicId componentPublicId, PublicId stampPublicId,
                                       ImmutableList<StampElement> selectedStampElements,

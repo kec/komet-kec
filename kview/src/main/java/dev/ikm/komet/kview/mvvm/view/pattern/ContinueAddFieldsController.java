@@ -32,7 +32,7 @@ public class ContinueAddFieldsController {
     private PatternPropertiesViewModel patternPropertiesViewModel;
 
     /**
-     * when adding a field, the user is directed to a confirmation screen
+     * when adding a attribute, the user is directed to a confirmation screen
      * to add more fields
      * @param actionEvent
      */

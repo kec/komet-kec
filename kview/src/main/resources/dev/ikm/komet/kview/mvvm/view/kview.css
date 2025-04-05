@@ -1000,9 +1000,9 @@ selected(active) - dark black
     -fx-content-display: LEFT;
 }
 /* TODO: ComboBoxThe is not editable yet. The following will be revisited */
-/*.project-bar .combo-box-base:editable > .text-field,*/
-/*.project-bar .combo-box-base:editable > .text-field:focused,*/
-/*.project-bar .combo-box-base:editable:focused > .text-field {*/
+/*.project-bar .combo-box-base:editable > .text-attribute,*/
+/*.project-bar .combo-box-base:editable > .text-attribute:focused,*/
+/*.project-bar .combo-box-base:editable:focused > .text-attribute {*/
 /*    !*-fx-background-color: #white, #304971, #304971, #304971, #304971;*!*/
 /*    !*-fx-background-insets: 3, 1, 2, -1.4, 2.6;*!*/
 /*    !*-fx-background-radius: 8, 2, 1, 4, 1;*!*/

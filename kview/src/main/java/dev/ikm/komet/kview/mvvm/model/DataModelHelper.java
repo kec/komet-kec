@@ -85,8 +85,8 @@ public class DataModelHelper {
     private static final Logger LOG = LoggerFactory.getLogger(DataModelHelper.class);
 
     /**
-     * data types for field definitions
-     * @return field definitions
+     * data types for attribute definitions
+     * @return attribute definitions
      */
     public static Set<ConceptEntity> fetchFieldDefinitionDataTypes() {
 
@@ -265,8 +265,8 @@ public class DataModelHelper {
                         identifiersToAppend.add("%s: %s".formatted(idSourceName, idValue));
                     } catch (IndexOutOfBoundsException exception) {
                         // ignore. TODO: getFieldWithMeaning() should handle gracefully when a meaning isn't found
-                        // The issue is that the starter data's identifier symantec's idValue field's meaning id does not match.
-                        // When this is ignored the identifier field will just have the normal public ids.
+                        // The issue is that the starter data's identifier symantec's idValue attribute's meaning id does not match.
+                        // When this is ignored the identifier attribute will just have the normal public ids.
                     }
                 }
             }));
@@ -299,7 +299,7 @@ public class DataModelHelper {
      * @param viewProperties viewProperties cannot be null. Required to get the calculator.
      * @param semanticEntityVersionLatest
      * @param fieldRecord
-     * @return the observable field
+     * @return the observable attribute
      */
     public static ObservableField<?> obtainObservableField(ViewProperties viewProperties, Latest<SemanticEntityVersion> semanticEntityVersionLatest, FieldRecord<Object> fieldRecord){
         ObservableSemantic observableSemantic = ObservableEntity.get(semanticEntityVersionLatest.get().nid());

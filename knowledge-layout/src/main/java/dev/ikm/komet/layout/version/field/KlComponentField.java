@@ -6,7 +6,7 @@ import dev.ikm.tinkar.entity.Entity;
 import dev.ikm.tinkar.entity.EntityVersion;
 
 /**
- * Represents a field whose value is some type of entity component.
+ * Represents a attribute whose value is some type of entity component.
  *
  * This interface extends the KlField interface, and it is parameterized
  * with an entity type and its corresponding version type.

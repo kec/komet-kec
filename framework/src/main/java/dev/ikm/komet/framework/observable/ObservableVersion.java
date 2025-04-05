@@ -25,7 +25,7 @@ import dev.ikm.tinkar.entity.StampEntity;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import dev.ikm.tinkar.terms.ConceptFacade;
 import dev.ikm.tinkar.terms.State;
-import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.list.ImmutableList;
 
 import java.util.Objects;
 
@@ -53,13 +53,18 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
 
     public abstract ObservableEntity<? extends ObservableVersion> getObservableEntity();
 
-    public abstract ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes();
+    public abstract ImmutableList<ObservableAttributeWithLocator> getObservableAttributes();
+
+    public int nid() {
+        return entity().nid();
+    }
 
     protected void addListeners() {
         stateProperty.addListener((observable, oldValue, newValue) -> {
             if (version().uncommitted()) {
                 Transaction.forVersion(version()).ifPresentOrElse(transaction -> {
-                    StampEntity newStamp = transaction.getStamp(newValue, version().time(), version().authorNid(), version().moduleNid(), version().pathNid());
+                    StampEntity newStamp = transaction.getStamp(newValue, version().time(),
+                            version().authorNid(), version().moduleNid(), version().pathNid());
                     versionProperty.set(withStampNid(newStamp.nid()));
                 }, () -> {
                     throw new IllegalStateException("No transaction for uncommitted version: " + version());
@@ -73,7 +78,8 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
             // TODO when to update the chronology with new record? At commit time? Automatically with reactive stream for commits?
             if (version().uncommitted()) {
                 Transaction.forVersion(version()).ifPresentOrElse(transaction -> {
-                    StampEntity newStamp = transaction.getStamp(version().state(), newValue.longValue(), version().authorNid(), version().moduleNid(), version().pathNid());
+                    StampEntity newStamp = transaction.getStamp(version().state(), newValue.longValue(),
+                            version().authorNid(), version().moduleNid(), version().pathNid());
                     versionProperty.set(withStampNid(newStamp.nid()));
                 }, () -> {
                     throw new IllegalStateException("No transaction for uncommitted version: " + version());
@@ -86,7 +92,8 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
         authorProperty.addListener((observable, oldValue, newValue) -> {
             if (version().uncommitted()) {
                 Transaction.forVersion(version()).ifPresentOrElse(transaction -> {
-                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(), newValue.nid(), version().moduleNid(), version().pathNid());
+                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(),
+                            newValue.nid(), version().moduleNid(), version().pathNid());
                     versionProperty.set(withStampNid(newStamp.nid()));
                 }, () -> {
                     throw new IllegalStateException("No transaction for uncommitted version: " + version());
@@ -99,7 +106,8 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
         moduleProperty.addListener((observable, oldValue, newValue) -> {
             if (version().uncommitted()) {
                 Transaction.forVersion(version()).ifPresentOrElse(transaction -> {
-                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(), version().authorNid(), newValue.nid(), version().pathNid());
+                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(),
+                            version().authorNid(), newValue.nid(), version().pathNid());
                     versionProperty.set(withStampNid(newStamp.nid()));
                 }, () -> {
                     throw new IllegalStateException("No transaction for uncommitted version: " + version());
@@ -112,7 +120,8 @@ public abstract sealed class ObservableVersion<V extends EntityVersion>
         pathProperty.addListener((observable, oldValue, newValue) -> {
             if (version().uncommitted()) {
                 Transaction.forVersion(version()).ifPresentOrElse(transaction -> {
-                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(), version().authorNid(), version().moduleNid(), newValue.nid());
+                    StampEntity newStamp = transaction.getStamp(version().state(), version().time(),
+                            version().authorNid(), version().moduleNid(), newValue.nid());
                     versionProperty.set(withStampNid(newStamp.nid()));
                 }, () -> {
                     throw new IllegalStateException("No transaction for uncommitted version: " + version());

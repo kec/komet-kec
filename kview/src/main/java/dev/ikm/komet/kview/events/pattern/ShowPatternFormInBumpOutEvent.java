@@ -126,12 +126,12 @@ public class ShowPatternFormInBumpOutEvent extends Evt {
 
     /**
      * This constructor is used when we have to edit the Pattern Fields.
-     * The input form is populated using existing field order and the pattern fields information.
+     * The input form is populated using existing attribute order and the pattern fields information.
      * @param source the object on which the event initially occurred.
      * @param eventType the eventType this should be SHOW_EDIT_FIELDS event type.
      * @param totalFields the total number of fields added in the current pattern.
-     * @param patternField the pattern field that is to be edited.
-     * @param fieldOrder the order of the selected pattern field.
+     * @param patternField the pattern attribute that is to be edited.
+     * @param fieldOrder the order of the selected pattern attribute.
      */
     public ShowPatternFormInBumpOutEvent(Object source, EvtType eventType, int totalFields, PatternField patternField, int fieldOrder) {
         super(source, eventType);

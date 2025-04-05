@@ -36,7 +36,7 @@ public class ImportViewModel extends FormViewModel {
 
     /**
      * The {@code ImportField} enum defines the fields used within the {@code ImportViewModel}.
-     * Each field represents a specific input or property required for the import functionality.
+     * Each attribute represents a specific input or property required for the import functionality.
      */
     public enum ImportField {
         /**
@@ -45,14 +45,14 @@ public class ImportViewModel extends FormViewModel {
         SELECTED_FILE("Selected File");
 
         /**
-         * The display name of the import field.
+         * The display name of the import attribute.
          */
         public final String name;
 
         /**
          * Constructs an {@code ImportField} with a specified display name.
          *
-         * @param name the display name of the field
+         * @param name the display name of the attribute
          */
         ImportField(String name) {
             this.name = name;

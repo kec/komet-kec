@@ -408,7 +408,7 @@ public class DataModelHelper {
             IntIdSet resultConfIds = lidrRecord.resultConformances() == null ? IntIds.set.empty() : IntIds.set.of(lidrRecord.resultConformances(),
                     (resultConf) -> PrimitiveData.get().nidForPublicId(resultConf.resultConformanceId()));
 
-            // Create pattern's field definitions
+            // Create pattern's attribute definitions
             MutableList<Object> lidrRecordFields = Lists.mutable.empty();
 
             ConceptFacade testPerformed = ConceptFacade.make(PrimitiveData.get().nidForPublicId(lidrRecord.testPerformedId()));

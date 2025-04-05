@@ -5,12 +5,12 @@ import dev.ikm.komet.layout.selection.SelectableIndexedElement;
 import dev.ikm.tinkar.terms.ConceptFacade;
 
 /**
- * The FieldDefinitionSelection record represents a selectedAttribute definition for a specific field
- * in the context of a pattern version. It includes an index indicating the position of the field
- * and a set of attributes describing the field's characteristics.
+ * The FieldDefinitionSelection record represents a selectedAttribute definition for a specific attribute
+ * in the context of a pattern version. It includes an index indicating the position of the attribute
+ * and a set of attributes describing the attribute's characteristics.
  *
- * @param index     the index of the field in the pattern version.
- * @param selectedAttribute an immutable set of selected field definition attributes.
+ * @param index     the index of the attribute in the pattern version.
+ * @param selectedAttribute an immutable set of selected attribute definition attributes.
  */
 public record FieldDefinitionSelection(int index, PatternVersionSelection.FieldAttribute selectedAttribute)
         implements SelectableIndexedElement {

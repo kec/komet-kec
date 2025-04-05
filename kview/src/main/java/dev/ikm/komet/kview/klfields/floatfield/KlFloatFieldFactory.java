@@ -30,6 +30,6 @@ public class KlFloatFieldFactory implements KlFieldFactory<Float> {
 
     @Override
     public String getDescription() {
-        return "A Float field";
+        return "A Float attribute";
     }
 }

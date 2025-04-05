@@ -651,7 +651,7 @@ public class ConceptDetailsNode extends ExplorationNodeAbstract {
 //            ObservableCompoundVersion newDescriptionDialect
 //                    = new ObservableCompoundVersion(optionalFocus.get().getPrimordialUuid(), TinkarTerm.ENGLISH_LANGUAGE.nid());
 //            newDescriptions.add(newDescriptionDialect);
-//            // Set with pattern nid, field meaning nid.
+//            // Set with pattern nid, attribute meaning nid.
 //            newDescriptionDialect.setField(TinkarTerm.DESCRIPTION_PATTERN, TinkarTerm.DESCRIPTION_TYPE, TinkarTerm.REGULAR_NAME_DESCRIPTION_TYPE);
 //            newDescriptionDialect.getDescription().setDescriptionTypeConceptNid(TinkarTerm.REGULAR_NAME_DESCRIPTION_TYPE.nid());
 //            newDescriptionDialect.getDescription().setStatus(State.ACTIVE, null);
@@ -825,7 +825,7 @@ public class ConceptDetailsNode extends ExplorationNodeAbstract {
         this.stampOrderHashMap.forEachKey(stampNid -> sortedStampNids.add(stampNid));
 
         this.sortedStampNids.sort(
-                (stampNid1, stampNid2) -> Entity.getStamp(stampNid2).instant().compareTo(Entity.getStamp(stampNid1).instant()));
+                (stampNid1, stampNid2) -> Entity.getStamp(stampNid2).lastVersion().instant().compareTo(Entity.getStamp(stampNid1).lastVersion().instant()));
 
         final AtomicInteger stampOrder = new AtomicInteger();
 

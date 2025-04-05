@@ -30,7 +30,7 @@ public class KLStringControlSkin extends SkinBase<KLStringControl> {
 
         textField = new TextField();
         textField.promptTextProperty().bind(control.promptTextProperty());
-        textField.getStyleClass().add("text-field");
+        textField.getStyleClass().add("text-attribute");
 
         getChildren().addAll(titleLabel, textField);
 

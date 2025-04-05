@@ -390,7 +390,7 @@ public enum ObservableFields implements ConceptFacade {
     KOMET_USER_LIST("KOMET user list"),
     CONCEPT_IS_ASSEMBLAGE("Concept is assemblage"),
 
-    SEMANTIC_FIELD_NAME("Semantic field name", "Field name"),
+    SEMANTIC_FIELD_NAME("Semantic attribute name", "Field name"),
     ASSEMBLAGE_FOR_CONSTRAINT("Assemblage for constraint", "Assemblage for constraint"),
     ROLE_TYPE_TO_ADD("Role type to add", "Role type to add"),
 

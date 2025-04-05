@@ -30,6 +30,6 @@ public class KlIntegerFieldFactory implements KlFieldFactory<Integer> {
 
     @Override
     public String getDescription() {
-        return "An Integer field";
+        return "An Integer attribute";
     }
 }

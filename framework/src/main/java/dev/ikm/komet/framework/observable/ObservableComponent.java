@@ -1,34 +1,37 @@
 package dev.ikm.komet.framework.observable;
 
-import org.eclipse.collections.api.map.ImmutableMap;
+import org.eclipse.collections.api.list.ImmutableList;
 
 /**
- * ObservableComponent defines a sealed interface that represents a
- * foundational construct for components in a system. This interface
- * is designed to be extended by specific observable component types.
+ * The ObservableComponent interface is a sealed interface that defines the core contract
+ * for components capable of providing observable attributes. It is restricted to specific
+ * subtypes, which are ObservableEntity and ObservableVersion.
  * <p>
- * As a sealed interface, the extensions of ObservableComponent are
- * explicitly restricted to the defined permits. The interface serves
- * as a common type for observing and interacting with various system-level
- * components, managing their versioning, state, and observable behaviors.
- * <p>
- * <p>Permitted subtypes:
- *<p> - ObservableEntity: Represents an observable construct associated
- *   with an entity, which includes fields and versions for observation.
- *<p> - ObservableVersion: Represents an observable version of an entity,
- *   equipped with properties like state, time, and author.
- *<p> - ObservableField: Represents an observable field within a system,
- *   capable of handling changes and maintaining field properties.
- *<p> - ObservableFieldDefinition: Defines an observable definition
- *   for fields, including metadata such as data type and purpose.
- * <p>
- * This interface enables consistent handling and interaction with
- * observable components across the system, leveraging its extensions
- * for specific component behaviors.
+ * This interface is primarily concerned with exposing observable attributes and their
+ * associated locators, enabling a detailed mapping of attributes within a structured context.
+ * Implementations of this interface must ensure the immutability of the returned attribute
+ * list and provide a means to pair attributes with the necessary locators for semantic clarity.
  */
 public sealed interface ObservableComponent
         permits ObservableEntity, ObservableVersion {
 
-    <OA extends ObservableAttribute> ImmutableMap<AttributeLocator, OA> getObservableAttributes();
+    /**
+     * Retrieves a list of observable attributes associated with their respective locators.
+     * Each entry in the returned list represents a pairing of an attribute and the
+     * locator providing its context.
+     *
+     * @return an immutable list of {@code AttributeWithLocator}, where each item
+     * associates an observable attribute with its corresponding locator.
+     */
+    ImmutableList<ObservableAttributeWithLocator> getObservableAttributes();
+
+    /**
+     * Retrieves the native identifier (nid) of the observable component.
+     * The nid is a unique, integer-based identifier used to represent
+     * and distinguish components within the system.
+     *
+     * @return the native identifier (nid) as an integer.
+     */
+    int nid();
 
 }

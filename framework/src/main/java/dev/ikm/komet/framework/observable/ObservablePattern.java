@@ -19,7 +19,7 @@ import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.EntityVersion;
 import dev.ikm.tinkar.entity.PatternEntity;
 import dev.ikm.tinkar.entity.PatternVersionRecord;
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.list.MutableList;
 
 public final class ObservablePattern
         extends ObservableEntity<ObservablePatternVersion>
@@ -39,7 +39,7 @@ public final class ObservablePattern
     }
 
     @Override
-    protected void addAdditionalFields(MutableMap<AttributeLocator, ObservableField> fieldMap) {
+    protected void addAdditionalFields(MutableList<ObservableAttributeWithLocator> attributesWithLocators) {
         // nothing to add...
     }
 }

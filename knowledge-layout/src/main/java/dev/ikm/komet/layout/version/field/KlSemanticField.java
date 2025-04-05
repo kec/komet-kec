@@ -6,7 +6,7 @@ import dev.ikm.tinkar.entity.SemanticEntity;
 import dev.ikm.tinkar.entity.SemanticEntityVersion;
 
 /**
- * Represents a field that holds a semantic entity.
+ * Represents a attribute that holds a semantic entity.
  *
  * This interface extends KlField and is parameterized with a semantic entity type
  * and its corresponding version type.

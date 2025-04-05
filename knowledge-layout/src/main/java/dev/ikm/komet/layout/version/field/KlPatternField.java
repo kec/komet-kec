@@ -6,7 +6,7 @@ import dev.ikm.tinkar.entity.PatternEntity;
 import dev.ikm.tinkar.entity.PatternEntityVersion;
 
 /**
- * Represents a field that holds a pattern entity.
+ * Represents a attribute that holds a pattern entity.
  *
  * This interface extends KlField and is parameterized with a pattern entity type
  * and its corresponding version type.

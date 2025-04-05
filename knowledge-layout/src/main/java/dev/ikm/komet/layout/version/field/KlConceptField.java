@@ -6,7 +6,7 @@ import dev.ikm.tinkar.entity.ConceptEntity;
 import dev.ikm.tinkar.entity.ConceptEntityVersion;
 
 /**
- * Represents a field that holds a concept entity.
+ * Represents a attribute that holds a concept entity.
  *
  * This interface extends KlField, and it is parameterized with a concept entity type
  * and its corresponding version type.

@@ -31,7 +31,7 @@ public interface KlConstructionContextForGadget {
     KometPreferences newPreferenceChild();
 
     /**
-     * Create a GridLayout for the provided field specifications. The layout will assume
+     * Create a GridLayout for the provided attribute specifications. The layout will assume
      * a starting position of Column = 0, Row = 0, and increment as appropriate for the layout
      * algorithm. Later calls will begin again at Column = 0, Row = 0, and can be used to lay out
      * embedded grids. Only gadgets that lay out subcomponents on a grid need to call this method.

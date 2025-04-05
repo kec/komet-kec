@@ -89,6 +89,7 @@ import dev.ikm.komet.kview.mvvm.viewmodel.PatternViewModel;
 import dev.ikm.komet.kview.mvvm.viewmodel.StampViewModel;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.ConceptEntity;
+import dev.ikm.tinkar.entity.Entity;
 import dev.ikm.tinkar.terms.EntityFacade;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringBinding;
@@ -432,7 +433,7 @@ public class PatternDetailsController {
                 .otherwise("");
         fqnAddDateLabel.textProperty().bind(dateStrProp);
 
-        //Listen to the changes in the fieldsTilePane and update the field numbers.
+        //Listen to the changes in the fieldsTilePane and update the attribute numbers.
         ObservableList<Node> fieldsTilePaneList = fieldsTilePane.getChildren();
         fieldsTilePaneList.addListener((ListChangeListener<Node>) (listener) -> {
             while(listener.next()){
@@ -586,13 +587,13 @@ public class PatternDetailsController {
     }
 
     /**
-     * This method updates the Field label with the correct field number value.
+     * This method updates the Field label with the correct attribute number value.
      */
     private void updateFieldValues() {
         ObservableList<Node> fieldVBoxes = fieldsTilePane.getChildren();
         for(int i=0 ; i < fieldVBoxes.size(); i++){
             Node node = fieldVBoxes.get(i);
-            Node labelNode = node.lookup(".pattern-field");
+            Node labelNode = node.lookup(".pattern-attribute");
             if(labelNode instanceof Label label){
                 label.setText("FIELD " + (i+1));
             }
@@ -603,7 +604,7 @@ public class PatternDetailsController {
         VBox fieldVBoxContainer = new VBox();
         fieldVBoxContainer.prefWidth(330);
         Label fieldLabel = new Label("FIELD " + fieldNum);
-        fieldLabel.getStyleClass().add("pattern-field");
+        fieldLabel.getStyleClass().add("pattern-attribute");
         Text fieldText = new Text(patternField.displayName());
         fieldText.getStyleClass().add("grey12-12pt-bold");
         HBox outerHBox = new HBox();
@@ -614,7 +615,7 @@ public class PatternDetailsController {
         if (patternField.stamp() == null) {
             dateAddedStr = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM d, yyyy")).toString();
         } else {
-            Long fieldMilis = patternField.stamp().time();
+            Long fieldMilis = Entity.getStamp(patternField.stamp().nid()).time();
             if (fieldMilis.equals(PREMUNDANE_TIME)) {
                 dateAddedStr = "Premundane";
             } else {

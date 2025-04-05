@@ -90,7 +90,7 @@ public abstract class PreferenceProperty<DT, I extends Property<DT>> implements 
      * The {@code binding} is used to initialize and bind the property with a specific
      * concept, enabling consistent and reusable property management.
      *
-     * This is a final field and is assigned during the construction of the
+     * This is a final attribute and is assigned during the construction of the
      * {@code PreferenceProperty} instance.
      */
     final ClassConceptBinding binding;

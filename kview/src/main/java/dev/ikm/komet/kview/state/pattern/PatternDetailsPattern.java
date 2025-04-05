@@ -45,7 +45,7 @@ public class PatternDetailsPattern extends StatePattern {
                 // after we add the Other Name, we want to be in the state ADDED_OTHER_NAME
                 .t("otherNameDone", ADDING_OTHER_NAME, ADDED_OTHER_NAME)
 
-                // we can navigate to the add field from the third pencil
+                // we can navigate to the add attribute from the third pencil
                 // therefore it can come from these other states
                 .t("addField", NEW_PATTERN_INITIAL, ADDING_FIELD)
                 .t("addField", ADDING_FQN, ADDING_FIELD)
@@ -55,10 +55,10 @@ public class PatternDetailsPattern extends StatePattern {
                 .t("addField", ADDED_DEFINTIONS, ADDING_FIELD)
                 .t("addField", ADDING_FIELD, ADDING_FIELD)
                 .t("addField", EDITING_OTHERNAME, ADDING_FIELD)
-                // adding field gets you to a continuous loop to a confirmation panel
+                // adding attribute gets you to a continuous loop to a confirmation panel
                 // to keep adding fields, that is why there is no ADDED_FIELD
 
-                // we can navigate to the edit field by right-clicking and choosing edit field
+                // we can navigate to the edit attribute by right-clicking and choosing edit attribute
                 // therefore it can come from these other states
                 .t("editField", NEW_PATTERN_INITIAL, EDITING_FIELD)
                 .t("editField", ADDING_DEFINITIONS, EDITING_FIELD)
@@ -70,7 +70,7 @@ public class PatternDetailsPattern extends StatePattern {
                 .t("editField", ADDING_FIELD, EDITING_FIELD)
                 .t("editField", EDITING_OTHERNAME, EDITING_FIELD)
 
-                // we can navigate to the edit other name description field from the  2nd pencil icon.
+                // we can navigate to the edit other name description attribute from the  2nd pencil icon.
                 // therefore it can come from other states.
                 .t("editOtherName", NEW_PATTERN_INITIAL, EDITING_OTHERNAME)
                 .t("editOtherName", ADDING_DEFINITIONS, EDITING_OTHERNAME)

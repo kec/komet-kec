@@ -75,7 +75,7 @@ public class ResultConformanceDetailsController extends AbstractBasicController 
         List<PublicId> allowableResultIds = Searcher.getAllowedResultsFromResultConformance(resultsConformanceRecord.resultConformanceId());
         allowableResultIds.forEach(allowableResultId -> {
             Text allowableText = new Text(findDescrNameText(allowableResultId));
-            allowableText.getStyleClass().add("result-field-value");
+            allowableText.getStyleClass().add("result-attribute-value");
             allowableResultsVBox.getChildren().add(new TextFlow(allowableText));
         });
         // TODO hard code for now to be qualitative.
@@ -103,7 +103,7 @@ public class ResultConformanceDetailsController extends AbstractBasicController 
     }
     private TextFlow createResultsTextFlow(String resultText) {
         Text text = new Text(resultText);
-        text.getStyleClass().add("result-field-value");
+        text.getStyleClass().add("result-attribute-value");
         return new TextFlow(text);
     }
     @Override

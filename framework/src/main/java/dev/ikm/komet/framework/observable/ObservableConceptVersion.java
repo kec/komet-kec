@@ -18,9 +18,9 @@ package dev.ikm.komet.framework.observable;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.terms.TinkarTerm;
-import org.eclipse.collections.api.factory.Maps;
-import org.eclipse.collections.api.map.ImmutableMap;
-import org.eclipse.collections.api.map.MutableMap;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 
 public final class ObservableConceptVersion extends ObservableVersion<ConceptVersionRecord> implements ConceptEntityVersion {
     ObservableConceptVersion(ConceptVersionRecord conceptVersionRecord) {
@@ -43,13 +43,12 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
     }
 
     @Override
-    public ImmutableMap<AttributeLocator, ObservableField> getObservableAttributes() {
-        MutableMap<AttributeLocator, ObservableField> fieldMap = Maps.mutable.empty();
+    public ImmutableList<ObservableAttributeWithLocator> getObservableAttributes() {
+        MutableList<ObservableAttributeWithLocator> attributesWithLocators = Lists.mutable.empty();
 
         int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
 
         for (AttributeCategory attributeCategory : AttributeCategorySet.conceptVersionFields()) {
-            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
             switch (attributeCategory) {
                 case PUBLIC_ID_FIELD -> {
                     //TODO temporary until we get a pattern for concept fields...
@@ -66,7 +65,8 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
 
                 case VERSION_STAMP_FIELD -> {
@@ -84,13 +84,14 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
                     FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
                             patternVersionStampNid, patternNid, indexInPattern);
 
-                    fieldMap.put(fieldLocator, new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr)));
+                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
+                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
                 }
             }
 
         }
 
-        return fieldMap.toImmutable();
+        return attributesWithLocators.toImmutable();
     }
 
 }

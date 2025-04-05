@@ -30,6 +30,6 @@ public class KlComponentFieldFactory implements KlFieldFactory<EntityProxy> {
 
     @Override
     public String getDescription() {
-        return "A Component field";
+        return "A Component attribute";
     }
 }

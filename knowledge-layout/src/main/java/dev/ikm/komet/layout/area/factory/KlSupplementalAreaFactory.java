@@ -32,4 +32,5 @@ public record KlSupplementalAreaFactory(String areaFactoryName, GridLayout gridL
         }
         return new KlSupplementalAreaFactory(in.readString(),
                 in.decode(), children.toImmutable());
-    }}
+    }
+}

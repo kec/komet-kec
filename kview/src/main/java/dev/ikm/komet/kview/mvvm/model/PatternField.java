@@ -16,7 +16,9 @@
 package dev.ikm.komet.kview.mvvm.model;
 
 import dev.ikm.tinkar.component.Stamp;
+import dev.ikm.tinkar.entity.StampEntity;
 import dev.ikm.tinkar.terms.EntityFacade;
+import dev.ikm.tinkar.terms.StampFacade;
 
 /**
  * object to capture data for a Pattern>Field
@@ -29,5 +31,5 @@ import dev.ikm.tinkar.terms.EntityFacade;
  * @param time
  */
 public record PatternField(String displayName, EntityFacade dataType,
-                           EntityFacade purpose, EntityFacade meaning, String comments, Stamp stamp) {
+                           EntityFacade purpose, EntityFacade meaning, String comments, StampFacade stamp) {
 }

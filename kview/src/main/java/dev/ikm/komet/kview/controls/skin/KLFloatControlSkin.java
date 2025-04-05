@@ -47,7 +47,7 @@ public class KLFloatControlSkin extends SkinBase<KLFloatControl> {
 
         textField = new TextField();
         textField.promptTextProperty().bind(control.promptTextProperty());
-        textField.getStyleClass().add("text-field");
+        textField.getStyleClass().add("text-attribute");
 
         errorLabel = new Label();
         errorLabel.visibleProperty().bind(control.showErrorProperty().and(

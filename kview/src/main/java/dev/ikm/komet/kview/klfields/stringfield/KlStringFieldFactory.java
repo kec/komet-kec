@@ -30,6 +30,6 @@ public class KlStringFieldFactory implements KlFieldFactory<String> {
 
     @Override
     public String getDescription() {
-        return "A String field";
+        return "A String attribute";
     }
 }

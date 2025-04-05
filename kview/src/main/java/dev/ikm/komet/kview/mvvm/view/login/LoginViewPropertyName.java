@@ -26,12 +26,12 @@ package dev.ikm.komet.kview.mvvm.view.login;
 public enum LoginViewPropertyName {
 
     /**
-     * Property name for the username field.
+     * Property name for the username attribute.
      */
     USERNAME("Username"),
 
     /**
-     * Property name for the password field.
+     * Property name for the password attribute.
      */
     PASSWORD("Password"),
 
@@ -68,7 +68,7 @@ public enum LoginViewPropertyName {
     private final String fieldName;
 
     /**
-     * Constructs a new {@code LoginViewPropertyName} with the specified field name.
+     * Constructs a new {@code LoginViewPropertyName} with the specified attribute name.
      *
      * @param fieldName the string value of the property name
      */

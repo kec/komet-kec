@@ -1,7 +1,7 @@
 package dev.ikm.komet.layout.attribute;
 
 import dev.ikm.komet.framework.observable.ObservableAttribute;
-import dev.ikm.komet.framework.observable.ObservableField;
+import dev.ikm.komet.layout.KlFactory;
 import dev.ikm.komet.layout.KlWidget;
 import dev.ikm.komet.layout.area.KlArea;
 import dev.ikm.tinkar.common.bind.ClassConceptBinding;
@@ -13,50 +13,54 @@ import dev.ikm.tinkar.common.bind.annotations.publicid.UuidAnnotation;
 import javafx.scene.layout.Region;
 
 /**
- * Represents a pane within the Knowledge Layout framework that is used to manage
- * and interact with fields associated with various data types. This interface
- * serves as a base structure for field panes supporting observation and manipulation
- * of field values through the use of the {@code ObservableField} abstraction.
+ * Defines an interface within the Knowledge Layout framework for managing and interacting
+ * with attributes of a specified data type and their associated JavaFX regions. This interface
+ * provides methods for binding, observing, and manipulating attribute data in a type-safe manner.
  *
- * This sealed interface defines the contract for all specific types of field panes
- * within the framework, including those managing boolean values, concept entities,
- * generic data, or component fields. It allows for type-safe interactions with the
- * corresponding field values and provides support for parent node association.
+ * The interface extends multiple base types to integrate functionality for JavaFX region handling,
+ * conceptual bindings, and knowledge layout area definitions.
  *
- * @param <DT> the data type of the value held and managed within this field pane
- * @param <FX> the FX component type of the parent UI element associated with the pane
+ * @param <DT> The data type managed by this attribute area.
+ * @param <FX> The type of the JavaFX {@code Region} associated with this attribute area.
  */
-@FullyQualifiedName("Knowledge Layout field pane")
-@RegularName("Field pane")
+@FullyQualifiedName("Knowledge layout regions")
+@RegularName("Attribute regions")
 @ParentProxy(parentName = "Komet panels (SOLOR)",
         parentPublicId = @PublicIdAnnotation(@UuidAnnotation("b3d1cdf6-27a5-502d-8f16-ed026a7b9d15")))
 public sealed interface KlAttributeArea<DT, FX extends Region> extends KlWidget<FX>, ClassConceptBinding, KlArea<FX>
-        permits KlBooleanAttributeArea, KlComponentAttributeArea, KlConceptAttributeArea, KlGenericAttributeArea, KlListAttributeArea, KlPublicIdAttributeArea {
+        permits KlFieldArea, KlListArea {
+
     /**
-     * Retrieves the value associated with the field pane by accessing the value
-     * of the underlying {@code ObservableField} instance.
+     * Sets the specified attribute to this attribute area. The attribute may represent
+     * a piece of data or functionality that is managed and displayed within the associated
+     * JavaFX {@code Region}. Implementations of this method define how the provided
+     * attribute is internally applied and how it interacts with the UI region.
      *
-     * @return the value of type {@code T} managed by the associated {@code ObservableField}
+     * @param attribute the attribute of type {@code DT} that needs to be set and managed
+     *                  within this attribute area
      */
-    default DT attributeValue() {
-        return getAttribute().value();
+    void setAttribute(DT attribute);
+
+    /**
+     * Retrieves the attribute currently managed by this attribute area.
+     * The returned attribute is of the type {@code DT}, representing the data
+     * or functionality associated with the JavaFX {@code Region}.
+     *
+     * @return the attribute of type {@code DT} managed by this attribute area
+     */
+    DT getAttribute();
+
+    /**
+     * Represents a specialized factory interface for creating or restoring instances of a specified type.
+     * This factory operates on data types (DT), a specific region implementation (FX),
+     * and a custom Knowledge Layout area (KL) that extends the behavior of {@link KlFactory}.
+     *
+     * @param <DT> The data type managed by the factory.
+     * @param <FX> The region type controlled by the factory. This extends the {@link Region} class.
+     * @param <KL> The custom Knowledge Layout area type, which combines data type and region, extending {@link KlFactory}.
+     */
+    interface Factory<DT, FX extends Region, KL extends KlAttributeArea<DT, FX>>
+            extends KlFactory<KL> {
+
     }
-
-    /**
-     * Sets the {@code ObservableField} for this field pane.
-     *
-     * @param field the {@code ObservableField} instance to be associated with this field pane.
-     *              It provides the value and observable properties for this field.
-     */
-    void setAttribute(ObservableAttribute<DT> field);
-
-    /**
-     * Retrieves the {@code ObservableField} instance associated with this field pane.
-     * The {@code ObservableField} provides access to the field's value and supports
-     * observation of property changes.
-     *
-     * @return the {@code ObservableField} instance managing the field's data and properties
-     */
-    ObservableAttribute<DT> getAttribute();
-
 }

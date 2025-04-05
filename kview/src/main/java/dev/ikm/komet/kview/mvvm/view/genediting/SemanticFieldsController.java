@@ -105,13 +105,13 @@ public class SemanticFieldsController {
 
         // subscribe to changes... if the FIELD_INDEX is -1 or unset, then the user clicked the
         //  pencil icon and wants to edit all the fields
-        // if the FIELD_INDEX is >= 0 then the user chose the context menu of a single field
-        //  to edit that field
+        // if the FIELD_INDEX is >= 0 then the user chose the context menu of a single attribute
+        //  to edit that attribute
         semanticFieldsViewModel.getObjectProperty(FIELD_INDEX).subscribe(fieldIndex -> {
             int fieldIdx = (int)fieldIndex;
             editFieldsVBox.getChildren().clear();
 
-            // single field to edit
+            // single attribute to edit
             if (fieldIdx >= 0) {
                 editFieldsVBox.getChildren().add(nodes.get(fieldIdx));
             } else {
@@ -128,7 +128,7 @@ public class SemanticFieldsController {
 
     private static Separator createSeparator() {
         Separator separator = new Separator();
-        separator.getStyleClass().add("field-separator");
+        separator.getStyleClass().add("attribute-separator");
         return separator;
     }
 
