@@ -1,9 +1,10 @@
 package dev.ikm.komet.layout.version;
 
 import dev.ikm.komet.framework.observable.ObservableVersion;
-import dev.ikm.komet.layout.KlFactory;
-import dev.ikm.komet.layout.KlVersionType;
+import dev.ikm.komet.layout.KlArea;
 import dev.ikm.komet.layout.KlWidget;
+import dev.ikm.komet.layout.feature.KlListOfVersionArea.VersionsAndSelection;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 
@@ -16,13 +17,21 @@ import javafx.scene.layout.Pane;
  * @see KlWidget
  * @see ObservableVersion
  */
-public interface KlMultiVersionArea<OV extends ObservableVersion, FX extends Pane> extends KlWidget<FX> {
+public non-sealed interface KlMultiVersionArea<OV extends ObservableVersion, FX extends Pane>
+        extends KlArea<FX> {
+
     /**
-     * Retrieves the list of observable versions associated with an entity in this multi-version pane.
+     * Configures the component with a read-only property that encapsulates information
+     * about the versions and the selected versions of an entity.
      *
-     * @return an ObservableList of ObservableVersion<V> objects, representing the multiple versions of the entity managed by this pane.
+     * @param versionsAndSelectionProperty a {@code ReadOnlyObjectProperty} that contains
+     *                                      a {@code VersionsAndSelection}
+     *                                      object, representing the list of observable versions
+     *                                      and the subset of selected versions.
      */
-    ObservableList<OV> observableVersions();
+    void setVersionAndSelectionProperty(ReadOnlyObjectProperty<VersionsAndSelection> versionsAndSelectionProperty);
+
+
     /**
      * Retrieves the list of single version panes associated with this multi-version pane.
      *
@@ -31,8 +40,8 @@ public interface KlMultiVersionArea<OV extends ObservableVersion, FX extends Pan
      */
     ObservableList<KlVersionArea<OV, FX>> klVersionAreas();
 
-    interface Factory<OV extends ObservableVersion, FX extends Pane>
-            extends KlFactory<KlMultiVersionArea<OV, FX>>, KlVersionType<OV> {
-
+    non-sealed interface Factory<FX extends Pane, OV extends ObservableVersion, KL extends KlMultiVersionArea<OV, FX>>
+            extends KlArea.Factory<FX, KL> {
     }
+
 }

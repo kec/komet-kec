@@ -19,7 +19,6 @@ import dev.ikm.komet.framework.view.ObservableViewNoOverride;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.framework.window.WindowSettings;
 import dev.ikm.komet.kview.klwindows.AbstractEntityChapterKlWindowFactory;
-import dev.ikm.komet.layout.context.KlContextFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import dev.ikm.komet.layout.window.KlJournalWindow;
 import dev.ikm.komet.preferences.KometPreferences;
@@ -71,22 +70,7 @@ public class ConceptKlWindowFactory extends AbstractEntityChapterKlWindowFactory
     }
 
     @Override
-    public KlJournalWindow createWithContext(KlPreferencesFactory preferencesFactory, KlContextFactory contextFactory) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
     public KlJournalWindow restore(KometPreferences preferences) {
         throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public Class<? extends KlJournalWindow> klImplementationClass() {
-        return ConceptKlWindow.class;
-    }
-
-    @Override
-    public String klDescription() {
-        return "Concept Details Chapter Window are displayed inside of the Journal Window desktop workspace";
     }
 }

@@ -37,4 +37,9 @@ public non-sealed interface KlConceptVersionArea<FX extends Pane> extends KlVers
     default ObjectProperty<ObservableConceptVersion> conceptVersionProperty() {
         return versionProperty();
     }
+
+    non-sealed interface Factory<FX extends Pane, KL extends KlConceptVersionArea<FX>>
+            extends KlVersionArea.Factory<FX, ObservableConceptVersion, KL> {
+
+    }
 }

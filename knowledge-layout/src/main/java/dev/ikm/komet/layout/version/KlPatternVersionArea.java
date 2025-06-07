@@ -39,4 +39,6 @@ public non-sealed interface KlPatternVersionArea<FX extends Pane> extends KlVers
      default ObjectProperty<ObservablePatternVersion> patternVersionProperty() {
         return versionProperty();
      }
-}
+    non-sealed interface Factory<FX extends Pane, KL extends KlPatternVersionArea<FX>>
+            extends KlVersionArea.Factory<FX, ObservablePatternVersion, KL> {
+    }}

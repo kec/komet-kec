@@ -15,20 +15,27 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.komet.framework.observable.binding.Binding;
+import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
-import dev.ikm.tinkar.terms.TinkarTerm;
+import dev.ikm.tinkar.entity.*;
+import dev.ikm.tinkar.entity.transaction.Transaction;
+import dev.ikm.tinkar.terms.EntityFacade;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
-import dev.ikm.tinkar.entity.*;
-import dev.ikm.tinkar.entity.transaction.Transaction;
-import dev.ikm.tinkar.terms.EntityFacade;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class ObservablePatternVersion
         extends ObservableVersion<PatternVersionRecord>
         implements PatternEntityVersion {
+    private static final Logger LOG = LoggerFactory.getLogger(ObservablePatternVersion.class);
+
     final SimpleObjectProperty<EntityFacade> purposeProperty = new SimpleObjectProperty<>(this, "Pattern purpose");
     final SimpleObjectProperty<EntityFacade> meaningProperty = new SimpleObjectProperty<>(this, "Pattern meaning");
     final ImmutableList<ObservableFieldDefinition> observableFieldDefinitions;
@@ -41,13 +48,26 @@ public final class ObservablePatternVersion
         meaningProperty.addListener(this::meaningChanged);
         MutableList<ObservableFieldDefinition> mutableFieldDefinitions = Lists.mutable.ofInitialCapacity(patternVersionRecord.fieldDefinitions().size());
         for (FieldDefinitionRecord fieldDefinition : patternVersionRecord.fieldDefinitions()) {
-            mutableFieldDefinitions.add(new ObservableFieldDefinition(fieldDefinition, this));
+            mutableFieldDefinitions.add(new ObservableFieldDefinition(fieldDefinition, this,
+                    FeatureLocator.Version.PatternFieldDefinitionListItem(nid(), indexInPattern(), patternNid(), stampNid())));
         }
         this.observableFieldDefinitions = mutableFieldDefinitions.toImmutable();
     }
+
     @Override
     public ObservablePattern getObservableEntity() {
         return ObservableEntity.get(nid());
+    }
+
+
+    @Override
+    public int patternNid() {
+        return Binding.Pattern.pattern().nid();
+    }
+
+    @Override
+    public int indexInPattern() {
+        return Binding.Pattern.versionItemDefinitionIndex();
     }
 
     private void purposeChanged(ObservableValue<? extends EntityFacade> observableValue, EntityFacade oldValue, EntityFacade newValue) {
@@ -131,73 +151,71 @@ public final class ObservablePatternVersion
     enum FIELDS {PURPOSE, MEANING}
 
 
-    @Override
-    public ImmutableList<ObservableAttributeWithLocator> getObservableAttributes() {
-        MutableList<ObservableAttributeWithLocator> attributesWithLocators = Lists.mutable.empty();
-
-        int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
-
-        for (AttributeCategory attributeCategory : AttributeCategorySet.patternVersionFields()) {
-            switch (attributeCategory) {
-                case PUBLIC_ID_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.publicId();
-                    int dataTypeNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    int purposeNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    int meaningNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    Entity<EntityVersion> idPattern = Entity.getFast(TinkarTerm.IDENTIFIER_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(idPattern.stampNids());
-                    int patternNid = TinkarTerm.IDENTIFIER_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-                case VERSION_STAMP_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.publicId();
-                    int dataTypeNid = TinkarTerm.NID.nid();
-                    int purposeNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int meaningNid = TinkarTerm.STAMP_PATTERN.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-
-                case PATTERN_FIELD_DEFINITION_LIST -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.observableFieldDefinitions;
-                    int dataTypeNid = TinkarTerm.POLYMORPHIC_FIELD.nid();
-                    int purposeNid = TinkarTerm.DEFINITION_DESCRIPTION_TYPE.nid();
-                    int meaningNid = TinkarTerm.DEFINITION_DESCRIPTION_TYPE.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 4;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-            }
-        }
-
-        return attributesWithLocators.toImmutable();
+    // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
+    private AtomicReference<Feature> patternMeaningFieldReference = new AtomicReference<>();
+    private Feature getPatternMeaningFeature(StampCalculator stampCalculator) {
+        return patternMeaningFieldReference.updateAndGet(currentValue -> currentValue != null
+                ? currentValue
+                : makePatternMeaningFeature(stampCalculator));
+    }
+    private Feature makePatternMeaningFeature(StampCalculator stampCalculator) {
+        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
+        PatternEntityVersion pattern = componentVersionPattern.get();
+        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.patternMeaningFieldDefinitionIndex());
+        FeatureLocator locator = FeatureLocator.Version.PatternMeaning(this.nid(), this.stampNid());
+        return new Feature(this.meaning(), fieldDefinition, this, locator);
     }
 
+
+    // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
+    private AtomicReference<Feature> patternPurposeFieldReference = new AtomicReference<>();
+    private Feature getPatternPurpose(StampCalculator stampCalculator) {
+        return patternPurposeFieldReference.updateAndGet(currentValue -> currentValue != null
+                ? currentValue
+                : makePatternPurposeFeature(stampCalculator));
+    }
+    private Feature makePatternPurposeFeature(StampCalculator stampCalculator) {
+        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
+        PatternEntityVersion pattern = componentVersionPattern.get();
+        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.patternPurposeFieldDefinitionIndex());
+        FeatureLocator locator = FeatureLocator.Version.PatternPurpose(this.nid(), this.stampNid()) ;
+        return new Feature(this.purpose(), fieldDefinition, this, locator);
+    }
+
+    // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
+    private AtomicReference<Feature> fieldDefinitionListReference = new AtomicReference<>();
+    private Feature getFieldDefinitionListFeature(StampCalculator stampCalculator) {
+        return fieldDefinitionListReference.updateAndGet(currentValue -> currentValue != null
+                ? currentValue
+                : makeFieldDefinitionListFeature(stampCalculator));
+    }
+    private Feature makeFieldDefinitionListFeature(StampCalculator stampCalculator) {
+        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
+        PatternEntityVersion pattern = componentVersionPattern.get();
+        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.fieldDefinitionListFieldDefinitionIndex());
+        FeatureLocator locator = FeatureLocator.Version.PatternFieldDefinitionList(this.nid(), this.stampNid()) ;
+        return new Feature(this.observableFieldDefinitions, fieldDefinition, this, locator);
+    }
+
+    @Override
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+        // Pattern purpose
+        features.add(getPatternPurpose(stampCalculator));
+        // Pattern meaning
+        features.add(getPatternMeaningFeature(stampCalculator));
+        // Pattern FieldDefinitionList
+        features.add(getFieldDefinitionListFeature(stampCalculator));
+        // Pattern FieldDefinitionListItems
+
+
+        Latest<PatternEntityVersion> latestDefinitionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
+        PatternEntityVersion definitionPattern = latestDefinitionPattern.get();
+        FieldDefinitionForEntity fieldDefinition = definitionPattern.fieldDefinitions().get(Binding.Pattern.Version.fieldDefinitionListItemIndex());
+
+        for (ObservableFieldDefinition featureDefinition : observableFieldDefinitions) {
+            FeatureLocator locator = FeatureLocator.Version.PatternFieldDefinitionListItem(
+                    featureDefinition.indexInPattern(), featureDefinition.patternNid(), this.nid(), this.stampNid());
+            features.add(new Feature(featureDefinition, fieldDefinition, this, locator ));
+        }
+    }
 }

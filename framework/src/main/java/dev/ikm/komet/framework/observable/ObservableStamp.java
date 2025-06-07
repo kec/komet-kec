@@ -15,8 +15,11 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
-import dev.ikm.tinkar.entity.*;
+import dev.ikm.tinkar.entity.EntityVersion;
+import dev.ikm.tinkar.entity.StampEntity;
+import dev.ikm.tinkar.entity.StampVersionRecord;
 import org.eclipse.collections.api.list.MutableList;
 
 public final class ObservableStamp
@@ -66,10 +69,8 @@ public final class ObservableStamp
         return latest;
     }
 
-
-
     @Override
-    protected void addAdditionalFields(MutableList<ObservableAttributeWithLocator> attributesWithLocators) {
+    protected void addAdditionalChronologyFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
         // Nothing to add...
     }
 

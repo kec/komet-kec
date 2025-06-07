@@ -16,6 +16,9 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.tinkar.component.FieldDataType;
+import dev.ikm.tinkar.terms.ConceptFacade;
+import dev.ikm.tinkar.terms.ConceptToDataType;
+import dev.ikm.tinkar.terms.PatternFacade;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import org.eclipse.collections.api.factory.Lists;
@@ -25,20 +28,32 @@ import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import dev.ikm.tinkar.terms.EntityFacade;
 
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class ObservableFieldDefinition
-        implements ObservableAttribute<Void>, FieldDefinitionForEntity  {
-
+        implements FieldDefinitionForEntity, LocatableFeature {
+//TODO: Consider renaming to ObservableFeatureDefinition.
     final ObservableComponent containingComponent;
+    final FeatureLocator locator;
     final AtomicReference<FieldDefinitionRecord> fieldDefinitionReference;
     final SimpleObjectProperty<EntityFacade> dataTypeProperty = new SimpleObjectProperty<>(this, "Field data type");
     final SimpleObjectProperty<EntityFacade> purposeProperty = new SimpleObjectProperty<>(this, "Field purpose");
     final SimpleObjectProperty<EntityFacade> meaningProperty = new SimpleObjectProperty<>(this, "Field meaning");
 
-    public ObservableFieldDefinition(FieldDefinitionRecord fieldDefinitionRecord, ObservableComponent containingComponent) {
+    public ObservableFieldDefinition(FieldDefinitionForEntity fieldDefinition, ObservableComponent containingComponent, FeatureLocator locator) {
+         this(switch (fieldDefinition) {
+            case FieldDefinitionRecord fieldDefinitionRecord -> fieldDefinitionRecord;
+            case ObservableFieldDefinition observableFieldDefinition ->
+                    observableFieldDefinition.fieldDefinitionReference.get();
+            default ->
+                    throw new IllegalStateException("Unexpected value: " + fieldDefinition.getClass().getSimpleName());
+        }, containingComponent, locator);
+
+    }
+
+    public ObservableFieldDefinition(FieldDefinitionRecord fieldDefinitionRecord, ObservableComponent containingComponent, FeatureLocator locator) {
         this.containingComponent = containingComponent;
+        this.locator = locator;
         fieldDefinitionReference = new AtomicReference<>(fieldDefinitionRecord);
         dataTypeProperty.set(Entity.getFast(fieldDefinitionRecord.dataTypeNid()));
         dataTypeProperty.addListener(this::dataTypeChanged);
@@ -48,7 +63,25 @@ public final class ObservableFieldDefinition
         meaningProperty.addListener(this::meaningChanged);
     }
 
+     public FeatureLocator locator() {
+         return this.locator;
+    }
+
     @Override
+    public int patternNid() {
+        return fieldDefinitionReference.get().patternNid();
+    }
+
+    @Override
+    public PatternFacade pattern() {
+        return FieldDefinitionForEntity.super.pattern();
+    }
+
+    @Override
+    public int patternVersionStampNid() {
+        return fieldDefinitionReference.get().patternVersionStampNid();
+    }
+
     public ObservableComponent containingComponent() {
         return containingComponent;
     }
@@ -59,8 +92,8 @@ public final class ObservableFieldDefinition
     }
 
     @Override
-    public ConceptEntity purpose() {
-        return FieldDefinitionForEntity.super.purpose();
+    public FieldDataType fieldDataType() {
+        return ConceptToDataType.convert(dataType());
     }
 
     @Override
@@ -139,9 +172,12 @@ public final class ObservableFieldDefinition
 
     private FieldDefinitionRecord getFieldDefinitionRecord(FIELD changedField, EntityFacade newValue, FieldDefinitionRecord oldFieldDefinition, StampEntity newStamp) {
         FieldDefinitionRecord newFieldDefinition = switch (changedField) {
-            case DATATYPE -> oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).dataTypeNid(newValue.nid()).build();
-            case PURPOSE -> oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).purposeNid(newValue.nid()).build();
-            case MEANING -> oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).meaningNid(newValue.nid()).build();
+            case DATATYPE ->
+                    oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).dataTypeNid(newValue.nid()).build();
+            case PURPOSE ->
+                    oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).purposeNid(newValue.nid()).build();
+            case MEANING ->
+                    oldFieldDefinition.with().patternVersionStampNid(newStamp.nid()).meaningNid(newValue.nid()).build();
         };
         return newFieldDefinition;
     }
@@ -174,24 +210,13 @@ public final class ObservableFieldDefinition
     }
 
     @Override
-    public int fieldIndex() {
-        //TODO consider renaming to fieldIndexInPattern.
-        return fieldDefinitionReference.get().indexInPattern();
+    public ConceptFacade purpose() {
+        return FieldDefinitionForEntity.super.purpose();
     }
 
     @Override
     public int purposeNid() {
         return purposeProperty.get().nid();
-    }
-
-    @Override
-    public Optional optionalValue() {
-        return Optional.empty();
-    }
-
-    @Override
-    public FieldDataType attributeDataType() {
-        return ObservableAttribute.super.attributeDataType();
     }
 
     @Override

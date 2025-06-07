@@ -26,4 +26,9 @@ import javafx.scene.layout.Pane;
  * @see ObservableVersion
  */
 public non-sealed interface KlGenericVersionArea<FX extends Pane> extends KlVersionArea<ObservableVersion, FX> {
+
+    non-sealed interface Factory<FX extends Pane, KL extends KlGenericVersionArea<FX>>
+            extends KlVersionArea.Factory<FX, ObservableVersion, KL> {
+
+    }
 }

@@ -28,4 +28,8 @@ public non-sealed interface KlSemanticVersionArea<FX extends Pane> extends KlVer
     default ObjectProperty<ObservableSemanticVersion> semanticVersionProperty() {
         return versionProperty();
     }
+
+    non-sealed interface Factory<FX extends Pane, KL extends KlSemanticVersionArea<FX>>
+            extends KlVersionArea.Factory<FX, ObservableSemanticVersion, KL> {
+    }
 }

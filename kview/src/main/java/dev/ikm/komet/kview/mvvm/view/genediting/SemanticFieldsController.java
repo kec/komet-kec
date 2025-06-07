@@ -181,7 +181,7 @@ public class SemanticFieldsController {
             SemanticVersionRecord version = Entity.getVersionFast(semantic.nid(), stamp.nid());
             MutableList fieldsForNewVersion = Lists.mutable.of(version.fieldValues().toArray());
             observableFields.forEach(of -> {
-                fieldsForNewVersion.set(of.fieldIndex(), of.value());
+                fieldsForNewVersion.set(of.indexInPattern(), of.value());
             });
             SemanticVersionRecord newVersion =null;
             if(stamp.lastVersion().committed()){

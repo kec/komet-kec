@@ -3,6 +3,7 @@ package dev.ikm.komet.kview.klwindows;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.preferences.KometPreferences;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 
 import java.util.Optional;
 
@@ -13,12 +14,12 @@ import java.util.Optional;
  *
  * @param <T> A JavaFX {@link Node} subclass serving as the root pane for this window.
  */
-public abstract class AbstractChapterKlWindow<T extends Node> implements ChapterKlWindow<T> {
+public abstract class AbstractChapterKlWindow implements ChapterKlWindow {
 
     private final ViewProperties viewProperties;
     private KometPreferences preferences;
     private Runnable onCloseRunnable;
-    protected T paneWindow;
+    protected Pane paneWindow;
 
     /**
      * Constructs a base "chapter window" with the specified view properties and preferences.
@@ -82,7 +83,7 @@ public abstract class AbstractChapterKlWindow<T extends Node> implements Chapter
     }
 
     @Override
-    public T fxGadget() {
+    public Pane fxObject() {
         return paneWindow;
     }
 

@@ -1,8 +1,6 @@
 package dev.ikm.komet.layout.window;
 
-import dev.ikm.komet.layout.KlContextSensitiveComponent;
-import dev.ikm.komet.layout.KlGadget;
-import dev.ikm.komet.layout.KlStateCommands;
+import dev.ikm.komet.layout.*;
 import dev.ikm.komet.layout.context.KlContext;
 import dev.ikm.komet.layout.context.KlContextProvider;
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
@@ -19,7 +17,7 @@ import javafx.stage.Window;
  * The {@code KlView} peer is the root {@code Node} of the stage.
  *
  */
-public non-sealed interface KlFxWindow extends KlGadget<Window>, KlStateCommands, KlContextProvider {
+public non-sealed interface KlFxWindow<FX extends Window> extends KlStateCommands, KlContextProvider, KlTopView<FX> {
 
     /**
      * Enumerates preference keys for managing the properties and default configuration states
@@ -163,7 +161,7 @@ public non-sealed interface KlFxWindow extends KlGadget<Window>, KlStateCommands
      * @return the {@link KlContext} instance representing the current context
      */
     default KlContext context() {
-        return KlGadget.super.context();
+        return KlTopView.super.context();
     }
 
     /**
@@ -188,4 +186,13 @@ public non-sealed interface KlFxWindow extends KlGadget<Window>, KlStateCommands
             case Window _ -> "";
         };
     }
+
+    static <KL extends KlFxWindow> KL restore(KometPreferences preferences) {
+        return KlView.restore(preferences);
+    }
+
+    non-sealed interface Factory<FX extends Window, KL extends KlTopView<FX>> extends KlTopView.Factory<FX, KL> {
+
+    }
+
 }

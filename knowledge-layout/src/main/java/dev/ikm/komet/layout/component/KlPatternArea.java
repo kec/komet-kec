@@ -1,10 +1,7 @@
 package dev.ikm.komet.layout.component;
 
-import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.framework.observable.ObservablePattern;
 import dev.ikm.komet.framework.observable.ObservablePatternVersion;
-import dev.ikm.komet.framework.observable.ObservableVersion;
-import dev.ikm.tinkar.entity.EntityVersion;
 import dev.ikm.tinkar.entity.PatternVersionRecord;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
@@ -22,13 +19,13 @@ import javafx.scene.layout.Pane;
  * designed to interact with observable patterns and their lifecycle.
  *
  * @param <FX> the type of the JavaFX {@code Pane} used for this pattern area
- * @see KlComponentArea
+ * @see KlChronologyArea
  * @see ObservablePattern
  * @see ObservablePatternVersion
  * @see PatternVersionRecord
  */
 public non-sealed interface KlPatternArea<FX extends Pane>
-        extends KlComponentArea<ObservablePattern, ObservablePatternVersion, FX> {
+        extends KlChronologyArea<ObservablePattern, ObservablePatternVersion, FX> {
 
     /**
      * Retrieves the observable pattern associated with this pane.
@@ -39,7 +36,7 @@ public non-sealed interface KlPatternArea<FX extends Pane>
      * @return the {@code ObservablePattern} associated with this pane
      */
     default ObservablePattern observablePattern() {
-        return componentProperty().get();
+        return chronologyProperty().get();
     }
 
     /**
@@ -50,7 +47,10 @@ public non-sealed interface KlPatternArea<FX extends Pane>
      * @return the {@code ObjectProperty} holding the {@code ObservablePattern}.
      */
     default ObjectProperty<ObservablePattern> patternProperty() {
-        return componentProperty();
+        return chronologyProperty();
     }
 
+    non-sealed interface Factory<FX extends Pane, KL extends KlPatternArea<FX>>
+            extends KlChronologyArea.Factory<FX, ObservablePattern, ObservablePatternVersion, KL> {
+    }
 }

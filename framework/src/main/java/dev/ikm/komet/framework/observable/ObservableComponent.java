@@ -1,5 +1,6 @@
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import org.eclipse.collections.api.list.ImmutableList;
 
 /**
@@ -16,15 +17,29 @@ public sealed interface ObservableComponent
         permits ObservableEntity, ObservableVersion {
 
     /**
-     * Retrieves a list of observable attributes associated with their respective locators.
-     * Each entry in the returned list represents a pairing of an attribute and the
-     * locator providing its context.
+     * Retrieves an immutable list of features associated with this observable component
+     * based on the provided stamp calculator. The list represents the attributes or
+     * characteristics of the component, each defined by a {@code Feature}.
      *
-     * @return an immutable list of {@code AttributeWithLocator}, where each item
-     * associates an observable attribute with its corresponding locator.
+     * @param stampCalculator the {@code StampCalculator} used to determine the visibility
+     *                        and context of the features to be retrieved.
+     * @return an {@code ImmutableList} of {@code Feature} objects associated with this component.
      */
-    ImmutableList<ObservableAttributeWithLocator> getObservableAttributes();
+    ImmutableList<Feature> getFeatures(StampCalculator stampCalculator);
 
+    /**
+     * Retrieves an immutable list of {@code Feature} objects representing only those features
+     * that are associated with a version.
+     *
+     * @param stampCalculator the {@code StampCalculator} used to determine visibility and context
+     *                        of the features to be filtered and retrieved.
+     * @return an {@code ImmutableList} of {@code Feature} objects matching any version criteria.
+     */
+    default ImmutableList<Feature> getVersionsAsFeatures(StampCalculator stampCalculator) {
+        return getFeatures(stampCalculator).collectIf(feature ->
+                FeatureLocator.anyVersion().match(feature.locator()),
+                feature -> feature);
+    }
     /**
      * Retrieves the native identifier (nid) of the observable component.
      * The nid is a unique, integer-based identifier used to represent

@@ -63,7 +63,7 @@ public class KLWorkspace extends Control {
 
     public static final double DEFAULT_HORIZONTAL_GAP = 24.0;
     public static final double DEFAULT_VERTICAL_GAP = 24.0;
-    private final ObservableList<ChapterKlWindow<Pane>> DEFAULT_WINDOWS = FXCollections.observableArrayList();
+    private final ObservableList<ChapterKlWindow> DEFAULT_WINDOWS = FXCollections.observableArrayList();
 
     /**
      * Number of rows for internal usage if grid-like layout is desired.
@@ -253,14 +253,14 @@ public class KLWorkspace extends Control {
     /**
      * A property that holds the list of windows in the workspace.
      */
-    private ObjectProperty<ObservableList<ChapterKlWindow<Pane>>> windows;
+    private ObjectProperty<ObservableList<ChapterKlWindow>> windows;
 
     /**
      * Gets the list of windows contained in this workspace.
      *
      * @return an {@link ObservableList} of {@link ChapterKlWindow} objects
      */
-    public ObservableList<ChapterKlWindow<Pane>> getWindows() {
+    public ObservableList<ChapterKlWindow> getWindows() {
         return (windows == null) ? DEFAULT_WINDOWS : windows.get();
     }
 
@@ -270,7 +270,7 @@ public class KLWorkspace extends Control {
      *
      * @param value the new list of windows
      */
-    public void setWindows(ObservableList<ChapterKlWindow<Pane>> value) {
+    public void setWindows(ObservableList<ChapterKlWindow> value) {
         windowsProperty().set(value);
     }
 
@@ -279,7 +279,7 @@ public class KLWorkspace extends Control {
      *
      * @return an {@link ObjectProperty} for the list of windows
      */
-    public ObjectProperty<ObservableList<ChapterKlWindow<Pane>>> windowsProperty() {
+    public ObjectProperty<ObservableList<ChapterKlWindow>> windowsProperty() {
         if (windows == null) {
             windows = new SimpleObjectProperty<>(this, "windows", DEFAULT_WINDOWS);
         }

@@ -20,6 +20,7 @@ import dev.ikm.komet.kview.klwindows.AbstractEntityChapterKlWindow;
 import dev.ikm.komet.kview.lidr.mvvm.view.details.LidrDetailsController;
 import dev.ikm.komet.kview.lidr.mvvm.viewmodel.LidrViewModel;
 import dev.ikm.komet.kview.mvvm.viewmodel.StampViewModel;
+import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.terms.EntityFacade;
 import javafx.scene.layout.Pane;
@@ -91,5 +92,10 @@ public class LidrKlWindow extends AbstractEntityChapterKlWindow {
             getOnClose().ifPresent(Runnable::run);
             // TODO more clean up such as view models and listeners just in case (memory).
         });
+    }
+
+    @Override
+    public void setKlRenderView(KlRenderView renderView) {
+        throw new UnsupportedOperationException();
     }
 }

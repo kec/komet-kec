@@ -15,15 +15,16 @@
  */
 package dev.ikm.komet.framework.observable;
 
-import dev.ikm.komet.framework.observable.locators.DirectSingularAttributeLocator;
+import dev.ikm.komet.framework.observable.binding.Binding;
 import dev.ikm.tinkar.coordinate.logic.PremiseType;
+import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.*;
-import dev.ikm.tinkar.terms.TinkarTerm;
 import org.eclipse.collections.api.list.MutableList;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class ObservableSemantic
         extends ObservableEntity<ObservableSemanticVersion>
@@ -90,52 +91,44 @@ public final class ObservableSemantic
         return Optional.of(axiomSemanticSnapshot);
     }
 
+    // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
+    final AtomicReference<Feature> patternForSemanticFieldReference = new AtomicReference<>();
+    private Feature getPatternForSemanticFeature(StampCalculator stampCalculator) {
+        return patternForSemanticFieldReference.updateAndGet(currentValue -> currentValue != null
+                ? currentValue
+                : makePatternForSemanticFeature(stampCalculator));
+    }
+    private Feature makePatternForSemanticFeature(StampCalculator stampCalculator) {
+        Latest<PatternEntityVersion> componentPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.pattern());
+        PatternEntityVersion pattern = componentPattern.get();
+        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Semantic.patternFieldDefinitionIndex());
+        FeatureLocator locator = FeatureLocator.Chronology.SemanticPattern(this.nid());
+        return new Feature(this.pattern(), fieldDefinition, this, locator);
+    }
+
+    // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
+    final AtomicReference<Feature> referencedComponentFieldReference = new AtomicReference<>();
+    private Feature getReferencedComponentFeature(StampCalculator stampCalculator) {
+        return referencedComponentFieldReference.updateAndGet(currentValue -> currentValue != null
+                ? currentValue
+                : makeReferencedComponentFeature(stampCalculator));
+    }
+
+    private Feature makeReferencedComponentFeature(StampCalculator stampCalculator) {
+        Latest<PatternEntityVersion> componentPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.pattern());
+        PatternEntityVersion pattern = componentPattern.get();
+        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Component.versionsFieldDefinitionIndex());
+        FeatureLocator locator = FeatureLocator.Chronology.SemanticReferencedComponent(this.nid());
+        return new Feature(this.referencedComponent(), fieldDefinition, this, locator);
+     }
+
     @Override
-    protected void addAdditionalFields(MutableList<ObservableAttributeWithLocator> attributesWithLocators) {
+    protected void addAdditionalChronologyFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+        // Pattern for semantic
+        features.add(getPatternForSemanticFeature(stampCalculator));
 
-        int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
-
-        for (AttributeCategory attributeCategory : AttributeCategorySet.semanticFields()) {
-            DirectSingularAttributeLocator fieldLocator = new DirectSingularAttributeLocator(attributeCategory);
-            switch (attributeCategory) {
-                case SEMANTIC_PATTERN_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.versions();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.COMPONENT_FOR_SEMANTIC.nid();
-                    int meaningNid = TinkarTerm.COMPONENT_FOR_SEMANTIC.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid,  indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-                case SEMANTIC_REFERENCED_COMPONENT_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.versions();
-                    int dataTypeNid = TinkarTerm.COMPONENT_FIELD.nid();
-                    int purposeNid = TinkarTerm.ASSEMBLAGE.nid();
-                    int meaningNid = TinkarTerm.ASSEMBLAGE.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid,  indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-            }
-        }
+        // Referenced component for semantic
+        features.add(getReferencedComponentFeature(stampCalculator));
     }
 
 }

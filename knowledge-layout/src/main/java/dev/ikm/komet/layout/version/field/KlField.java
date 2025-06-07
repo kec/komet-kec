@@ -8,6 +8,7 @@ import dev.ikm.tinkar.common.bind.annotations.names.RegularName;
 import dev.ikm.tinkar.common.bind.annotations.publicid.PublicIdAnnotation;
 import dev.ikm.tinkar.common.bind.annotations.publicid.UuidAnnotation;
 import javafx.scene.Parent;
+import javafx.scene.layout.Region;
 
 /**
  * Represents an observable attribute in the Komet framework.
@@ -20,6 +21,6 @@ import javafx.scene.Parent;
 @RegularName("Knowledge Layout Field")
 @ParentProxy(parentName = "Komet panels (SOLOR)",
         parentPublicId = @PublicIdAnnotation(@UuidAnnotation("b3d1cdf6-27a5-502d-8f16-ed026a7b9d15")))
-public interface KlField<DT> extends KlWidget<Parent>, ClassConceptBinding {
+public interface KlField<DT> extends KlWidget<Region>, ClassConceptBinding {
     ObservableField<DT> field();
 }

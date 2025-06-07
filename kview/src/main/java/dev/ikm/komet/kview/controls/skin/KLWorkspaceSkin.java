@@ -121,17 +121,17 @@ public class KLWorkspaceSkin extends SkinBase<KLWorkspace> {
     /**
      * The current list of {@link ChapterKlWindow} instances from the {@link KLWorkspace}.
      */
-    private ObservableList<ChapterKlWindow<Pane>> workspaceWindows;
+    private ObservableList<ChapterKlWindow> workspaceWindows;
 
     /**
      * Listener to track changes in the workspace's window list, such as additions or removals.
      */
-    private final ListChangeListener<ChapterKlWindow<Pane>> windowsListChangeListener;
+    private final ListChangeListener<ChapterKlWindow> windowsListChangeListener;
 
     /**
      * A weak wrapper around {@link #windowsListChangeListener} to avoid strong reference leaks.
      */
-    private final WeakListChangeListener<ChapterKlWindow<Pane>> weakWindowsListChangeListener;
+    private final WeakListChangeListener<ChapterKlWindow> weakWindowsListChangeListener;
 
     /**
      * The timeline used to animate auto-scrolling when newly creating or re-laying out windows.
@@ -189,7 +189,7 @@ public class KLWorkspaceSkin extends SkinBase<KLWorkspace> {
         updateWorkspaceWindows();
 
         // If there are already windows in the workspace, add them now
-        for (ChapterKlWindow<Pane> window : workspaceWindows) {
+        for (ChapterKlWindow window : workspaceWindows) {
             addWindow(window);
         }
 
@@ -207,9 +207,9 @@ public class KLWorkspaceSkin extends SkinBase<KLWorkspace> {
         // --------------------------------------------------------------------
         registerChangeListener(workspace.windowsProperty(), o -> updateWorkspaceWindows());
         registerChangeListener(desktopPane.widthProperty(), o ->
-                workspaceWindows.forEach(win -> clampWindowPosition(win.fxGadget())));
+                workspaceWindows.forEach(win -> clampWindowPosition(win.fxObject())));
         registerChangeListener(desktopPane.heightProperty(), o ->
-                workspaceWindows.forEach(win -> clampWindowPosition(win.fxGadget())));
+                workspaceWindows.forEach(win -> clampWindowPosition(win.fxObject())));
     }
 
     /**
@@ -557,8 +557,8 @@ public class KLWorkspaceSkin extends SkinBase<KLWorkspace> {
      *
      * @param window The {@link ChapterKlWindow} to be added.
      */
-    private void addWindow(ChapterKlWindow<Pane> window) {
-        final Pane windowPanel = window.fxGadget();
+    private void addWindow(ChapterKlWindow window) {
+        final Pane windowPanel = window.fxObject();
         // Make the window draggable/resizable
         new WindowSupport(windowPanel, desktopPane);
 
@@ -710,8 +710,8 @@ public class KLWorkspaceSkin extends SkinBase<KLWorkspace> {
      *
      * @param window the window to remove
      */
-    private void removeWindow(ChapterKlWindow<Pane> window) {
-        final Pane windowPanel = window.fxGadget();
+    private void removeWindow(ChapterKlWindow window) {
+        final Pane windowPanel = window.fxObject();
         desktopPane.getChildren().remove(windowPanel);
 
         // Remove clamp listeners stored in the window's properties

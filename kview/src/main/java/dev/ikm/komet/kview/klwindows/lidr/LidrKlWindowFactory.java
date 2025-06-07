@@ -17,8 +17,6 @@ package dev.ikm.komet.kview.klwindows.lidr;
 
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.kview.klwindows.AbstractEntityChapterKlWindowFactory;
-import dev.ikm.komet.kview.klwindows.genediting.GenEditingKlWindow;
-import dev.ikm.komet.layout.context.KlContextFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import dev.ikm.komet.layout.window.KlJournalWindow;
 import dev.ikm.komet.preferences.KometPreferences;
@@ -57,28 +55,12 @@ public class LidrKlWindowFactory extends AbstractEntityChapterKlWindowFactory {
         return new LidrKlWindow(journalTopic, entityFacade, deviceConcept, viewProperties, preferences);
     }
 
-    @Override
-    public Class<KlJournalWindow> klInterfaceClass() {
-        return KlJournalWindow.class;
-    }
-
-    @Override
-    public Class<? extends KlJournalWindow> klImplementationClass() {
-        return LidrKlWindow.class;
-    }
-
-    @Override
-    public String klDescription() {
+    public String productDescription() {
         return "Lidr Details Chapter Window are displayed inside of the Journal Window desktop workspace";
     }
 
     @Override
     public LidrKlWindow create(KlPreferencesFactory preferencesFactory) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public LidrKlWindow createWithContext(KlPreferencesFactory preferencesFactory, KlContextFactory contextFactory) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

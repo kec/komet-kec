@@ -33,4 +33,8 @@ public non-sealed interface KlStampVersionArea<FX extends Pane> extends KlVersio
     default ObjectProperty<ObservableStampVersion> stampVersionProperty() {
          return versionProperty();
     }
+
+    non-sealed interface Factory<FX extends Pane, KL extends KlStampVersionArea<FX>>
+            extends KlVersionArea.Factory<FX, ObservableStampVersion, KL> {
+    }
 }

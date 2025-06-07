@@ -6,6 +6,7 @@ import dev.ikm.komet.kview.mvvm.view.pattern.PatternDetailsController;
 import dev.ikm.komet.kview.mvvm.viewmodel.PatternViewModel;
 import dev.ikm.komet.kview.mvvm.viewmodel.StampViewModel;
 import dev.ikm.komet.kview.state.pattern.PatternDetailsPattern;
+import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.entity.Entity;
@@ -102,5 +103,10 @@ public class PatternKlWindow extends AbstractEntityChapterKlWindow {
      */
     public void onShown() {
         jfxNode.controller().putTitlePanesArrowOnRight();
+    }
+
+    @Override
+    public void setKlRenderView(KlRenderView renderView) {
+        throw new UnsupportedOperationException();
     }
 }

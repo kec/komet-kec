@@ -1,9 +1,11 @@
 package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
+import dev.ikm.komet.layout.KlArea;
 import dev.ikm.komet.layout.KlWidget;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 
 /**
  * The {@code KlMultiComponentPane} interface provides a contract for presenting
@@ -14,7 +16,7 @@ import javafx.scene.layout.Pane;
  *
  * @see KlWidget
  * @see ObservableEntity
- * @see KlComponentArea
+ * @see KlChronologyArea
  */
 public interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pane> extends KlWidget<FX> {
     /**
@@ -28,5 +30,11 @@ public interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pa
      *
      * @return an ObservableList of KlComponentPane objects, representing the individual component panes contained within this multi-component pane.
      */
-    ObservableList<KlComponentArea> klComponentAreas();
+    ObservableList<KlChronologyArea> klComponentAreas();
+
+
+    non-sealed interface Factory<FX extends Region, KL extends KlArea<FX>> extends KlArea.Factory<FX, KL> {
+
+    }
+
 }

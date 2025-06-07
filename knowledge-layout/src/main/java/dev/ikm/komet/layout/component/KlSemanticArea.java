@@ -1,11 +1,9 @@
 package dev.ikm.komet.layout.component;
 
-import dev.ikm.komet.framework.observable.ObservableEntity;
+import dev.ikm.komet.framework.observable.ObservableConcept;
+import dev.ikm.komet.framework.observable.ObservableConceptVersion;
 import dev.ikm.komet.framework.observable.ObservableSemantic;
 import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
-import dev.ikm.komet.framework.observable.ObservableVersion;
-import dev.ikm.tinkar.entity.EntityVersion;
-import dev.ikm.tinkar.entity.SemanticVersionRecord;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
@@ -19,10 +17,10 @@ import javafx.scene.layout.Pane;
  * logic into JavaFX-based user interface components.
  *
  * @param <FX> the type of the JavaFX {@code Pane} representing this semantic area
- * @see KlComponentArea
+ * @see KlChronologyArea
  */
 public non-sealed interface KlSemanticArea<FX extends Pane>
-        extends KlComponentArea<ObservableSemantic, ObservableSemanticVersion, FX> {
+        extends KlChronologyArea<ObservableSemantic, ObservableSemanticVersion, FX> {
 
     /**
      * Retrieves the observable semantic pattern associated with this pane.
@@ -34,7 +32,7 @@ public non-sealed interface KlSemanticArea<FX extends Pane>
      * @return the {@code ObservableSemantic} associated with this pane
      */
     default ObservableSemantic observablePattern() {
-        return componentProperty().get();
+        return chronologyProperty().get();
     }
 
     /**
@@ -45,7 +43,10 @@ public non-sealed interface KlSemanticArea<FX extends Pane>
      * @return the {@code ObjectProperty} holding the {@code ObservableSemantic}.
      */
     default ObjectProperty<ObservableSemantic> patternSemantic() {
-        return componentProperty();
+        return chronologyProperty();
     }
 
+    non-sealed interface Factory<FX extends Pane, KL extends KlSemanticArea<FX>>
+            extends KlChronologyArea.Factory<FX, ObservableSemantic, ObservableSemanticVersion, KL> {
+    }
 }

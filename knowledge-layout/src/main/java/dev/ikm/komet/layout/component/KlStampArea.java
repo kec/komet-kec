@@ -1,11 +1,9 @@
 package dev.ikm.komet.layout.component;
 
-import dev.ikm.komet.framework.observable.ObservableSemantic;
-import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
+import dev.ikm.komet.framework.observable.ObservableConcept;
+import dev.ikm.komet.framework.observable.ObservableConceptVersion;
 import dev.ikm.komet.framework.observable.ObservableStamp;
 import dev.ikm.komet.framework.observable.ObservableStampVersion;
-import dev.ikm.tinkar.entity.SemanticVersionRecord;
-import dev.ikm.tinkar.entity.StampVersionRecord;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.layout.Pane;
 
@@ -19,11 +17,11 @@ import javafx.scene.layout.Pane;
  * JavaFX ObjectProperty, facilitating interaction and binding within application UIs.
  *
  * @param <FX> the type of the JavaFX {@code Pane} used by this component area
- * @see KlComponentArea
+ * @see KlChronologyArea
  * @see ObservableStamp
  */
 public non-sealed interface KlStampArea<FX extends Pane>
-        extends KlComponentArea<ObservableStamp, ObservableStampVersion, FX> {
+        extends KlChronologyArea<ObservableStamp, ObservableStampVersion, FX> {
 
     /**
      * Retrieves the observable stamp associated with this pane.
@@ -34,7 +32,7 @@ public non-sealed interface KlStampArea<FX extends Pane>
      * @return the {@code ObservableStamp} associated with this pane.
      */
     default ObservableStamp observableStamp() {
-        return componentProperty().get();
+        return chronologyProperty().get();
     }
 
     /**
@@ -45,7 +43,10 @@ public non-sealed interface KlStampArea<FX extends Pane>
      * @return the {@code ObjectProperty} holding the {@code ObservableStamp}.
      */
     default ObjectProperty<ObservableStamp> stampSemantic() {
-        return componentProperty();
+        return chronologyProperty();
     }
 
+    non-sealed interface Factory<FX extends Pane, KL extends KlStampArea<FX>>
+            extends KlChronologyArea.Factory<FX, ObservableStamp, ObservableStampVersion, KL> {
+    }
 }

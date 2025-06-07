@@ -1,12 +1,59 @@
 package dev.ikm.komet.layout;
 
-import dev.ikm.komet.framework.observable.AttributeLocator;
-import dev.ikm.komet.framework.observable.ObservableAttributeWithLocator;
-import dev.ikm.komet.layout.area.factory.KlDynamicAreaFactory;
-import org.eclipse.collections.api.factory.Lists;
+import dev.ikm.komet.framework.observable.Feature;
+import dev.ikm.komet.layout.area.AreaGridSettings;
 import org.eclipse.collections.api.list.ImmutableList;
 
+/**
+ * The LayoutComputer interface defines the contract for generating and managing
+ * layout configurations dynamically. It facilitates the creation of layout structures
+ * based on specified attributes and layout customization parameters.
+ * Implementations are responsible for translating attribute locators and layout
+ * overrides into a collection of dynamic area factories that define the layout
+ * composition and behavior.
+ */
 public interface LayoutComputer {
+    /**
+     * Represents an element in the layout, combining specific grid settings and a collection
+     * of observable features. This is a compact data structure used within the layout
+     * computation process.
+     *
+     * @param areaGridSettings  the grid settings associated with this layout element,
+     *                          determining placement and grid behavior
+     * @param features          an immutable list of observable features (possibly empty) that define
+     *                          additional characteristics and behaviors for the layout element
+     */
+    record LayoutElement(AreaGridSettings areaGridSettings, ImmutableList<Feature> features) {}
 
-    ImmutableList<KlDynamicAreaFactory> create(ImmutableList<? extends AttributeLocator> attributeLocators);
+    /**
+     * All layout computers perform the layout within an overarching {@code KnowledgeLayout}.
+     * This {@code KnowledgeLayout} provides necessary contextual information for layout such as
+     * the {@code LayoutOverrides} and {@code LayoutKey} instances.
+     *
+     * @return the overarching {@code KnowledgeLayout} for this computer.
+     */
+    KnowledgeLayout masterLayout();
+
+    /**
+     * Retrieves the {@code LayoutOverrides} instance for this layout computer.
+     * The {@code LayoutOverrides} object encapsulates mechanisms to customize, serialize,
+     * and restore layout configurations for specific graph locations within the layout context.
+     *
+     * @return the {@code LayoutOverrides} instance associated with the layout context of this computer.
+     */
+    default LayoutOverrides layoutOverrides() {
+        return masterLayout().layoutOverrides();
+    }
+
+
+    /**
+     * Creates a list of area factories based on provided locators, layout customization,
+     * and hierarchical layout configurations.
+     *
+     * @param features        a list of locators used to identify and specify properties for creating area factories
+     * @param areaKeyProvider the hierarchical key identifying the next layout level configuration to be used
+     * @return an immutable list of {@code LayoutElement} instances representing the layout components.
+     */
+    ImmutableList<LayoutElement> layout(ImmutableList<Feature> features,
+                                        LayoutKey.AreaKeyProvider areaKeyProvider);
 }

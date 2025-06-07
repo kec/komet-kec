@@ -15,11 +15,12 @@
  */
 package dev.ikm.komet.framework.observable;
 
+import dev.ikm.komet.framework.observable.binding.Binding;
 import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
-import dev.ikm.tinkar.entity.*;
-import dev.ikm.tinkar.terms.TinkarTerm;
-import org.eclipse.collections.api.factory.Lists;
-import org.eclipse.collections.api.list.ImmutableList;
+import dev.ikm.tinkar.entity.ConceptEntityVersion;
+import dev.ikm.tinkar.entity.ConceptVersionRecord;
+import dev.ikm.tinkar.entity.Entity;
+import dev.ikm.tinkar.entity.PatternEntity;
 import org.eclipse.collections.api.list.MutableList;
 
 public final class ObservableConceptVersion extends ObservableVersion<ConceptVersionRecord> implements ConceptEntityVersion {
@@ -43,55 +44,24 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
     }
 
     @Override
-    public ImmutableList<ObservableAttributeWithLocator> getObservableAttributes() {
-        MutableList<ObservableAttributeWithLocator> attributesWithLocators = Lists.mutable.empty();
-
-        int firstStamp = StampCalculator.firstStampTimeOnly(this.entity().stampNids());
-
-        for (AttributeCategory attributeCategory : AttributeCategorySet.conceptVersionFields()) {
-            switch (attributeCategory) {
-                case PUBLIC_ID_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.publicId();
-                    int dataTypeNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    int purposeNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    int meaningNid = TinkarTerm.IDENTIFIER_VALUE.nid();
-                    Entity<EntityVersion> idPattern = Entity.getFast(TinkarTerm.IDENTIFIER_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(idPattern.stampNids());
-                    int patternNid = TinkarTerm.IDENTIFIER_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-
-                case VERSION_STAMP_FIELD -> {
-                    //TODO temporary until we get a pattern for concept fields...
-                    //TODO get right starter set entities. Temporary incorrect codes for now.
-                    Object value = this.publicId();
-                    int dataTypeNid = TinkarTerm.NID.nid();
-                    int purposeNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int meaningNid = TinkarTerm.STAMP_PATTERN.nid();
-                    Entity<EntityVersion> stampPattern = Entity.getFast(TinkarTerm.STAMP_PATTERN.nid());
-                    int patternVersionStampNid = StampCalculator.firstStampTimeOnly(stampPattern.stampNids());
-                    int patternNid = TinkarTerm.STAMP_PATTERN.nid();
-                    int indexInPattern = 0;
-
-                    FieldDefinitionRecord fdr = new FieldDefinitionRecord(dataTypeNid, purposeNid, meaningNid,
-                            patternVersionStampNid, patternNid, indexInPattern);
-
-                    attributesWithLocators.add(AttributeLocator.direct.singularWithObservable(attributeCategory,
-                            new ObservableField(new FieldRecord(value, this.nid(), firstStamp, fdr), this)));
-                }
-            }
-
-        }
-
-        return attributesWithLocators.toImmutable();
+    public int patternNid() {
+        return Binding.Concept.pattern().nid();
     }
 
+    @Override
+    public int patternVersionStampNid() {
+        PatternEntity pattern = Entity.getFast(patternNid());
+        return pattern.lastVersion().stampNid();
+    }
+
+    @Override
+    public int indexInPattern() {
+        return Binding.Concept.versionItemPatternIndex();
+    }
+
+
+    @Override
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+        // Nothing to add.
+    }
 }

@@ -1,6 +1,11 @@
 package dev.ikm.komet.layout.area;
 
+import dev.ikm.komet.layout.KlArea;
+import dev.ikm.komet.layout.KlParent;
+import dev.ikm.komet.layout.KlView;
 import javafx.scene.layout.Region;
+import org.eclipse.collections.api.factory.Lists;
+import org.eclipse.collections.api.list.ImmutableList;
 
 /**
  * The KlSupplementalArea interface represents a specialized type of {@code KlArea}
@@ -15,5 +20,9 @@ import javafx.scene.layout.Region;
  * @param <FX> the type of JavaFX {@code Region} associated with the implementation
  *             of this interface
  */
-public non-sealed interface KlSupplementalArea<FX extends Region> extends KlArea<FX> {
+public non-sealed interface KlSupplementalArea<FX extends Region> extends KlArea<FX>, KlParent {
+    non-sealed interface Factory<FX extends Region, KL extends KlSupplementalArea<FX>>
+            extends KlArea.Factory<FX, KL> {
+    }
 }
+

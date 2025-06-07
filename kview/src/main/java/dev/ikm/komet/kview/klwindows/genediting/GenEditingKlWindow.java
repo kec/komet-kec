@@ -3,6 +3,7 @@ package dev.ikm.komet.kview.klwindows.genediting;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.kview.klwindows.AbstractEntityChapterKlWindow;
 import dev.ikm.komet.kview.mvvm.view.genediting.GenEditingDetailsController;
+import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.entity.EntityService;
 import dev.ikm.tinkar.entity.SemanticEntity;
@@ -65,6 +66,11 @@ public class GenEditingKlWindow extends AbstractEntityChapterKlWindow {
             getOnClose().ifPresent(Runnable::run);
             // TODO more clean up such as view models and listeners just in case (memory).
         });
+    }
+
+    @Override
+    public void setKlRenderView(KlRenderView renderView) {
+        throw new UnsupportedOperationException();
     }
 
     /**

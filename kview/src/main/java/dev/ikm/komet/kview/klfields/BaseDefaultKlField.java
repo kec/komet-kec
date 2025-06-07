@@ -7,6 +7,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.GridPane;
+
+import java.util.Optional;
 
 public abstract class BaseDefaultKlField<T> implements KlField<T> {
     protected final ObservableField<T> observableField;

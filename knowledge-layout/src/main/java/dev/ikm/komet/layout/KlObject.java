@@ -1,12 +1,18 @@
 package dev.ikm.komet.layout;
 
 import dev.ikm.komet.layout.context.KlContext;
+import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import dev.ikm.komet.layout.preferences.PreferenceProperty;
 import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.common.util.uuid.UuidT5Generator;
 import javafx.collections.ObservableMap;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
+import org.eclipse.collections.api.list.MutableList;
 
 import java.util.UUID;
 
@@ -16,7 +22,7 @@ import static dev.ikm.tinkar.common.util.uuid.UuidUtil.NIL_UUID;
  * A typed object of programmatic interest to the Knowledge Layout system that
  * uses the KometPreferences for saving and restoring state.
  */
-public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
+public sealed interface KlObject permits KlKnowledgeBaseContext, KlView {
     /**
      * Keys for objects that KlGadgets will store in the properties of their associated
      * JavaFx {@code Node}s. Some of these objects will provide caching and computation
@@ -33,6 +39,15 @@ public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
          * It allows for dynamic attachment of additional functionality or metadata
          * to the Nodes, supporting advanced system configurations.
          */
+        FX_PEER,
+        /**
+         * Represents a property key used within the property system of JavaFX {@code Nodes}
+         * and {@code Window} objects to associate them with their corresponding Knowledge layout peer.
+         * This key is utilized to enable dynamic linking of JavaFX objects to their corresponding
+         * knolwedge layout peer,
+         * allowing additional functionality, behavior, or metadata to be incorporated
+         * into the JavaFX objects as needed.
+         */
         KL_PEER,
 
         /**
@@ -46,16 +61,6 @@ public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
          */
         KL_CONTEXT,
 
-        /**
-         * Represents a property key used within the property system of JavaFX {@code Nodes}
-         * and {@code Window} objects to manage layout computations. The {@code KL_LAYOUT_COMPUTER}
-         * key facilitates the association of layout-related behaviors or computation objects
-         * that dynamically determine the layout configurations of components. It supports
-         * advanced layout functionalities, ensuring flexibility and efficiency in layout handling
-         * within the JavaFX scene graph. The management and persistence of associated objects
-         * are handled as part of the gadget framework.
-         */
-        KL_LAYOUT_COMPUTER
     }
 
 
@@ -139,6 +144,14 @@ public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
      */
     KometPreferences preferences();
 
+    default KlPreferencesFactory childPreferencesFactory(KlObject child) {
+        return KlPreferencesFactory.create(preferences(), child.getClass());
+    }
+
+    default KlPreferencesFactory childPreferencesFactory(Class<? extends KlObject> childClass) {
+        return KlPreferencesFactory.create(preferences(), childClass);
+    }
+
     /**
      * Retrieves an observable map of properties associated with the current {@code KlObject}.
      * These properties provide a flexible mechanism for storing additional state or configuration data
@@ -178,4 +191,128 @@ public sealed interface KlObject permits KlGadget, KlKnowledgeBaseContext{
         return UuidT5Generator.get(this.getClass().getName() + this.hashCode());
     }
 
+    sealed interface Factory<FX, KL extends KlView<FX>>
+            permits KlView.Factory {
+
+        KL create(KlPreferencesFactory preferencesFactory);
+
+        KL restore(KometPreferences preferences);
+
+        /**
+         * Retrieves the concrete class of the {@code KlView}
+         * product that is produced by the factory.
+         *
+         * @return A {@link Class} object representing the class type of the implementation
+         *         of {@link KlView} associated with this factory.
+         */
+        default Class<?> productClass() {
+            return this.getClass().getEnclosingClass();
+        }
+
+        /**
+         * Retrieves the name of the product created by this factory.
+         * Each instance does not have a resulting unique name.
+         * Product is the textbook term in the context of design patterns
+         * (as in the “Factory Method” and “Abstract Factory” Gang of Four patterns).
+         *
+         * @return A string representing a generic name of the product.
+         */
+        default String productName() {
+            return camelCaseToWords(this.getClass().getEnclosingClass().getSimpleName());
+        }
+
+        /**
+         * Retrieves the name of this factory.
+         *
+         * @return A string representing the name of the factory.
+         */
+        default String factoryName() {
+            return camelCaseToWords(this.getClass().getEnclosingClass().getSimpleName()) +
+                    " " + camelCaseToWords(this.getClass().getSimpleName());
+        }
+
+        /**
+         * Retrieves the compatible service types for the area factory. These types can
+         * be used to discover other factories that can be used interchangeably with
+         * this factory and can be dynamically substituted for user preferences or
+         * specific functionality.
+         *
+         * @return the service type name of the area factory as a String.
+         */
+        default ImmutableList<Class<?>> areaFactoryServiceTypes() {
+            MutableList<Class<?>> interfaces = Lists.mutable.empty();
+            Class<?> clazz = null;
+            while (clazz != null) {
+                for (Class<?> iface : clazz.getInterfaces()) {
+                    if (KlArea.Factory.class.isAssignableFrom(iface)) {
+                        interfaces.add((Class<KL>) iface);
+                    }
+
+                }
+                clazz = clazz.getSuperclass();
+            }
+            return interfaces.toImmutable();
+        }
+
+        /**
+         * Retrieves a description of the product created by this factory.
+         * Product is the textbook term in the context of design patterns
+         * (as in the “Factory Method” and “Abstract Factory” Gang of Four patterns).
+         *
+         * @return A string representing the description of the factory's product.
+         */
+        default String productDescription() {
+            StringBuilder description = new StringBuilder("A Knowledge Layout object that implements the ");
+            ImmutableList<Class<?>> areaFactoryServiceTypes = areaFactoryServiceTypes();
+            areaFactoryServiceTypes.forEach(klInterfaceClass -> description.append(klInterfaceClass.getSimpleName()).append(", "));
+            description.delete(description.length() - 2, description.length());
+            if (areaFactoryServiceTypes.size() > 1) {
+                description.append("interfaces.");
+            } else {
+                description.append("interface.");
+            }
+            return description.toString();
+        }
+
+        /**
+         * Provides a palette icon for the layout tool that represents this factory.
+         *
+         * @return A Node object representing the visual icon of the layout palette.
+         */
+        default Node layoutPaletteIcon() {
+            Label paletteIcon = new Label(productName());
+            Tooltip.install(paletteIcon, new Tooltip(productDescription()));
+            return paletteIcon;
+        }
+    }
+
+
+    /**
+     * TODO: move this to a text utility in tinkar-core ?
+     * @param camelCaseString
+     * @return
+     */
+    static String camelCaseToWords(String camelCaseString) {
+        if (camelCaseString.startsWith("kl")) {
+            camelCaseString = camelCaseString.replaceFirst("^kl", "knowledgeLayout");
+        } else if (camelCaseString.startsWith("Kl")) {
+            camelCaseString = camelCaseString.replaceFirst( "^Kl", "KnowledgeLayout");
+        }
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < camelCaseString.length(); i++) {
+            char ch = camelCaseString.charAt(i);
+
+            if (Character.isUpperCase(ch)) {
+                if (i > 0) {
+                    result.append(" ");
+                }
+                result.append(Character.toLowerCase(ch));
+            } else {
+                result.append(ch);
+            }
+        }
+
+        return result.toString().replace("kl ", "Knowledge Layout ");
+    }
 }

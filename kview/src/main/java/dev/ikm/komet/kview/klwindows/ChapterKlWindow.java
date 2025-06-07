@@ -26,7 +26,7 @@ import javafx.scene.Node;
  */
 // TODO: This interface is purely a placeholder and temporarily replacement for the original KlJournalWindow interface.
 //       It can be removed once the original KlJournalWindow interface will be updated.
-public interface ChapterKlWindow<T extends Node> extends KlJournalWindow<T> {
+public interface ChapterKlWindow extends KlJournalWindow {
 
     /**
      * Sets a callback that is invoked when this window is closed.

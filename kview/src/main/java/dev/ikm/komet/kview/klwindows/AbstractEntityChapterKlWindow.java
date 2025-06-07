@@ -3,6 +3,7 @@ package dev.ikm.komet.kview.klwindows;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.layout.KlGadget;
 import dev.ikm.komet.layout.context.KlContext;
+import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.terms.EntityFacade;
 import javafx.scene.layout.Pane;
@@ -22,7 +23,7 @@ import java.util.UUID;
  * @see AbstractChapterKlWindow
  * @see EntityFacade
  */
-public abstract class AbstractEntityChapterKlWindow extends AbstractChapterKlWindow<Pane> {
+public abstract class AbstractEntityChapterKlWindow extends AbstractChapterKlWindow {
 
     /**
      * The UUID for the journal topic used by the owning Journal Window to communicate events.
@@ -83,4 +84,16 @@ public abstract class AbstractEntityChapterKlWindow extends AbstractChapterKlWin
     protected void setJournalTopic(UUID journalTopic) {
         this.journalTopic = journalTopic;
     }
+
+
+    @Override
+    public void setKlRenderView(KlRenderView renderView) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public KlRenderView getKlRenderView() {
+        throw new UnsupportedOperationException();
+    }
+
 }

@@ -18,13 +18,13 @@ import javafx.scene.layout.Pane;
  * user interfaces.
  *
  * @param <FX> the type of the JavaFX {@code Pane} represented by this concept area
- * @see KlComponentArea
+ * @see KlChronologyArea
  * @see ObservableConcept
  * @see ObservableConceptVersion
  * @see ConceptVersionRecord
  */
 public non-sealed interface KlConceptArea<FX extends Pane>
-        extends KlComponentArea<ObservableConcept, ObservableConceptVersion, FX> {
+        extends KlChronologyArea<ObservableConcept, ObservableConceptVersion, FX> {
     /**
      * Retrieves the observable concept associated with this pane.
      *
@@ -34,7 +34,7 @@ public non-sealed interface KlConceptArea<FX extends Pane>
      * @return the {@code ObservableConcept} associated with this pane
      */
     default ObservableConcept observableConcept() {
-        return componentProperty().get();
+        return chronologyProperty().get();
     }
 
     /**
@@ -45,7 +45,10 @@ public non-sealed interface KlConceptArea<FX extends Pane>
      * @return the {@code ObjectProperty} holding the {@code ObservableConcept}.
      */
     default ObjectProperty<ObservableConcept> conceptProperty() {
-        return componentProperty();
+        return chronologyProperty();
     }
 
+    non-sealed interface Factory<FX extends Pane, KL extends KlConceptArea<FX>>
+            extends KlChronologyArea.Factory<FX, ObservableConcept, ObservableConceptVersion, KL> {
+    }
 }

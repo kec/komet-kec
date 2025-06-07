@@ -897,7 +897,7 @@ public class JournalController {
         detailsNode.handleActivity(Lists.immutable.of(conceptFacade));
 
         // Getting the concept window pane
-        final Pane conceptWindowPane = conceptKlWindow.fxGadget();
+        final Pane conceptWindowPane = conceptKlWindow.fxObject();
 
         // If a concept window is newly launched assign it a unique id 'CONCEPT_XXX-XXXX-XX'
         final String conceptFolderName = createConceptFolderName(conceptWindowPane, conceptWindowSettingsMap);
@@ -941,7 +941,7 @@ public class JournalController {
         detailsNode.getDetailsViewController().onReasonerSlideoutTray(reasonerToggleConsumer);
 
         // Getting the concept window pane
-        final Pane conceptWindowPane = conceptKlWindow.fxGadget();
+        final Pane conceptWindowPane = conceptKlWindow.fxObject();
 
         // This will refresh the Concept details, history, timeline
         //detailsNode.handleActivity(Lists.immutable.of(conceptFacade));
@@ -980,7 +980,7 @@ public class JournalController {
         workspace.getWindows().add(lidrKlWindow);
 
         // Getting the concept window pane
-        final Pane conceptWindowPane = lidrKlWindow.fxGadget();
+        final Pane conceptWindowPane = lidrKlWindow.fxObject();
 
         // This will refresh the Concept details, history, timeline
         //detailsNode.handleActivity(Lists.immutable.of(conceptFacade));
@@ -1020,7 +1020,7 @@ public class JournalController {
         workspace.getWindows().add(lidrKlWindow);
 
         // Getting the concept window pane
-        final Pane conceptWindowPane = lidrKlWindow.fxGadget();
+        final Pane conceptWindowPane = lidrKlWindow.fxObject();
 
         // This will refresh the Concept details, history, timeline
         //detailsNode.handleActivity(Lists.immutable.of(conceptFacade));
@@ -1278,7 +1278,7 @@ public class JournalController {
                 detailsNode.getDetailsViewController().onReasonerSlideoutTray(reasonerToggleConsumer);
 
                 // Getting the concept window pane
-                Pane kometNodePanel = conceptKlWindow.fxGadget();
+                Pane kometNodePanel = conceptKlWindow.fxObject();
 
                 // Make the window compact sized.
                 detailsNode.getDetailsViewController().compactSizeWindow();
@@ -1530,7 +1530,7 @@ public class JournalController {
         Optional<String> conceptFolderName;
         conceptFolderName = Optional.of(CONCEPT_FOLDER_PREFIX + UUID.randomUUID());
         // create a conceptWindowSettingsMap
-        Pane chapterWindow = patternKlWindow.fxGadget();
+        Pane chapterWindow = patternKlWindow.fxObject();
         Map<ConceptWindowSettings, Object> conceptWindowSettingsObjectMap = createConceptPrefMap(conceptFolderName.get(), chapterWindow);
         chapterWindow.setUserData(conceptWindowSettingsObjectMap);
 

@@ -3,7 +3,6 @@ package dev.ikm.komet.kview.klwindows.pattern;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.kview.klwindows.AbstractEntityChapterKlWindowFactory;
 import dev.ikm.komet.kview.klwindows.lidr.LidrKlWindow;
-import dev.ikm.komet.layout.context.KlContextFactory;
 import dev.ikm.komet.layout.preferences.KlPreferencesFactory;
 import dev.ikm.komet.layout.window.KlJournalWindow;
 import dev.ikm.komet.preferences.KometPreferences;
@@ -29,28 +28,12 @@ public class PatternKlWindowFactory extends AbstractEntityChapterKlWindowFactory
         return new PatternKlWindow(journalTopic, entityFacade, viewProperties, preferences);
     }
 
-    @Override
-    public Class<KlJournalWindow> klInterfaceClass() {
-        return KlJournalWindow.class;
-    }
-
-    @Override
-    public Class<? extends KlJournalWindow> klImplementationClass() {
-        return PatternKlWindow.class;
-    }
-
-    @Override
-    public String klDescription() {
+    public String productDescription() {
         return "Pattern Details Chapter Window are displayed inside of the Journal Window desktop workspace";
     }
 
     @Override
     public LidrKlWindow create(KlPreferencesFactory preferencesFactory) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public LidrKlWindow createWithContext(KlPreferencesFactory preferencesFactory, KlContextFactory contextFactory) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

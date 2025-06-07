@@ -288,8 +288,7 @@ public class EditFullyQualifiedNameController implements BasicController {
         setupComboBox(caseSignificanceComboBox, allCaseDescendents);
 
         // get case concept's case sensitivity (e.g. 'Case insensitive')
-        PatternEntity<PatternEntityVersion> patternEntity = latestEntityVersion.get().pattern();
-        PatternEntityVersion patternEntityVersion = viewCalculator.latest(patternEntity).get();
+        PatternEntityVersion patternEntityVersion = viewCalculator.latestPatternEntityVersion(latestEntityVersion.get().pattern()).get();
         int indexCaseSig = patternEntityVersion.indexForMeaning(DESCRIPTION_CASE_SIGNIFICANCE);
         ConceptFacade caseSigConceptFacade = (ConceptFacade) latestEntityVersion.get().fieldValues().get(indexCaseSig);
         ConceptEntity caseSigConcept = Entity.getFast(caseSigConceptFacade.nid());

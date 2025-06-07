@@ -860,8 +860,7 @@ public class DetailsController  {
         otherNamesVBox.getChildren().clear();
         descriptionSemanticsMap.forEach((semanticEntityVersion, fieldDescriptions) -> {
 
-            PatternEntity<PatternEntityVersion> patternEntity = semanticEntityVersion.pattern();
-            PatternEntityVersion patternEntityVersion = viewCalculator.latest(patternEntity).get();
+            PatternEntityVersion patternEntityVersion = viewCalculator.latestPatternEntityVersion(semanticEntityVersion.pattern()).get();
 
             boolean isFQN = semanticEntityVersion
                     .fieldValues()

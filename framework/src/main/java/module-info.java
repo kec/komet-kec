@@ -46,7 +46,7 @@ open module dev.ikm.komet.framework {
     exports dev.ikm.komet.framework.panel.axiom;
     exports dev.ikm.komet.framework.events;
     exports dev.ikm.komet.framework.events.appevents;
-    exports dev.ikm.komet.framework.observable.locators;
+    exports dev.ikm.komet.framework.observable.binding;
 
     provides CachingService with dev.ikm.komet.framework.dnd.DragRegistry.CacheProvider;
     requires io.github.classgraph;
