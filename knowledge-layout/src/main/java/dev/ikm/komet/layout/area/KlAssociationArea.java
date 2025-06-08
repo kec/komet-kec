@@ -6,7 +6,7 @@ import javafx.scene.layout.Region;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 
-public non-sealed interface KlAssociationArea<FX extends Region> extends KlArea<FX>, KlParent {
+public non-sealed interface KlAssociationArea<FX extends Region> extends KlArea<FX>, KlParent<FX> {
     // Association area walks up nodes until it
 
     // Chronology panels need to put the

@@ -1,6 +1,7 @@
 package dev.ikm.komet.layout.area;
 
 import dev.ikm.komet.layout.KlArea;
+import dev.ikm.komet.layout.KlParent;
 import dev.ikm.komet.layout.KlView;
 import dev.ikm.komet.layout.LayoutKey;
 import dev.ikm.tinkar.common.binary.*;
@@ -114,7 +115,7 @@ public record AreaGridSettings(
                 layoutKeyForArea, areaFactoryClassName);
     }
 
-    public KlArea makeAndAddToParent(KlView parentView) {
+    public KlArea makeAndAddToParent(KlParent parentView) {
         KlArea.Factory factory = makeAreaFactory();
         return factory.createAndAddToParent(this, parentView);
     }

@@ -7,6 +7,7 @@ module dev.ikm.komet.layout {
     requires dev.ikm.jpms.recordbuilder.core;
     requires java.compiler;
     requires log4j;
+    requires javafx.graphics;
 
     exports dev.ikm.komet.layout;
     exports dev.ikm.komet.layout.action;

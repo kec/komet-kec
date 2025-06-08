@@ -16,6 +16,7 @@ import org.eclipse.collections.api.list.MutableList;
 
 import java.util.UUID;
 
+import static dev.ikm.komet.layout.KlObject.PropertyKeys.KL_PEER;
 import static dev.ikm.tinkar.common.util.uuid.UuidUtil.NIL_UUID;
 
 /**
@@ -115,6 +116,17 @@ public sealed interface KlObject permits KlKnowledgeBaseContext, KlView {
         public Object defaultValue() {
             return defaultValue;
         }
+    }
+
+    static KlObject getKlPeer(Node node) {
+        Node tempNode = node;
+        while (tempNode != null) {
+            if (tempNode.hasProperties() && tempNode.getProperties().containsKey(KL_PEER)) {
+                return (KlObject) tempNode.getProperties().get(KL_PEER);
+            }
+            tempNode = tempNode.getParent();
+        }
+        throw new IllegalStateException("Can't find KL_PEER in scene graph. Node: " + node);
     }
 
     /**

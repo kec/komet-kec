@@ -45,8 +45,7 @@ import java.util.Optional;
  */
 public sealed interface KlArea<FX extends Region>
         extends KlGadget<FX>
-        permits KlWidget, KlAssociationArea, KlGenericArea, KlPropertyArea, KlSupplementalArea,
-        KlChronologyArea, KlMultiVersionArea, KlVersionArea {
+        permits KlParent, KlWidget, KlAssociationArea, KlGenericArea, KlPropertyArea, KlSupplementalArea, KlChronologyArea, KlMultiVersionArea, KlVersionArea {
 
     /**
      * Keys for objects that {@code KlWidget}'s will store in the properties of their associated
@@ -683,12 +682,12 @@ public sealed interface KlArea<FX extends Region>
          */
         KL create(KlPreferencesFactory preferencesFactory, AreaGridSettings areaGridSettings);
 
-        default KL createAndAddToParent(AreaGridSettings areaGridSettings, KlView parentArea) {
+        default KL createAndAddToParent(AreaGridSettings areaGridSettings, KlParent parentArea) {
             Objects.requireNonNull(areaGridSettings, "areaLayout is null");
             Objects.requireNonNull(parentArea, "parentArea is null");
 
             KlPreferencesFactory preferencesFactory =
-                    KlPreferencesFactory.create(parentArea.preferences(), this.getClass());
+                    KlPreferencesFactory.create(parentArea.preferences(), this.getClass().getEnclosingClass());
 
             KL klView = this.create(preferencesFactory, areaGridSettings);
             parentArea.addToParent(klView);

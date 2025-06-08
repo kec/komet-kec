@@ -20,7 +20,7 @@ import org.eclipse.collections.api.list.ImmutableList;
  * @param <FX> the type of JavaFX {@code Region} associated with the implementation
  *             of this interface
  */
-public non-sealed interface KlSupplementalArea<FX extends Region> extends KlArea<FX>, KlParent {
+public non-sealed interface KlSupplementalArea<FX extends Region> extends KlArea<FX>, KlParent<FX> {
     non-sealed interface Factory<FX extends Region, KL extends KlSupplementalArea<FX>>
             extends KlArea.Factory<FX, KL> {
     }

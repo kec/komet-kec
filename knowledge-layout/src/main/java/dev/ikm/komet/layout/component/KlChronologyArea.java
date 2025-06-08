@@ -41,7 +41,7 @@ import javafx.scene.layout.Pane;
  */
 public sealed interface KlChronologyArea<OE extends ObservableEntity<OV>,
         OV extends ObservableVersion<? extends EntityVersion>, FX extends Pane>
-        extends KlArea<FX>, KlParent
+        extends KlArea<FX>, KlParent<FX>
         permits KlConceptArea, KlGenericChronologyArea, KlPatternArea, KlSemanticArea, KlStampArea {
     /**
      * Retrieves the observable component associated with this pane.
