@@ -205,7 +205,7 @@ Example:
        * Constructs a prototypical Event.
        * You can optionally pass arguments in this constructor and set the value as final in the constructor.
        * The value can be retrived using the getter method for that variable.
-       * @param source         the object on which the Event initially occurred
+       * @param source         the chronologyKey on which the Event initially occurred
        * @param eventType
        */
       public MyDefienedEvent(Object source, EvtType eventType) {

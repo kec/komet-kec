@@ -98,4 +98,14 @@ public class LidrKlWindow extends AbstractEntityChapterKlWindow {
     public void setKlRenderView(KlRenderView renderView) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void knowledgeLayoutUnbind() {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void knowledgeLayoutBind() {
+        // Nothing to do here.
+    }
 }

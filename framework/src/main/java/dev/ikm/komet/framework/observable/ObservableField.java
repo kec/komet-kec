@@ -21,23 +21,14 @@ import static java.util.Comparator.comparing;
 
 
 // A field that indirectly adds meaning to a referenced entity via a semantic of a pattern.
-public final class ObservableField<DT> extends ObservableFieldAbstract<DT> {
-//TODO: Consider renaming to ObservableFieldOnSemantic
+public final class ObservableField<DT> extends ObservableFeature<DT> {
 
-    private final FeatureLocator featureLocator;
-
-    public ObservableField(Field<DT> attribute, ObservableSemanticVersion containingVersion, boolean writeOnEveryChange) {
-        super(attribute, containingVersion, writeOnEveryChange);
-        this.featureLocator = FeatureLocator.Version.SemanticFieldListItem(containingComponent().nid(),
-                indexInPattern(), patternNid(), containingVersion.stampNid());
+    public ObservableField(FeatureKey featureKey, Field<DT> attribute, ObservableSemanticVersion containingVersion, boolean writeOnEveryChange) {
+        super(featureKey, attribute, containingVersion, writeOnEveryChange);
     }
 
-    public ObservableField(Field<DT> attribute, ObservableSemanticVersion containingVersion) {
-        this(attribute, containingVersion, false);
+    public ObservableField(FeatureKey featureKey, Field<DT> attribute, ObservableSemanticVersion containingVersion) {
+        this(featureKey, attribute, containingVersion, false);
     }
 
-    @Override
-    public FeatureLocator locator() {
-        return featureLocator;
-    }
 }

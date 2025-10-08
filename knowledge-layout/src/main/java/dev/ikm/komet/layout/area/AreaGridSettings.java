@@ -2,7 +2,6 @@ package dev.ikm.komet.layout.area;
 
 import dev.ikm.komet.layout.KlArea;
 import dev.ikm.komet.layout.KlParent;
-import dev.ikm.komet.layout.KlView;
 import dev.ikm.komet.layout.LayoutKey;
 import dev.ikm.tinkar.common.binary.*;
 import dev.ikm.tinkar.common.service.PluggableService;
@@ -12,6 +11,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 
@@ -25,8 +26,10 @@ import java.lang.reflect.Constructor;
  */
 @RecordBuilder
 public record AreaGridSettings(
+        String areaFactoryClassName,
         int columnIndex,
         int rowIndex,
+        LayoutKey.ForArea layoutKeyForArea,
         int columnSpan,
         int rowSpan,
         Priority hGrow,
@@ -40,9 +43,10 @@ public record AreaGridSettings(
         Double preferredWidth,
         boolean fillHeight,
         boolean fillWidth,
-        boolean visible,
-        LayoutKey.ForArea layoutKeyForArea,
-        String areaFactoryClassName) implements AreaGridSettingsBuilder.With, Encodable {
+        boolean visible
+) implements AreaGridSettingsBuilder.With, Encodable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(AreaGridSettings.class);
 
     private static final int marshalVersion = 1;
 
@@ -84,12 +88,12 @@ public record AreaGridSettings(
      */
     public AreaGridSettings(int columnIndex, int rowIndex, LayoutKey.ForArea layoutKeyForArea,
                             String areaFactoryClassName) {
-        this(columnIndex, rowIndex, 1, 1,
+        this(areaFactoryClassName, columnIndex, rowIndex, layoutKeyForArea, 1, 1,
                 Priority.SOMETIMES, Priority.NEVER, HPos.LEFT, VPos.TOP,
                 new Insets(0),
                 Double.MAX_VALUE, Double.MAX_VALUE,
                 Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE,
-                true, true, true, layoutKeyForArea, areaFactoryClassName);
+                true, true, true);
     }
 
     /**
@@ -106,17 +110,18 @@ public record AreaGridSettings(
      *                    current column and row values are applied during initialization.
      */
     public AreaGridSettings(GridStepper incrementer, LayoutKey.ForArea layoutKeyForArea, String areaFactoryClassName) {
-        this(incrementer.column(), incrementer.row(), 1, 1,
+        this(areaFactoryClassName, incrementer.column(), incrementer.row(), layoutKeyForArea, 1, 1,
                 Priority.SOMETIMES, Priority.NEVER, HPos.LEFT, VPos.TOP,
                 new Insets(0),
                 Double.MAX_VALUE, Double.MAX_VALUE,
                 Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE,
-                true, true, true,
-                layoutKeyForArea, areaFactoryClassName);
+                true, true, true
+        );
     }
 
     public KlArea makeAndAddToParent(KlParent parentView) {
         KlArea.Factory factory = makeAreaFactory();
+        LOG.debug("Adding {} to {}", factory.productClass().getSimpleName(), parentView.getClass().getSimpleName());
         return factory.createAndAddToParent(this, parentView);
     }
 
@@ -131,10 +136,10 @@ public record AreaGridSettings(
     }
 
     public AreaGridSettings with(int columnIndex, int rowIndex, LayoutKey.ForArea layoutKeyForArea, String areaFactoryClassName) {
-        return new AreaGridSettings(columnIndex, rowIndex, columnSpan, rowSpan,
+        return new AreaGridSettings(areaFactoryClassName, columnIndex, rowIndex, layoutKeyForArea, columnSpan, rowSpan,
                 hGrow, vGrow, hAlignment, vAlignment, margin, maxHeight, maxWidth,
-                preferredHeight, preferredWidth, fillHeight, fillWidth, visible,
-                layoutKeyForArea, areaFactoryClassName);
+                preferredHeight, preferredWidth, fillHeight, fillWidth, visible
+        );
     }
 
     public AreaGridSettings with(Class factoryClass) {
@@ -151,28 +156,45 @@ public record AreaGridSettings(
     @Override
     @Encoder
     public void encode(EncoderOutput out) {
-        out.writeInt(marshalVersion);
+//        String areaFactoryClassName,
+        out.writeString(areaFactoryClassName);
+//        int columnIndex,
         out.writeInt(columnIndex);
+//        int rowIndex,
         out.writeInt(rowIndex);
+//        LayoutKey.ForArea layoutKeyForArea,
+        out.encode(layoutKeyForArea);
+//        int columnSpan,
         out.writeInt(columnSpan);
+//        int rowSpan,
         out.writeInt(rowSpan);
+//        Priority hGrow,
         out.writeString(hGrow.name());
+//        Priority vGrow,
         out.writeString(vGrow.name());
+//        HPos hAlignment,
         out.writeString(hAlignment.name());
+//        VPos vAlignment,
         out.writeString(vAlignment.name());
+//        Insets margin,
         out.writeDouble(margin.getTop());
         out.writeDouble(margin.getRight());
         out.writeDouble(margin.getBottom());
         out.writeDouble(margin.getLeft());
+//        Double maxHeight,
         out.writeDouble(maxHeight);
+//        Double maxWidth,
         out.writeDouble(maxWidth);
+//        Double preferredHeight,
         out.writeDouble(preferredHeight);
+//        Double preferredWidth,
         out.writeDouble(preferredWidth);
+//        boolean fillHeight,
         out.writeBoolean(fillHeight);
+//        boolean fillWidth,
         out.writeBoolean(fillWidth);
+//        boolean visible
         out.writeBoolean(visible);
-        out.write(layoutKeyForArea);
-        out.writeString(areaFactoryClassName);
     }
 
     /**
@@ -187,17 +209,18 @@ public record AreaGridSettings(
      */
     @Decoder
     public static AreaGridSettings decode(DecoderInput in) {
-        int objectMarshalVersion = in.readInt();
-        if (objectMarshalVersion == marshalVersion) {
             return new AreaGridSettings(
+                    in.readString(), // String areaFactoryClassName,
                     in.readInt(), // int columnIndex,
                     in.readInt(), // int rowIndex,
+                    in.decode(), //LayoutKey.ForArea layoutKeyForArea,
                     in.readInt(), // int columnSpan,
                     in.readInt(), // int rowSpan,
                     Priority.valueOf(in.readString()), // Priority hGrow,
                     Priority.valueOf(in.readString()), // Priority vGrow,
                     HPos.valueOf(in.readString()), // HPos hAlignment,
                     VPos.valueOf(in.readString()), // VPos vAlignment,
+// Insets margin,
                     new Insets(in.readDouble(), // Insets margin top,
                             in.readDouble(), // Insets margin right,
                             in.readDouble(), // Insets margin bottom,
@@ -209,12 +232,47 @@ public record AreaGridSettings(
                     in.readDouble(), // Double preferredWidth
                     in.readBoolean(), // boolean fillHeight
                     in.readBoolean(), // boolean fillWidth
-                    in.readBoolean(),
-                    LayoutKey.LayoutKeyRecord.decode(in),
-                    in.readString()
-             );
-        } else {
-            throw new UnsupportedOperationException("Unsupported version: " + objectMarshalVersion);
-        }
+                    in.readBoolean() // boolean visible
+            );
+    }
+
+    @Override
+    public String toString() {
+        String factoryForArea = areaFactoryClassName();
+        factoryForArea = factoryForArea.substring(factoryForArea.lastIndexOf('.') + 1);
+        String compactMargin = margin.toString()
+                .replace("Insets ", "")
+                .replace("top=", "t:")
+                .replace("right=", "r:")
+                .replace("bottom=", "b:")
+                .replace("left=", "l:");
+
+        return "AreaGridSettings{" +
+                "" + factoryForArea +
+                ", c: " + columnIndex +
+                ", r: " + rowIndex +
+                ", " + layoutKeyForArea +
+                ", cs: " + columnSpan +
+                ", rs: " + rowSpan +
+                ", hg: " + hGrow +
+                ", vg: " + vGrow +
+                ", ha: " + hAlignment +
+                ", va: " + vAlignment +
+                ", margin: " + compactMargin +
+                ", mh: " + processLayoutDouble(maxHeight) +
+                ", mw: " + processLayoutDouble(maxWidth) +
+                ", ph: " + processLayoutDouble(preferredHeight) +
+                ", pw: " + processLayoutDouble(preferredWidth) +
+                ", fh: " + fillHeight +
+                ", fw: " + fillWidth +
+                ", v: " + visible +
+                '}';
+    }
+
+    private static String processLayoutDouble(Double value) {
+        return Double.toString(value)
+                .replace("1.7976931348623157E308", "Double.MAX_VALUE")
+                .replace("-1.0", "USE_COMPUTED_SIZE");
+
     }
 }

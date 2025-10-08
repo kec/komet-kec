@@ -119,4 +119,14 @@ public class ConceptKlWindow extends AbstractEntityChapterKlWindow {
     public DetailsNode getDetailsNode() {
         return detailsNode;
     }
+
+    @Override
+    public void knowledgeLayoutUnbind() {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void knowledgeLayoutBind() {
+        // Nothing to do here.
+    }
 }

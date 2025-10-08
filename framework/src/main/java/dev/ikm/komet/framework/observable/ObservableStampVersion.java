@@ -16,10 +16,6 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.komet.framework.observable.binding.Binding;
-import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
-import dev.ikm.tinkar.entity.FieldDefinitionForEntity;
-import dev.ikm.tinkar.entity.PatternEntityVersion;
 import dev.ikm.tinkar.entity.StampVersionRecord;
 import org.eclipse.collections.api.list.MutableList;
 
@@ -38,24 +34,24 @@ public final class ObservableStampVersion
     }
 
     protected void addListeners() {
-        stateProperty.addListener((observable, oldValue, newValue) -> {
+        stateProperty().addListener((observable, oldValue, newValue) -> {
             versionProperty.set(version().withStateNid(newValue.nid()));
         });
 
-        timeProperty.addListener((observable, oldValue, newValue) -> {
+        timeProperty().addListener((observable, oldValue, newValue) -> {
             // TODO when to update the chronology with new record? At commit time? Automatically with reactive stream for commits?
             versionProperty.set(version().withTime(newValue.longValue()));
         });
 
-        authorProperty.addListener((observable, oldValue, newValue) -> {
+        authorProperty().addListener((observable, oldValue, newValue) -> {
             versionProperty.set(version().withAuthorNid(newValue.nid()));
         });
 
-        moduleProperty.addListener((observable, oldValue, newValue) -> {
+        moduleProperty().addListener((observable, oldValue, newValue) -> {
             versionProperty.set(version().withModuleNid(newValue.nid()));
         });
 
-        pathProperty.addListener((observable, oldValue, newValue) -> {
+        pathProperty().addListener((observable, oldValue, newValue) -> {
             versionProperty.set(version().withPathNid(newValue.nid()));
         });
     }
@@ -82,97 +78,87 @@ public final class ObservableStampVersion
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    private AtomicReference<Feature> versionStatusFieldReference = new AtomicReference<>();
-    private Feature getVersionStatusField(StampCalculator stampCalculator) {
+    private AtomicReference<FeatureWrapper> versionStatusFieldReference = new AtomicReference<>();
+    private FeatureWrapper getVersionStatusField() {
         return versionStatusFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeVersionStatusField(stampCalculator));
+                : makeVersionStatusField());
     }
-    private Feature makeVersionStatusField(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Stamp.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Stamp.Version.stampFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.StampStatus(this.nid());
-        return new Feature(this.state(), fieldDefinition, this, locator);
+    private FeatureWrapper makeVersionStatusField() {
+        FeatureKey locator = FeatureKey.Version.StampStatus(this.nid());
+        return new FeatureWrapper(this.stateProperty(), Binding.Stamp.Version.pattern().nid(),
+                Binding.Stamp.Version.statusFieldDefinitionIndex(),this, locator);
     }
 
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    private AtomicReference<Feature> versionTimeFieldReference = new AtomicReference<>();
-    private Feature getVersionTimeField(StampCalculator stampCalculator) {
+    private AtomicReference<FeatureWrapper> versionTimeFieldReference = new AtomicReference<>();
+    private FeatureWrapper getVersionTimeField() {
         return versionTimeFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeVersionTimeField(stampCalculator));
+                : makeVersionTimeField());
     }
-    private Feature makeVersionTimeField(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Stamp.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Stamp.Version.timeFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.StampTime(nid());
-        return new Feature(this.time(), fieldDefinition, this, locator);
+    private FeatureWrapper makeVersionTimeField() {
+        FeatureKey locator = FeatureKey.Version.StampTime(nid());
+        return new FeatureWrapper(this.timeProperty(), Binding.Stamp.Version.pattern().nid(),
+                Binding.Stamp.Version.timeFieldDefinitionIndex(), this, locator);
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    private AtomicReference<Feature> versionAuthorFieldReference = new AtomicReference<>();
-    private Feature getVersionAuthorFeature(StampCalculator stampCalculator) {
+    private AtomicReference<FeatureWrapper> versionAuthorFieldReference = new AtomicReference<>();
+    private FeatureWrapper getVersionAuthorFeature() {
         return versionAuthorFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeVersionAuthorFeature(stampCalculator));
+                : makeVersionAuthorFeature());
     }
-    private Feature makeVersionAuthorFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Stamp.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Stamp.Version.authorFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.StampAuthor(this.nid());
-        return new Feature(this.author(), fieldDefinition, this, locator);
+    private FeatureWrapper makeVersionAuthorFeature() {
+        FeatureKey locator = FeatureKey.Version.StampAuthor(this.nid());
+        return new FeatureWrapper(this.authorProperty(), Binding.Stamp.Version.pattern().nid(),
+                Binding.Stamp.Version.authorFieldDefinitionIndex(),this, locator);
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    private AtomicReference<Feature> versionModuleFieldReference = new AtomicReference<>();
-    private Feature getVersionModuleFeature(StampCalculator stampCalculator) {
+    private AtomicReference<FeatureWrapper> versionModuleFieldReference = new AtomicReference<>();
+    private FeatureWrapper getVersionModuleFeature() {
         return versionModuleFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeVersionModuleFeature(stampCalculator));
+                : makeVersionModuleFeature());
     }
-    private Feature makeVersionModuleFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Stamp.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Stamp.Version.moduleFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.StampModule(this.nid());
-        return new Feature(this.module(), fieldDefinition, this, locator);
+    private FeatureWrapper makeVersionModuleFeature() {
+        FeatureKey locator = FeatureKey.Version.StampModule(this.nid());
+        return new FeatureWrapper(this.moduleProperty(), Binding.Stamp.Version.pattern().nid(),
+                Binding.Stamp.Version.moduleFieldDefinitionIndex(),this, locator);
     }
 
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    private AtomicReference<Feature> versionPathFieldReference = new AtomicReference<>();
-    private Feature getVersionPathField(StampCalculator stampCalculator) {
+    private AtomicReference<FeatureWrapper> versionPathFieldReference = new AtomicReference<>();
+    private FeatureWrapper getVersionPathField() {
         return versionPathFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeVersionPathField(stampCalculator));
+                : makeVersionPathField());
     }
-    private Feature makeVersionPathField(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Stamp.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Stamp.Version.pathFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.StampPath(this.nid());
-        return new Feature(this.path(), fieldDefinition, this, locator);
+    private FeatureWrapper makeVersionPathField() {
+        FeatureKey locator = FeatureKey.Version.StampPath(this.nid());
+        return new FeatureWrapper(this.pathProperty(), Binding.Stamp.Version.pattern().nid(),
+                Binding.Stamp.Version.pathFieldDefinitionIndex(),this, locator);
     }
 
     @Override
-    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features) {
         // Status
-        features.add(getVersionStatusField(stampCalculator));
+        features.add(getVersionStatusField());
 
         // Time
-        features.add(getVersionTimeField(stampCalculator));
+        features.add(getVersionTimeField());
 
         // Author
-        features.add(getVersionAuthorFeature(stampCalculator));
+        features.add(getVersionAuthorFeature());
 
         // Module
-        features.add(getVersionModuleFeature(stampCalculator));
+        features.add(getVersionModuleFeature());
 
         // Path
-        features.add(getVersionPathField(stampCalculator));
+        features.add(getVersionPathField());
     }
 }

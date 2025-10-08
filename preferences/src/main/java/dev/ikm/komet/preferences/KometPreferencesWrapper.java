@@ -15,19 +15,23 @@
  */
 package dev.ikm.komet.preferences;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.NodeChangeListener;
 import java.util.prefs.PreferenceChangeListener;
-import java.util.prefs.Preferences;
 
 /**
  * An application preferences wrapper.
  * 
  */
 public class KometPreferencesWrapper implements KometPreferences {
+    private static final Logger LOG = LoggerFactory.getLogger(KometPreferencesWrapper.class);
     final KometPreferencesImpl delegate;
 
     public KometPreferencesWrapper(KometPreferencesImpl delegate) {
@@ -61,7 +65,9 @@ public class KometPreferencesWrapper implements KometPreferences {
 
     @Override
     public void clear() throws BackingStoreException {
-        delegate.clear();
+        if (!delegate.isRemoved()) {
+            delegate.clear();
+        }
     }
 
     @Override
@@ -134,7 +140,18 @@ public class KometPreferencesWrapper implements KometPreferences {
 
     @Override
     public KometPreferences node(String pathName) {
-        return new KometPreferencesWrapper((KometPreferencesImpl) delegate.node(pathName));
+        KometPreferencesWrapper kometPreferencesWrapper = new KometPreferencesWrapper((KometPreferencesImpl) delegate.node(pathName));
+        LOG.debug("*** Created Preference Node: {}, {}, new node: {}, removed: {}, path: {}",
+                kometPreferencesWrapper.name(),
+                kometPreferencesWrapper.delegate.hashCode(),
+                kometPreferencesWrapper.delegate.isNewNode(),
+                kometPreferencesWrapper.delegate.isRemoved(),
+                pathName);
+        return kometPreferencesWrapper;
+    }
+
+    public int delegateHash() {
+        return delegate.hashCode();
     }
 
     @Override
@@ -144,6 +161,7 @@ public class KometPreferencesWrapper implements KometPreferences {
 
     @Override
     public void removeNode() throws BackingStoreException {
+        LOG.debug("*** Removing Preference Node: {}, {}, path: {}", name(), delegate.hashCode(), absolutePath());
         try {
             delegate.removeNode();
         } catch (IllegalStateException ex) {
@@ -211,4 +229,8 @@ public class KometPreferencesWrapper implements KometPreferences {
         delegate.exportSubtree(os);
     }
 
+    @Override
+    public Optional<File> directory() {
+        return Optional.of(delegate.directory());
+    }
 }

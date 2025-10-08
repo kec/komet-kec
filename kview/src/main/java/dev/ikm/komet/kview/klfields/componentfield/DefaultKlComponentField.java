@@ -9,18 +9,20 @@ import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
 import dev.ikm.tinkar.terms.EntityProxy;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Parent;
+import javafx.scene.layout.Region;
 
 public class DefaultKlComponentField extends BaseDefaultKlField<EntityProxy> {
 
     public DefaultKlComponentField(ObservableField<EntityProxy> observableComponentField, ObservableView observableView, boolean isEditable) {
         super(observableComponentField, observableView, isEditable);
 
-        Parent node;
+        Region node;
         if (isEditable) {
             KLComponentControl componentControl = new KLComponentControl();
 
             // title
-            componentControl.setTitle(field().meaning().description());
+            componentControl.setTitle(observableView.getDescriptionTextOrNid(
+                    field().definition(calculatorForContext()).meaningNid()));
 
             // entity
             EntityProxy entity = field().value();
@@ -28,7 +30,8 @@ public class DefaultKlComponentField extends BaseDefaultKlField<EntityProxy> {
 
             componentControl.entityProperty().subscribe(newEntity -> {
                 field().valueProperty().set(newEntity);
-                componentControl.setTitle(field().field().meaning().description());
+                componentControl.setTitle(observableView.getDescriptionTextOrNid(
+                        field().definition(calculatorForContext()).meaningNid()));
                 updateTooltipText();
             });
 
@@ -41,7 +44,7 @@ public class DefaultKlComponentField extends BaseDefaultKlField<EntityProxy> {
             updateControlText(valueProperty.get(), readOnlyComponentControl);
 
             // title
-            String title = observableView.calculator().languageCalculator().getDescriptionText(observableComponentField.meaningNid()).orElse("Blank Title");
+            String title = observableView.calculator().languageCalculator().getDescriptionText(observableComponentField.definition(calculatorForContext()).meaningNid()).orElse("Blank Title");
             readOnlyComponentControl.setTitle(title);
 
             // icon
@@ -56,7 +59,7 @@ public class DefaultKlComponentField extends BaseDefaultKlField<EntityProxy> {
             node = readOnlyComponentControl;
         }
 
-        setKlWidget(node);
+        setFxObject(node);
     }
 
     private void updateControlText(EntityProxy entityProxy, KLReadOnlyComponentControl klReadOnlyComponentControl) {

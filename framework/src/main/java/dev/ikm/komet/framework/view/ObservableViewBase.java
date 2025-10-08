@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.framework.view;
 
-import javafx.beans.Observable;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;

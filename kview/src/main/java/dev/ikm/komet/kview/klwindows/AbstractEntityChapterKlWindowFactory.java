@@ -2,12 +2,9 @@ package dev.ikm.komet.kview.klwindows;
 
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.layout.KlFactory;
-import dev.ikm.komet.layout.KlWidget;
 import dev.ikm.komet.layout.window.KlJournalWindow;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.terms.EntityFacade;
-import javafx.scene.control.MenuItem;
-import org.eclipse.collections.api.list.ImmutableList;
 
 import java.util.UUID;
 

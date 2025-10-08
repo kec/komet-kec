@@ -45,7 +45,6 @@ import java.util.Set;
 import java.util.UUID;
 
 import static dev.ikm.komet.kview.lidr.mvvm.model.DataModelHelper.*;
-import static dev.ikm.komet.kview.mvvm.viewmodel.StampViewModel.*;
 import static dev.ikm.tinkar.coordinate.stamp.StampFields.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

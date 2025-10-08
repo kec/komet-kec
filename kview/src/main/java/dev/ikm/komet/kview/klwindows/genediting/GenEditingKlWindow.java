@@ -79,4 +79,16 @@ public class GenEditingKlWindow extends AbstractEntityChapterKlWindow {
     public void onShown() {
         jfxNode.controller().putTitlePanesArrowOnRight();
     }
+
+
+    @Override
+    public void knowledgeLayoutUnbind() {
+        // Nothing to do here.
+    }
+
+    @Override
+    public void knowledgeLayoutBind() {
+        // Nothing to do here.
+    }
+
 }

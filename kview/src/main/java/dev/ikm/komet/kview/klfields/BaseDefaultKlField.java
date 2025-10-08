@@ -7,15 +7,13 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Parent;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
-
-import java.util.Optional;
+import javafx.scene.layout.Region;
 
 public abstract class BaseDefaultKlField<T> implements KlField<T> {
     protected final ObservableField<T> observableField;
     protected final ObservableView observableView;
 
-    protected ObjectProperty<Parent> klWidget = new SimpleObjectProperty<>() {
+    protected ObjectProperty<Region> fxObject = new SimpleObjectProperty<>() {
         @Override
         protected void invalidated() {
             Tooltip.install(get(), tooltip);
@@ -34,13 +32,19 @@ public abstract class BaseDefaultKlField<T> implements KlField<T> {
 
         this.isEditable = isEditable;
 
-        title = field().field().meaning().description() + ":";
+        title = observableView.getDescriptionTextOrNid(field().definition(observableView.calculator()).meaningNid())
+                + ":";
 
-        tooltip.setText(observableView.getDescriptionTextOrNid(observableField.purposeNid()));
+        tooltip.setText(observableView.getDescriptionTextOrNid(observableField.fieldDefinition(observableView.calculator()).purposeNid()));
     }
 
     protected void updateTooltipText() {
-        tooltip.setText(observableView.getDescriptionTextOrNid(observableField.purposeNid()));
+        tooltip.setText(observableView.getDescriptionTextOrNid(observableField.fieldDefinition(observableView.calculator()).purposeNid()));
+    }
+
+    @Override
+    public void restoreFromPreferencesOrDefaults() {
+        // Not supported
     }
 
     // -- on edit action
@@ -59,10 +63,25 @@ public abstract class BaseDefaultKlField<T> implements KlField<T> {
     public String getTitle() { return title; }
 
     // -- klWidget
-    protected void setKlWidget(Parent klWidget) { this.klWidget.set(klWidget); }
+    protected void setFxObject(Region klWidget) { this.fxObject.set(klWidget); }
 
     @Override
-    public Parent klWidget() {
-        return klWidget.get();
+    public Region fxObject() {
+        return fxObject.get();
+    }
+
+    @Override
+    public void knowledgeLayoutUnbind() {
+        // not implemented here
+    }
+
+    @Override
+    public void knowledgeLayoutBind() {
+        // not implemented here
+    }
+
+    @Override
+    public void save() {
+        // not implemented here
     }
 }

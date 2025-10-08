@@ -17,6 +17,7 @@ public sealed interface KlTopView<FX>
         return KlView.restore(preferences);
     }
     sealed interface Factory<FX, KL extends KlTopView<FX>> extends KlView.Factory<FX, KL> permits KlFxWindow.Factory, KlJournalWindow.Factory {
+
     }
 
 }

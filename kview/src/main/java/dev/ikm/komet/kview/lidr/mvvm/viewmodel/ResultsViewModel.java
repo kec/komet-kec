@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.kview.lidr.mvvm.viewmodel;
 
-import dev.ikm.komet.kview.lidr.mvvm.model.DataModelHelper;
 import dev.ikm.komet.kview.mvvm.model.DescrName;
 import dev.ikm.komet.kview.mvvm.viewmodel.FormViewModel;
 import dev.ikm.komet.framework.builder.ConceptEntityBuilder;

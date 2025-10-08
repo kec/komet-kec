@@ -7,13 +7,14 @@ import dev.ikm.komet.kview.controls.KLReadOnlyDataTypeControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
 import dev.ikm.komet.layout.version.field.KlIntegerField;
 import javafx.scene.Parent;
+import javafx.scene.layout.Region;
 
 public class DefaultKlIntegerField extends BaseDefaultKlField<Integer> implements KlIntegerField {
 
     public DefaultKlIntegerField(ObservableField<Integer> observableIntegerField, ObservableView observableView, boolean isEditable) {
         super(observableIntegerField, observableView, isEditable);
 
-        Parent node;
+        Region node;
         if (isEditable) {
             KLIntegerControl integerControl = new KLIntegerControl();
             integerControl.valueProperty().bindBidirectional(observableIntegerField.valueProperty());
@@ -25,6 +26,6 @@ public class DefaultKlIntegerField extends BaseDefaultKlField<Integer> implement
             readOnlyIntegerControl.setTitle(getTitle());
             node = readOnlyIntegerControl;
         }
-        setKlWidget(node);
+        setFxObject(node);
     }
 }

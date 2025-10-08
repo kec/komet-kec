@@ -4,6 +4,7 @@ import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.framework.observable.ObservableVersion;
 import dev.ikm.komet.layout.KlArea;
 import dev.ikm.komet.layout.KlParent;
+import dev.ikm.komet.layout.preferences.PropertyWithDefault;
 import dev.ikm.tinkar.entity.EntityVersion;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
@@ -40,9 +41,13 @@ import javafx.scene.layout.Pane;
  * @see KlStampArea
  */
 public sealed interface KlChronologyArea<OE extends ObservableEntity<OV>,
-        OV extends ObservableVersion<? extends EntityVersion>, FX extends Pane>
-        extends KlArea<FX>, KlParent<FX>
+        OV extends ObservableVersion<?>, FX extends Pane>
+        extends KlArea<FX>
         permits KlConceptArea, KlGenericChronologyArea, KlPatternArea, KlSemanticArea, KlStampArea {
+
+    enum PreferenceKeys {
+        CURRENT_ENTITY
+    }
     /**
      * Retrieves the observable component associated with this pane.
      *
@@ -74,7 +79,7 @@ public sealed interface KlChronologyArea<OE extends ObservableEntity<OV>,
 
     sealed interface Factory<FX extends Pane,
                              OE extends ObservableEntity<OV>,
-                             OV extends ObservableVersion<? extends EntityVersion>,
+                             OV extends ObservableVersion<?>,
                              KL extends KlChronologyArea<OE, OV, FX>>
             extends KlArea.Factory<FX, KL>
             permits KlConceptArea.Factory,

@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.framework.window;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

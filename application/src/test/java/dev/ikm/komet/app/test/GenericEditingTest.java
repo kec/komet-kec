@@ -110,8 +110,8 @@ public class GenericEditingTest {
         StringBuilder sb = new StringBuilder();
         fieldRecords.forEach(fieldRecord ->
                 sb.append("---Field Detail---").append("\n")
-                        .append(text(fieldRecord.meaningNid())).append(": ").append(fieldRecord.value().toString()).append("\n")
-                        .append("Hover Over: ").append(text(fieldRecord.purposeNid())).append("\n\n")
+                        .append(text(fieldRecord.fieldDefinition(stampCalculator).meaningNid())).append(": ").append(fieldRecord.value().toString()).append("\n")
+                        .append("Hover Over: ").append(text(fieldRecord.fieldDefinition(stampCalculator).purposeNid())).append("\n\n")
         );
         return sb.toString();
     }
@@ -124,7 +124,8 @@ public class GenericEditingTest {
                     semanticEntityVersion.fieldValues().get(i),
                     semanticEntityVersion.nid(),
                     semanticEntityVersion.stampNid(),
-                    fieldDefinitionForEntities.get(i))
+                    fieldDefinitionForEntities.get(i).patternNid(),
+                    fieldDefinitionForEntities.get(i).indexInPattern())
             );
         }
         return fieldRecords;

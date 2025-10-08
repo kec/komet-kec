@@ -1,6 +1,5 @@
 package dev.ikm.komet.layout.window;
 
-import dev.ikm.komet.layout.KlGadget;
 import dev.ikm.komet.layout.KlStateCommands;
 import dev.ikm.komet.layout.KlTopView;
 import dev.ikm.komet.layout.KlView;

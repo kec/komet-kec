@@ -37,8 +37,8 @@ public class ReadOnlyKLFieldFactory {
         Node componentRow = jfxNode.node();
         // update attribute's meaning title label
         Label fieldMeaning = (Label) componentRow.lookup(".semantic-attribute-type-label");
-        fieldMeaning.setTooltip(new Tooltip(text(viewProperties, fieldRecord.purposeNid())));
-        fieldMeaning.setText(text(viewProperties, fieldRecord.meaningNid()));
+        fieldMeaning.setTooltip(new Tooltip(text(viewProperties, fieldRecord.fieldDefinition(viewProperties.calculator()).purposeNid())));
+        fieldMeaning.setText(text(viewProperties, fieldRecord.fieldDefinition(viewProperties.calculator()).meaningNid()));
 
         // update attribute's purpose
         TextFlow fieldValue = (TextFlow) componentRow.lookup(".semantic-attribute-ditree-value");

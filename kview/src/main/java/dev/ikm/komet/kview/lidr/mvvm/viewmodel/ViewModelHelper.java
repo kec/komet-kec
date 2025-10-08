@@ -50,7 +50,6 @@ import java.util.regex.Pattern;
 
 import static dev.ikm.komet.kview.lidr.mvvm.model.DataModelHelper.*;
 import static dev.ikm.komet.kview.lidr.mvvm.viewmodel.ResultsViewModel.*;
-import static dev.ikm.komet.kview.mvvm.viewmodel.StampViewModel.*;
 import static dev.ikm.tinkar.coordinate.stamp.StampFields.*;
 
 

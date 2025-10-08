@@ -1,6 +1,6 @@
 package dev.ikm.komet.layout;
 
-import dev.ikm.komet.framework.observable.FeatureLocator;
+import dev.ikm.komet.framework.observable.FeatureKey;
 import dev.ikm.komet.layout.area.AreaGridSettings;
 import dev.ikm.tinkar.common.binary.*;
 import dev.ikm.tinkar.common.util.uuid.UuidT5Generator;
@@ -57,7 +57,7 @@ public sealed interface LayoutKey extends Encodable {
      * implementation. It serves as a foundational building block for defining structured layout keys.
      */
     sealed interface ForArea extends LayoutKey permits LayoutKeyRecord {
-        LayoutKey.Property makePropertyLayoutKey(FeatureLocator locator);
+        LayoutKey.Property makePropertyLayoutKey(FeatureKey locator);
 
         LayoutKey.Supplemental makeSupplementalLayoutKey(AreaGridSettings areaGridSettings);
 
@@ -137,10 +137,10 @@ public sealed interface LayoutKey extends Encodable {
      *
      * @param id The {@link UUID} representing the unique identifier for the layout key.
      */
-    record LayoutKeyRecord(
-            UUID id) implements ForArea, LayoutKey.Property, AreaKeyProvider, LayoutKey.Supplemental {
+    record LayoutKeyRecord(UUID id)
+            implements ForArea, LayoutKey.Property, AreaKeyProvider, LayoutKey.Supplemental {
         @Override
-        public Property makePropertyLayoutKey(FeatureLocator locator) {
+        public Property makePropertyLayoutKey(FeatureKey locator) {
             return new LayoutKeyRecord(UuidT5Generator.get(namespace, locator.toString()));
         }
 
@@ -163,20 +163,25 @@ public sealed interface LayoutKey extends Encodable {
         @Encoder
         @Override
         public void encode(EncoderOutput out) {
-            out.writeString(id.toString());
+            out.writeUuid(id);
         }
 
         @Decoder
         public static LayoutKeyRecord decode(DecoderInput in) {
             switch (Encodable.checkVersion(in)) {
                 default:
-                    return new LayoutKeyRecord(UUID.fromString(in.readString()));
+                    return new LayoutKeyRecord(in.readUuid());
             }
         }
 
         @Override
         public ForArea forArea() {
             return this;
+        }
+
+        @Override
+        public String toString() {
+            return "LayoutKey{" +  id + '}';
         }
     }
 }

@@ -17,7 +17,7 @@ import javafx.stage.Window;
  * The {@code KlView} peer is the root {@code Node} of the stage.
  *
  */
-public non-sealed interface KlFxWindow<FX extends Window> extends KlStateCommands, KlContextProvider, KlTopView<FX> {
+public non-sealed interface KlFxWindow extends KlStateCommands, KlContextProvider, KlTopView<Stage> {
 
     /**
      * Enumerates preference keys for managing the properties and default configuration states
@@ -132,7 +132,9 @@ public non-sealed interface KlFxWindow<FX extends Window> extends KlStateCommand
      * If the window is currently hidden or not rendered, invoking this method
      * will ensure it is rendered and brought into view.
      */
-    void show();
+    default void show() {
+        this.fxObject().show();
+    }
 
     /**
      * Hides the top-level window, making it invisible to the user.
@@ -142,7 +144,9 @@ public non-sealed interface KlFxWindow<FX extends Window> extends KlStateCommand
      * This method does not permanently dispose of the window or its resources, allowing
      * it to be shown again later through appropriate operations.
      */
-    void hide();
+    default void hide() {
+        this.fxObject().hide();
+    }
     /**
      * Saves the current state of the window or layout with the specified name.
      * This method is typically used to persist the configuration, positioning, and other
@@ -175,23 +179,17 @@ public non-sealed interface KlFxWindow<FX extends Window> extends KlStateCommand
      *              associated FX object is a {@code Stage}.
      */
     default void setTitle(String title) {
-        switch (this.fxObject()) {
-            case Stage stage -> stage.setTitle(title);
-            case Window _ -> {/* no title at Window level */}
-        }
+        this.fxObject().setTitle(title);
     }
     default String getTitle() {
-        return switch (this.fxObject()) {
-            case Stage stage -> stage.getTitle();
-            case Window _ -> "";
-        };
+        return this.fxObject().getTitle();
     }
 
     static <KL extends KlFxWindow> KL restore(KometPreferences preferences) {
         return KlView.restore(preferences);
     }
 
-    non-sealed interface Factory<FX extends Window, KL extends KlTopView<FX>> extends KlTopView.Factory<FX, KL> {
+    non-sealed interface Factory extends KlTopView.Factory<Stage, KlFxWindow> {
 
     }
 

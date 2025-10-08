@@ -7,13 +7,14 @@ import dev.ikm.komet.kview.controls.KLReadOnlyDataTypeControl;
 import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
 import dev.ikm.komet.layout.version.field.KlFloatField;
 import javafx.scene.Parent;
+import javafx.scene.layout.Region;
 
 public class DefaultKlFloatField extends BaseDefaultKlField<Float> implements KlFloatField {
 
     public DefaultKlFloatField(ObservableField<Float> observableFloatField, ObservableView observableView, boolean isEditable) {
         super(observableFloatField, observableView, isEditable);
 
-        Parent node;
+        Region node;
         if (isEditable) {
             KLFloatControl floatControl = new KLFloatControl();
 
@@ -29,6 +30,6 @@ public class DefaultKlFloatField extends BaseDefaultKlField<Float> implements Kl
 
             node = readOnlyStringControl;
         }
-        setKlWidget(node);
+        setFxObject(node);
     }
 }

@@ -24,9 +24,9 @@ import javafx.scene.layout.Pane;
  * @see KlChronologyArea
  */
 public non-sealed interface KlGenericChronologyArea<FX extends Pane>
-        extends KlChronologyArea<ObservableEntity<ObservableVersion<EntityVersion>>, ObservableVersion<EntityVersion>, FX> {
+        extends KlChronologyArea<ObservableEntity<ObservableVersion<?>>, ObservableVersion<?>, FX> {
 
     non-sealed interface Factory<FX extends Pane, KL extends KlGenericChronologyArea<FX>>
-            extends KlChronologyArea.Factory<FX, ObservableEntity<ObservableVersion<EntityVersion>>, ObservableVersion<EntityVersion>, KL> {
+            extends KlChronologyArea.Factory<FX, ObservableEntity<ObservableVersion<?>>, ObservableVersion<?>, KL> {
     }
  }

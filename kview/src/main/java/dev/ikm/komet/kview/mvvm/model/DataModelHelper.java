@@ -288,7 +288,8 @@ public class DataModelHelper {
                     semanticEntityVersion.fieldValues().get(i),
                     semanticEntityVersion.nid(),
                     semanticEntityVersion.stampNid(),
-                    fieldDefinitionForEntities.get(i))
+                    semanticEntityVersion.patternNid(),
+                    i)
             );
         }
         return fieldRecords;

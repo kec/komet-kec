@@ -185,7 +185,9 @@ public class ChangeListItemController {
             isItAnAxiom = isItAnAxiom || currentFieldRecord.value() instanceof DiTreeEntity;
 
             // Current Field definition
-            FieldDefinitionForEntity currentFieldDefinition = currentFieldRecord.fieldDefinition();
+            FieldDefinitionForEntity currentFieldDefinition =
+                    viewCalculator.latestPatternEntityVersion(currentFieldRecord.patternNid())
+                            .get().fieldDefinitions().get(currentFieldRecord.indexInPattern());
             // Current value's attribute definition's datatype nid
             int dataTypeNid = currentFieldDefinition.dataTypeNid();
             // Current value's attribute definition's meaning nid

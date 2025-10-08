@@ -108,7 +108,7 @@
         <jpackage.version>1.6.6</jpackage.version>
         <mockito.version>5.15.2</mockito.version>
         <nsmenufx.version>3.1.0</nsmenufx.version>
-        <openjfx.version>23.0.1</openjfx.version>
+        <openjfx.version>24.0.1</openjfx.version>
         <scenic-view.version>11.0.2</scenic-view.version>
 
         <!-- TestFX / Monocle -->
@@ -122,7 +122,6 @@
             --add-exports=javafx.base/com.sun.javafx.logging=org.testfx.monocle
             --add-opens=javafx.graphics/javafx.scene=org.controlsfx.controls
             --add-exports=javafx.controls/com.sun.javafx.scene.control.behavior=dev.ikm.komet.navigator
-            --enable-preview
         </commonTestFXArgs>
     </properties>
 
@@ -650,13 +649,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <source>23</source>
-                    <target>23</target>
-                    <release>23</release>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
+                    <source>24</source>
+                    <target>24</target>
+                    <release>24</release>
+<!--                    <compilerArgs>-->
+<!--                        <arg>-parameters</arg>-->
+<!--                        <arg>&#45;&#45;enable-preview</arg>-->
+<!--                    </compilerArgs>-->
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
                             <groupId>io.soabase.record-builder</groupId>

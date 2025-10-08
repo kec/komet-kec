@@ -219,35 +219,35 @@ public interface Binding {
              * @return field index
              */
             static int statusFieldDefinitionIndex() {
-                return 1;
+                return 0; //TODO VALIDATE STARTER SET: change back to 1 when starter set if fixed
             }
             /**
              * WARNING: off by one because of missing stampField in the pattern.
              * @return field index
              */
             static int timeFieldDefinitionIndex() {
-                return 2;
+                return 1; //TODO VALIDATE STARTER SET: change back to 2 when starter set if fixed
             }
             /**
              * WARNING: off by one because of missing stampField in the pattern.
              * @return field index
              */
             static int authorFieldDefinitionIndex() {
-                return 3;
+                return 2; //TODO VALIDATE STARTER SET: change back to 3 when starter set if fixed
             }
             /**
              * WARNING: off by one because of missing stampField in the pattern.
              * @return field index
              */
             static int moduleFieldDefinitionIndex() {
-                return 4;
+                return 3; //TODO VALIDATE STARTER SET: change back to 4 when starter set if fixed
             }
             /**
              * WARNING: off by one because of missing stampField in the pattern.
              * @return field index
              */
             static int pathFieldDefinitionIndex() {
-                return 5;
+                return 4; //TODO VALIDATE STARTER SET: change back to 5 when starter set if fixed
             }
         }
     }

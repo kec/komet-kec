@@ -8,6 +8,8 @@ import dev.ikm.komet.kview.klfields.BaseDefaultKlField;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -19,7 +21,7 @@ public class DefaultKlImageField extends BaseDefaultKlField<byte[]> {
     public DefaultKlImageField(ObservableField<byte[]> observableImageField, ObservableView observableView, boolean isEditable) {
         super(observableImageField, observableView, isEditable);
 
-        Parent node;
+        Region node;
         if (isEditable) {
             KLImageControl imageControl = new KLImageControl();
 
@@ -57,7 +59,7 @@ public class DefaultKlImageField extends BaseDefaultKlField<byte[]> {
 
             node = readOnlyImageControl;
         }
-        setKlWidget(node);
+        setFxObject(node);
     }
 
     private Image newImageFromByteArray(byte[] imageByteArray) {

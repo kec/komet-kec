@@ -18,7 +18,6 @@ package dev.ikm.komet.framework.observable;
 import org.eclipse.collections.api.list.ImmutableList;
 import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
-import dev.ikm.tinkar.entity.ConceptVersionRecord;
 
 import java.util.Comparator;
 import java.util.function.Predicate;

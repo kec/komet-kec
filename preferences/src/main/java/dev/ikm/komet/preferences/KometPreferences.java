@@ -16,8 +16,10 @@
 package dev.ikm.komet.preferences;
 
 import dev.ikm.tinkar.common.binary.Encodable;
+import dev.ikm.tinkar.common.util.uuid.UuidUtil;
 import dev.ikm.tinkar.terms.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigDecimal;
@@ -46,36 +48,35 @@ public interface KometPreferences {
         return copyThisSubtreeTo(this, newParent, overwrite);
     }
 
-    static boolean copyThisSubtreeTo(KometPreferences oldNodeToCopyFrom, KometPreferences newParent, boolean overwrite) throws BackingStoreException {
-        List<String> childrenNames = List.of(newParent.childrenNames());
-        boolean childAlreadyExists = childrenNames.contains(oldNodeToCopyFrom.name());
+    static boolean copyThisSubtreeTo(KometPreferences sourcePreferences, KometPreferences destinationPreferences, boolean overwrite) throws BackingStoreException {
+        List<String> childrenNames = List.of(destinationPreferences.childrenNames());
+        boolean childAlreadyExists = childrenNames.contains(sourcePreferences.name());
         if (!overwrite && childAlreadyExists) {
             return false;
         }
         if (childAlreadyExists) {
-            newParent.node(oldNodeToCopyFrom.name()).removeNode();
-            newParent.flush();
+            destinationPreferences.node(sourcePreferences.name()).removeNode();
+            destinationPreferences.flush();
         }
-        for (String childName : newParent.childrenNames()) {
-            KometPreferences existingChild = oldNodeToCopyFrom.node(childName);
-            KometPreferences newChild = newParent.node(childName);
-            recursiveAdd(existingChild, newChild);
-        }
-        newParent.flush();
+        recursiveAdd(sourcePreferences, destinationPreferences);
+        destinationPreferences.flush();
         return true;
     }
-    static void recursiveAdd(KometPreferences oldNodeToCopyFrom, KometPreferences newParentToAddTo) throws BackingStoreException {
-        for (String childName : oldNodeToCopyFrom.childrenNames()) {
-            KometPreferences existingChild = oldNodeToCopyFrom.node(childName);
-            KometPreferences newChild = newParentToAddTo.node(childName);
-            for (String key: existingChild.keys()) {
-                newChild.put(key, existingChild.get(key, null));
-            }
-            newChild.flush();
-            recursiveAdd(existingChild, newChild);
+    static void recursiveAdd(KometPreferences sourceNode, KometPreferences destinationNode) throws BackingStoreException {
+        for (String key: sourceNode.keys()) {
+            destinationNode.put(key, sourceNode.get(key, null));
+        }
+        for (String sourceChildName : sourceNode.childrenNames()) {
+            KometPreferences sourceChild = sourceNode.node(sourceChildName);
+            KometPreferences destinationChild = destinationNode.node(sourceChildName);
+            destinationChild.flush();
+            recursiveAdd(sourceChild, destinationChild);
         }
     }
 
+    default int delegateHash() {
+       return this.hashCode();
+    }
     /**
      * Associates the specified value with the specified entity key in this map.
      *
@@ -282,8 +283,11 @@ public interface KometPreferences {
      */
     default UUID getUuid(Enum key, UUID defaultValue) {
         if (defaultValue != null) {
-            String uuidStr = get(key, defaultValue.toString());
-            return UUID.fromString(uuidStr);
+            Optional<String> optionalUuidStr = get(key);
+            if (optionalUuidStr.isPresent() && UuidUtil.isUUID(optionalUuidStr.get())) {
+                UUID.fromString(optionalUuidStr.get());
+            }
+            return defaultValue;
         }
         throw new NullPointerException("Default value cannot be null");
     }
@@ -1093,7 +1097,10 @@ public interface KometPreferences {
     default <T extends Object> T getObject(Enum key, T defaultValue) {
         Optional<byte[]> optionalBytes = getByteArray(key);
         if (optionalBytes.isPresent()) {
-            return Encodable.decode(optionalBytes.get());
+            Object decodedObject = Encodable.decode(optionalBytes.get());
+            if (decodedObject != null) {
+                return (T) decodedObject;
+            }
         }
         return defaultValue;
     }
@@ -1171,7 +1178,11 @@ public interface KometPreferences {
      * @param encodable The Encodable instance representing the object to be stored, which will be converted to a byte array.
      */
     default void putObject(String key, Encodable encodable) {
-        putByteArray(key, encodable.toBytes());
+        if (encodable == null) {
+            putByteArray(key, Encodable.nullEncodable.toBytes());
+        } else {
+            putByteArray(key, encodable.toBytes());
+        }
     }
 
     /**
@@ -2289,4 +2300,11 @@ public interface KometPreferences {
      *                               removed with the {@link #removeNode()} method.
      */
     String[] keys() throws BackingStoreException;
+
+    /**
+     * Retrieves the directory file reference.
+     *
+     * @return a File object representing the directory containing this preference node.
+     */
+    Optional<File> directory();
 }

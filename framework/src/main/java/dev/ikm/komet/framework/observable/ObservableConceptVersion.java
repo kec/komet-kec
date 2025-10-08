@@ -16,11 +16,8 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.komet.framework.observable.binding.Binding;
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.entity.ConceptEntityVersion;
 import dev.ikm.tinkar.entity.ConceptVersionRecord;
-import dev.ikm.tinkar.entity.Entity;
-import dev.ikm.tinkar.entity.PatternEntity;
 import org.eclipse.collections.api.list.MutableList;
 
 public final class ObservableConceptVersion extends ObservableVersion<ConceptVersionRecord> implements ConceptEntityVersion {
@@ -49,19 +46,13 @@ public final class ObservableConceptVersion extends ObservableVersion<ConceptVer
     }
 
     @Override
-    public int patternVersionStampNid() {
-        PatternEntity pattern = Entity.getFast(patternNid());
-        return pattern.lastVersion().stampNid();
-    }
-
-    @Override
     public int indexInPattern() {
         return Binding.Concept.versionItemPatternIndex();
     }
 
 
     @Override
-    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features) {
         // Nothing to add.
     }
 }

@@ -18,8 +18,10 @@ package dev.ikm.komet.preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Optional;
 import java.util.prefs.*;
 import java.util.prefs.Preferences;
 
@@ -208,4 +210,8 @@ public class PreferencesWrapper implements KometPreferences {
         return delegate.toString();
     }
 
+    @Override
+    public Optional<File> directory() {
+        return Optional.empty();
+    }
 }

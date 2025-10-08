@@ -17,8 +17,6 @@ package dev.ikm.komet.framework.observable;
 
 import dev.ikm.komet.framework.observable.binding.Binding;
 import dev.ikm.tinkar.coordinate.logic.PremiseType;
-import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.*;
 import org.eclipse.collections.api.list.MutableList;
@@ -92,43 +90,37 @@ public final class ObservableSemantic
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    final AtomicReference<Feature> patternForSemanticFieldReference = new AtomicReference<>();
-    private Feature getPatternForSemanticFeature(StampCalculator stampCalculator) {
+    final AtomicReference<FeatureWrapper> patternForSemanticFieldReference = new AtomicReference<>();
+    private FeatureWrapper getPatternForSemanticFeature() {
         return patternForSemanticFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makePatternForSemanticFeature(stampCalculator));
+                : makePatternForSemanticFeature());
     }
-    private Feature makePatternForSemanticFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.pattern());
-        PatternEntityVersion pattern = componentPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Semantic.patternFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Chronology.SemanticPattern(this.nid());
-        return new Feature(this.pattern(), fieldDefinition, this, locator);
+    private FeatureWrapper makePatternForSemanticFeature() {
+        FeatureKey locator = FeatureKey.Entity.SemanticPattern(this.nid());
+        return new FeatureWrapper(this.pattern(), Binding.Semantic.pattern().nid(), Binding.Semantic.patternFieldDefinitionIndex(), this, locator);
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
-    final AtomicReference<Feature> referencedComponentFieldReference = new AtomicReference<>();
-    private Feature getReferencedComponentFeature(StampCalculator stampCalculator) {
+    final AtomicReference<FeatureWrapper> referencedComponentFieldReference = new AtomicReference<>();
+    private FeatureWrapper getReferencedComponentFeature() {
         return referencedComponentFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeReferencedComponentFeature(stampCalculator));
+                : makeReferencedComponentFeature());
     }
 
-    private Feature makeReferencedComponentFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.pattern());
-        PatternEntityVersion pattern = componentPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Component.versionsFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Chronology.SemanticReferencedComponent(this.nid());
-        return new Feature(this.referencedComponent(), fieldDefinition, this, locator);
+    private FeatureWrapper makeReferencedComponentFeature() {
+        FeatureKey locator = FeatureKey.Entity.SemanticReferencedComponent(this.nid());
+        return new FeatureWrapper(this.referencedComponent(), Binding.Semantic.pattern().nid(), Binding.Component.versionsFieldDefinitionIndex(), this, locator);
      }
 
     @Override
-    protected void addAdditionalChronologyFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+    protected void addAdditionalChronologyFeatures(MutableList<Feature> features) {
         // Pattern for semantic
-        features.add(getPatternForSemanticFeature(stampCalculator));
+        features.add(getPatternForSemanticFeature());
 
         // Referenced component for semantic
-        features.add(getReferencedComponentFeature(stampCalculator));
+        features.add(getReferencedComponentFeature());
     }
 
 }

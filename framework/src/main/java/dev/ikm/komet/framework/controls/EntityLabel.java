@@ -15,8 +15,6 @@
  */
 package dev.ikm.komet.framework.controls;
 
-import dev.ikm.komet.framework.observable.ObservableEntity;
-import dev.ikm.komet.framework.observable.ObservableEntitySnapshot;
 import dev.ikm.komet.framework.observable.ObservableSemantic;
 import dev.ikm.komet.framework.observable.ObservableSemanticSnapshot;
 import javafx.scene.control.Button;
@@ -37,7 +35,6 @@ import dev.ikm.tinkar.coordinate.logic.PremiseType;
 import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.entity.Entity;
 import dev.ikm.tinkar.entity.EntityVersion;
-import dev.ikm.tinkar.entity.SemanticEntityVersion;
 import dev.ikm.tinkar.terms.EntityFacade;
 import dev.ikm.tinkar.terms.State;
 import org.slf4j.Logger;

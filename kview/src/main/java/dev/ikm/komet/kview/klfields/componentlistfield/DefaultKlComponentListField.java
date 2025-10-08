@@ -13,12 +13,13 @@ import dev.ikm.tinkar.terms.EntityProxy;
 import javafx.beans.property.ObjectProperty;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Region;
 
 public class DefaultKlComponentListField extends BaseDefaultKlField<IntIdList> implements KlComponentListField {
 
     public DefaultKlComponentListField(ObservableField<IntIdList> observableComponentListField, ObservableView observableView, boolean isEditable) {
         super(observableComponentListField, observableView, isEditable);
-        Parent node;
+        Region node;
         ObjectProperty<IntIdList> observableProperty = observableComponentListField.valueProperty();
         if (isEditable) {
             KLComponentListControl klComponentListControl = new KLComponentListControl();
@@ -45,6 +46,6 @@ public class DefaultKlComponentListField extends BaseDefaultKlField<IntIdList> i
 
             node = klReadOnlyComponentListControl;
         }
-        setKlWidget(node);
+        setFxObject(node);
     }
 }

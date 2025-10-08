@@ -2,7 +2,6 @@ package dev.ikm.komet.layout.component;
 
 import dev.ikm.komet.framework.observable.ObservableEntity;
 import dev.ikm.komet.layout.KlArea;
-import dev.ikm.komet.layout.KlWidget;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -14,11 +13,11 @@ import javafx.scene.layout.Region;
  * @param <OE> the type parameter that extends {@link ObservableEntity}, representing
  * the specific observable entity type managed by this pane.
  *
- * @see KlWidget
+ * @see KlArea
  * @see ObservableEntity
  * @see KlChronologyArea
  */
-public interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pane> extends KlWidget<FX> {
+public non-sealed interface KlMultiComponentArea<OE extends ObservableEntity, FX extends Pane> extends KlArea<FX> {
     /**
      * Retrieves the list of observable entities associated with this pane.
      *

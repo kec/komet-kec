@@ -4,6 +4,8 @@ import dev.ikm.komet.framework.observable.Feature;
 import dev.ikm.komet.layout.area.AreaGridSettings;
 import org.eclipse.collections.api.list.ImmutableList;
 
+import java.util.Optional;
+
 /**
  * The LayoutComputer interface defines the contract for generating and managing
  * layout configurations dynamically. It facilitates the creation of layout structures
@@ -14,16 +16,27 @@ import org.eclipse.collections.api.list.ImmutableList;
  */
 public interface LayoutComputer {
     /**
-     * Represents an element in the layout, combining specific grid settings and a collection
-     * of observable features. This is a compact data structure used within the layout
-     * computation process.
+     * Represents a layout element in the layout computation process. A layout element
+     * consists of settings for grid management and an optional specific feature that
+     * defines additional characteristics of the layout.
      *
-     * @param areaGridSettings  the grid settings associated with this layout element,
-     *                          determining placement and grid behavior
-     * @param features          an immutable list of observable features (possibly empty) that define
-     *                          additional characteristics and behaviors for the layout element
+     * Instances of this record are utilized within the layout computation system to
+     * dynamically construct and configure layout compositions.
+     *
+     * Fields:
+     * - {@code areaGridSettings}: Contains grid-related settings and configurations
+     *   associated with this layout element.
+     * - {@code optionalFeature}: Encapsulates an optional feature to provide additional
+     *   properties or behaviors to the layout element.
      */
-    record LayoutElement(AreaGridSettings areaGridSettings, ImmutableList<Feature> features) {}
+    record LayoutElement(AreaGridSettings areaGridSettings, Optional<Feature> optionalFeature) {
+        public LayoutElement(AreaGridSettings areaGridSettings, Feature feature) {
+            this(areaGridSettings, Optional.ofNullable(feature));
+        }
+        public LayoutElement(AreaGridSettings areaGridSettings) {
+            this(areaGridSettings, Optional.empty());
+        }
+    }
 
     /**
      * All layout computers perform the layout within an overarching {@code KnowledgeLayout}.
@@ -54,6 +67,6 @@ public interface LayoutComputer {
      * @param areaKeyProvider the hierarchical key identifying the next layout level configuration to be used
      * @return an immutable list of {@code LayoutElement} instances representing the layout components.
      */
-    ImmutableList<LayoutElement> layout(ImmutableList<Feature> features,
+    ImmutableList<LayoutElement> layout(ImmutableList<? extends Feature> features,
                                         LayoutKey.AreaKeyProvider areaKeyProvider);
 }

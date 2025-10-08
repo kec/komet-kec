@@ -21,25 +21,10 @@ public sealed interface ObservableComponent
      * based on the provided stamp calculator. The list represents the attributes or
      * characteristics of the component, each defined by a {@code Feature}.
      *
-     * @param stampCalculator the {@code StampCalculator} used to determine the visibility
-     *                        and context of the features to be retrieved.
      * @return an {@code ImmutableList} of {@code Feature} objects associated with this component.
      */
-    ImmutableList<Feature> getFeatures(StampCalculator stampCalculator);
+    ImmutableList<Feature> getFeatures();
 
-    /**
-     * Retrieves an immutable list of {@code Feature} objects representing only those features
-     * that are associated with a version.
-     *
-     * @param stampCalculator the {@code StampCalculator} used to determine visibility and context
-     *                        of the features to be filtered and retrieved.
-     * @return an {@code ImmutableList} of {@code Feature} objects matching any version criteria.
-     */
-    default ImmutableList<Feature> getVersionsAsFeatures(StampCalculator stampCalculator) {
-        return getFeatures(stampCalculator).collectIf(feature ->
-                FeatureLocator.anyVersion().match(feature.locator()),
-                feature -> feature);
-    }
     /**
      * Retrieves the native identifier (nid) of the observable component.
      * The nid is a unique, integer-based identifier used to represent

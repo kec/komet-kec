@@ -47,6 +47,7 @@ open module dev.ikm.komet.framework {
     exports dev.ikm.komet.framework.events;
     exports dev.ikm.komet.framework.events.appevents;
     exports dev.ikm.komet.framework.observable.binding;
+    exports dev.ikm.komet.framework.observable.key;
 
     provides CachingService with dev.ikm.komet.framework.dnd.DragRegistry.CacheProvider;
     requires io.github.classgraph;
@@ -82,7 +83,9 @@ open module dev.ikm.komet.framework {
     requires transitive dev.ikm.jpms.eclipse.collections.api;
     requires transitive org.kordamp.ikonli.javafx;
     requires transitive org.slf4j;
-    requires transitive dev.ikm.tinkar.ext.lang.owl; // Owl expression builder
+    requires transitive dev.ikm.tinkar.ext.lang.owl;
+    requires dev.ikm.tinkar.component;
+
 
     uses dev.ikm.komet.framework.concurrent.TaskListsService;
     uses dev.ikm.komet.preferences.PreferencesService;

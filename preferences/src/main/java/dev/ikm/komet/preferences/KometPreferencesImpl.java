@@ -60,7 +60,11 @@ public class KometPreferencesImpl
         this.directory = new File(configuredRoot, DB_PREFERENCES_FOLDER);
         LOG.info("Opening configuration preferences from location: " + this.directory.getAbsolutePath());
         this.preferencesFile = new File(this.directory, "preferences.xml");
+        if (!this.directory.exists() || !this.directory.isDirectory() || !this.preferencesFile.exists()) {
+            this.newNode = true;
+        }
         this.temporaryFile = new File(this.directory, "preferences-tmp.xml");
+
         init();
     }
 
@@ -135,6 +139,10 @@ public class KometPreferencesImpl
         for (AbstractPreferences childPreferences : preferences.cachedChildren()) {
             recursiveInit((KometPreferencesImpl) childPreferences);
         }
+    }
+
+    public File directory() {
+        return directory;
     }
 
     public Object getLock() {
@@ -224,14 +232,20 @@ public class KometPreferencesImpl
 
     private void writeToDisk() throws BackingStoreException {
         try {
-            if (!directory.exists() && !directory.mkdirs()) {
-                throw new BackingStoreException(directory + " create failed.");
-            }
+            if (this.isRemoved()) {
+                if (directory.exists()) {
+                    removeNodeSpi();
+                }
+            } else {
+                if (!directory.exists() && !directory.mkdirs()) {
+                    throw new BackingStoreException(directory + " create failed.");
+                }
 
-            try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
-                exportMap(fos, preferencesTree);
+                try (FileOutputStream fos = new FileOutputStream(temporaryFile)) {
+                    exportMap(fos, preferencesTree);
+                }
+                Files.move(temporaryFile.toPath(), preferencesFile.toPath(), REPLACE_EXISTING);
             }
-            Files.move(temporaryFile.toPath(), preferencesFile.toPath(), REPLACE_EXISTING);
         } catch (Exception e) {
             if (e instanceof BackingStoreException) {
                 throw (BackingStoreException) e;
@@ -257,5 +271,9 @@ public class KometPreferencesImpl
     @Override
     public boolean isRemoved() {
         return super.isRemoved();
+    }
+
+    public boolean isNewNode() {
+        return newNode;
     }
 }

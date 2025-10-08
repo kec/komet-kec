@@ -16,8 +16,6 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.komet.framework.observable.binding.Binding;
-import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.terms.EntityProxy;
 import dev.ikm.tinkar.terms.PatternFacade;
@@ -79,40 +77,36 @@ public final class ObservableSemanticVersion
     }
 
     @Override
-    public ImmutableList<ObservableField> fields(PatternEntityVersion patternVersion) {
+    public ImmutableList<ObservableField> fields() {
         ObservableField[] fieldArray = new ObservableField[fieldValues().size()];
         for (int indexInPattern = 0; indexInPattern < fieldArray.length; indexInPattern++) {
             Object value = fieldValues().get(indexInPattern);
-            FieldDefinitionForEntity fieldDef = patternVersion.fieldDefinitions().get(indexInPattern);
-            FieldDefinitionRecord fieldDefinitionRecord = new FieldDefinitionRecord(fieldDef.dataTypeNid(),
-                    fieldDef.purposeNid(), fieldDef.meaningNid(), patternVersion.stampNid(), patternVersion.nid(), indexInPattern);
-            fieldArray[indexInPattern] = new ObservableField(new FieldRecord(value, this.nid(), this.stampNid(), fieldDefinitionRecord), this);
+
+            FeatureKey.VersionFeature.Semantic.FieldListItem featureKey =
+                    FeatureKey.Version.SemanticFieldListItem(nid(), indexInPattern, patternNid(), stampNid());
+
+            fieldArray[indexInPattern] = new ObservableField(featureKey, new FieldRecord(value, featureKey.nid(), featureKey.stampNid(), featureKey.patternNid(), featureKey.index()), this);
         }
         return Lists.immutable.of(fieldArray);
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
     private AtomicReference<Feature> fieldListReference = new AtomicReference<>();
-    private Feature getFieldListFeature(StampCalculator stampCalculator) {
+    private Feature getFieldListFeature() {
         return fieldListReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeFieldListFeature(stampCalculator));
+                : makeFieldListFeature());
     }
-    private Feature makeFieldListFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.Version.pattern());
-        PatternEntityVersion patternEntityVersion = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = patternEntityVersion.fieldDefinitions().get(Binding.Semantic.Version.semanticFieldsDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.SemanticFieldList(this.nid(), stampNid());
-        return new Feature(this.fields(patternEntityVersion), fieldDefinition, this, locator);
+    private Feature makeFieldListFeature() {
+        FeatureKey locator = FeatureKey.Version.SemanticFieldList(this.nid(), stampNid());
+        return new FeatureList(this.fields(), locator, Binding.Semantic.Version.pattern(), Binding.Semantic.Version.semanticFieldsDefinitionIndex(), this);
     }
 
     @Override
-    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
-        features.add(getFieldListFeature(stampCalculator));
-
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Semantic.Version.pattern());
-        for (ObservableField field : fields(componentVersionPattern.get())) {
-            features.add(new Feature(field, this));
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features) {
+        features.add(getFieldListFeature());
+        for (ObservableField field : fields()) {
+            features.add(field);
         }
     }
 }

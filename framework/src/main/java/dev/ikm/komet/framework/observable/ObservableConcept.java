@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.framework.observable;
 
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.ConceptEntity;
 import dev.ikm.tinkar.entity.ConceptVersionRecord;
@@ -40,7 +39,7 @@ public final class ObservableConcept
     }
 
     @Override
-    protected void addAdditionalChronologyFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+    protected void addAdditionalChronologyFeatures(MutableList<Feature> features) {
         // Nothing to add.
     }
 }

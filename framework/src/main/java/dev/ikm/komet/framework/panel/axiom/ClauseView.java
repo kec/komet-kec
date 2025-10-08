@@ -38,7 +38,6 @@ import dev.ikm.tinkar.common.id.PublicId;
 import dev.ikm.tinkar.common.service.PrimitiveData;
 import dev.ikm.tinkar.common.util.text.NaturalOrder;
 import dev.ikm.tinkar.common.util.time.DateTimeUtil;
-import dev.ikm.tinkar.component.Concept;
 import dev.ikm.tinkar.component.graph.DiTree;
 import dev.ikm.tinkar.coordinate.Coordinates;
 import dev.ikm.tinkar.coordinate.logic.PremiseType;

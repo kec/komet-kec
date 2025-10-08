@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.navigator.graph;
 
- import dev.ikm.komet.navigator.graph.MultiParentVertex;
  import javafx.scene.Node;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 

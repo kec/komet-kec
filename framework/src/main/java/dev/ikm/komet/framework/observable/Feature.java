@@ -1,100 +1,83 @@
 package dev.ikm.komet.framework.observable;
 
-import dev.ikm.tinkar.component.FieldDataType;
-import dev.ikm.tinkar.component.FieldDefinition;
-import dev.ikm.tinkar.terms.ConceptFacade;
-import dev.ikm.tinkar.terms.ConceptToDataType;
+import dev.ikm.tinkar.component.FeatureDefinition;
+import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
+import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.terms.EntityProxy;
 import dev.ikm.tinkar.terms.PatternFacade;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.ReadOnlyProperty;
 
-/**
- * The Feature class represents an attribute or characteristic within an {@code ObservableComponent}.
- * It serves as a data encapsulation for metadata and associated values of a field in the component.
- * <p>
- *  Features contain their field definition, and therefore require a {@code StampCalculator} to determine
- *  the correct pattern version based on the {@code StampCalculator}, which is used to determine current meaning and purpose.
- *
- * @param <DT> the data type of the value associated with this Feature
+/*
+ComponentFeature?
+
+DT extends Feature?
+
+Always has a value?
+
  */
-public final class Feature<DT> implements LocatableFeature {
-    private final ObservableComponent containingComponent;
-    private final FieldDefinition fieldDefinition;
-    private final ObjectProperty<DT> valueProperty;
-    public final FeatureLocator locator;
+public sealed interface Feature<DT>
+        permits FeatureList, FeatureWrapper, ObservableEntity.EntityFeature, ObservableFeature, ObservableFeatureDefinition, ObservableVersion {
 
-    public Feature(DT value, FieldDefinition fieldDefinition, ObservableComponent containingComponent, FeatureLocator locator) {
-        this.containingComponent = containingComponent;
-        this.fieldDefinition = fieldDefinition;
-        this.locator = locator;
-        this.valueProperty = new SimpleObjectProperty<>();
-        this.valueProperty.set(value);
+    /*
+    If I just implement ObservableFeature as:
+
+    Meaning, Purpose, Value, and disconnect from all the other classes:
+
+    DT can be:
+        Object (Traditional Semantic Field)
+        FieldDefinition (Pattern field definitions)
+        List<ObservableFeature>
+
+ObservableFeatureField
+
+Field<LocatableField>
+
+
+    ObservableDefinition can be encapsulated by a feature, but not a feature itself.
+
+    ObservableFeature
+        ObservableField
+            ObservableFieldDirect
+            ObservableFieldIndirect
+        ObservableFeatureList<ObservableField>
+     */
+
+    FeatureKey featureKey();
+
+    ObservableComponent containingComponent();
+
+    int patternNid();
+
+    default PatternFacade pattern() {
+        return EntityProxy.Pattern.make(patternNid());
     }
 
-    public Feature(ObservableField field, ObservableComponent containingComponent) {
-        this.containingComponent = containingComponent;
-        this.fieldDefinition = field.field();
-        this.locator = field.locator();
-        this.valueProperty = field.valueProperty();
+    int indexInPattern();
+
+    default FeatureDefinition definition(StampCalculator stampCalculator) {
+        Latest<ObservablePatternVersion> patternVersion = stampCalculator.latest(ObservableEntity.get(this.patternNid()));
+        if (patternVersion.isPresent()) {
+            return patternVersion.get().fieldDefinitions().get(this.indexInPattern());
+        } else {
+            throw new RuntimeException("Pattern version not found for " + this +
+                    " in " + ObservableEntity.get(this.patternNid()));
+        }
     }
 
-    public int patternNid() {
-        return fieldDefinition.patternNid();
-    }
+    ReadOnlyProperty<? extends Feature<DT>> featureProperty();
 
-    public int patternVersionStampNid() {
-        return fieldDefinition.patternVersionStampNid();
-    }
 
-    public DT value() {
-        return valueProperty.getValue();
-    }
+    default DT value() {
+        // TODO: This is a hack to get around a few problems. Needs to be rethought.
+        return switch (this) {
+            case FeatureList<?> featureList -> (DT) featureList;
+            case FeatureWrapper<DT> wrapper -> wrapper.value();
+            case ObservableEntity.EntityFeature entityFeature -> (DT) entityFeature.value();
+            case ObservableFeature<DT> observableFeature -> observableFeature.value();
+            case ObservableFeatureDefinition observableFeatureDefinition -> (DT) observableFeatureDefinition;
+            case ObservableVersion observableVersion -> (DT) observableVersion;
+        };
 
-    public ObjectProperty<DT> valueProperty() {
-        return valueProperty;
-    }
-
-    public int indexInPattern() {
-        return fieldDefinition.indexInPattern();
-    }
-
-    public ObservableComponent containingComponent() {
-        return containingComponent;
-    }
-
-    public FeatureLocator locator() { return locator; }
-
-    public int meaningNid() {
-        return fieldDefinition.meaningNid();
-    }
-
-    public ConceptFacade meaning() {
-        return EntityProxy.Concept.make(fieldDefinition.meaningNid());
-    }
-
-    public ConceptFacade purpose() {
-        return EntityProxy.Concept.make(fieldDefinition.purposeNid());
-    }
-
-    public PatternFacade pattern() {
-        return EntityProxy.Pattern.make(fieldDefinition.patternNid());
-    }
-
-    public ConceptFacade dataType() {
-        return EntityProxy.Concept.make(fieldDefinition.dataTypeNid());
-    }
-
-    public FieldDataType fieldDataType() {
-        return ConceptToDataType.convert(dataType());
-    }
-
-    public int purposeNid() {
-        return fieldDefinition.purposeNid();
-    }
-
-    public int dataTypeNid() {
-        return fieldDefinition.dataTypeNid();
     }
 
 }

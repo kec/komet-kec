@@ -30,7 +30,6 @@ import dev.ikm.tinkar.common.id.PublicId;
 import dev.ikm.tinkar.common.id.PublicIds;
 import dev.ikm.tinkar.common.service.PrimitiveData;
 import dev.ikm.tinkar.common.util.uuid.UuidUtil;
-import dev.ikm.tinkar.component.Concept;
 import dev.ikm.tinkar.component.graph.DiTree;
 import dev.ikm.tinkar.component.graph.Vertex;
 import dev.ikm.tinkar.coordinate.Coordinates;

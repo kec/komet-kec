@@ -8,15 +8,17 @@ module dev.ikm.komet.layout {
     requires java.compiler;
     requires log4j;
     requires javafx.graphics;
+    requires dev.ikm.jpms.eclipse.collections.api;
+    requires javafx.base;
+    requires dev.ikm.tinkar.common;
+    requires javafx.controls;
 
     exports dev.ikm.komet.layout;
     exports dev.ikm.komet.layout.action;
     exports dev.ikm.komet.layout.area;
 
     exports dev.ikm.komet.layout.component;
-    exports dev.ikm.komet.layout.feature;
     exports dev.ikm.komet.layout.version.field;
-    exports dev.ikm.komet.layout.version;
     exports dev.ikm.komet.layout.context;
     exports dev.ikm.komet.layout.event;
     exports dev.ikm.komet.layout.orchestration;
@@ -29,7 +31,5 @@ module dev.ikm.komet.layout {
     opens dev.ikm.komet.layout to javafx.fxml;
     opens dev.ikm.layout.app to javafx.fxml;
     opens dev.ikm.komet.layout.area to javafx.fxml;
-
-    provides SaveState with LayoutOverrides.Saver;
 
 }

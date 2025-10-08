@@ -15,8 +15,6 @@
  */
 package dev.ikm.komet.framework.observable;
 
-import dev.ikm.tinkar.coordinate.logic.PremiseType;
-import dev.ikm.tinkar.entity.EntityService;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
@@ -24,7 +22,6 @@ import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import dev.ikm.tinkar.entity.Field;
 import dev.ikm.tinkar.entity.PatternEntityVersion;
-import dev.ikm.tinkar.entity.SemanticVersionRecord;
 import dev.ikm.tinkar.terms.EntityFacade;
 
 import java.util.Comparator;
@@ -106,7 +103,7 @@ public final class ObservableSemanticSnapshot extends
                             Latest<Field<T>> latestField = Latest.of(field);
                             if (latestVersion.isContradicted()) {
                                 for (ObservableSemanticVersion contradiction : latestVersion.contradictions()) {
-                                    latestField.addLatest(contradiction.fields(latestPattern.get()).get(index));
+                                    latestField.addLatest(contradiction.fields().get(index));
                                 }
                             }
                             return latestField;
@@ -123,10 +120,10 @@ public final class ObservableSemanticSnapshot extends
                     Latest<PatternEntityVersion> latestPattern = viewCalculator.latestPatternEntityVersion(version.patternNid());
                     return latestPattern.ifAbsentOrFunction(Latest::empty,
                             patternEntityVersion -> {
-                                Latest<ImmutableList<ObservableField>> latest = Latest.of(version.fields(patternEntityVersion));
+                                Latest<ImmutableList<ObservableField>> latest = Latest.of(version.fields());
                                 if (latestVersion.isContradicted()) {
                                     for (ObservableSemanticVersion contradiction : latestVersion.contradictions()) {
-                                        latest.addLatest(contradiction.fields(patternEntityVersion));
+                                        latest.addLatest(contradiction.fields());
                                     }
                                 }
                                 return latest;
@@ -191,7 +188,7 @@ public final class ObservableSemanticSnapshot extends
                             Latest<Field> latestField = Latest.of(field);
                             if (latestVersion.isContradicted()) {
                                 for (ObservableSemanticVersion contradiction : latestVersion.contradictions()) {
-                                    latestField.addLatest(contradiction.fields(latestPattern.get()).get(index));
+                                    latestField.addLatest(contradiction.fields().get(index));
                                 }
                             }
                             matchedFields.add(latestField);

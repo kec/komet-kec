@@ -48,10 +48,8 @@ import dev.ikm.komet.framework.events.AxiomChangeEvent;
 import dev.ikm.komet.framework.events.EvtBus;
 import dev.ikm.komet.framework.events.EvtBusFactory;
 import dev.ikm.komet.framework.events.Subscriber;
-import dev.ikm.komet.framework.observable.ObservableEntity;
-import dev.ikm.komet.framework.observable.ObservableField;
-import dev.ikm.komet.framework.observable.ObservableSemantic;
-import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
+import dev.ikm.komet.framework.observable.*;
+import dev.ikm.komet.framework.observable.FeatureKey;
 import dev.ikm.komet.framework.propsheet.KometPropertySheet;
 import dev.ikm.komet.framework.propsheet.SheetItem;
 import dev.ikm.komet.framework.view.ViewProperties;
@@ -1124,7 +1122,13 @@ public class DetailsController  {
             ObservableSemantic observableSemantic = ObservableEntity.get(semanticEntityVersion.nid());
             ObservableSemanticVersion observableSemanticVersion = observableSemantic.getVersionFast(semanticEntityVersion.stampNid());
 
-            fieldArray[indexInPattern] = new ObservableField(new FieldRecord(value, semanticEntityVersion.nid(), semanticEntityVersion.stampNid(), fieldDefinitionRecord), observableSemanticVersion);
+            FeatureKey.VersionFeature.Semantic.FieldListItem featureKey =
+                    FeatureKey.Version.SemanticFieldListItem(observableSemanticVersion.nid(),
+                            observableSemanticVersion.indexInPattern(), observableSemanticVersion.patternNid(),
+                            observableSemanticVersion.stampNid());
+
+            fieldArray[indexInPattern] = new ObservableField(featureKey, new FieldRecord(value, featureKey.nid(),
+                    featureKey.stampNid(), featureKey.patternNid(), featureKey.index()), observableSemanticVersion);
         }
         return Lists.immutable.of(fieldArray);
     }

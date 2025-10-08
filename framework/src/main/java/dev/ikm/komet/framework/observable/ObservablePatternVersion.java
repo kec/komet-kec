@@ -16,8 +16,6 @@
 package dev.ikm.komet.framework.observable;
 
 import dev.ikm.komet.framework.observable.binding.Binding;
-import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
-import dev.ikm.tinkar.coordinate.stamp.calculator.StampCalculator;
 import dev.ikm.tinkar.entity.*;
 import dev.ikm.tinkar.entity.transaction.Transaction;
 import dev.ikm.tinkar.terms.EntityFacade;
@@ -38,7 +36,7 @@ public final class ObservablePatternVersion
 
     final SimpleObjectProperty<EntityFacade> purposeProperty = new SimpleObjectProperty<>(this, "Pattern purpose");
     final SimpleObjectProperty<EntityFacade> meaningProperty = new SimpleObjectProperty<>(this, "Pattern meaning");
-    final ImmutableList<ObservableFieldDefinition> observableFieldDefinitions;
+    final ImmutableList<ObservableFeatureDefinition> observableFieldDefinitions;
 
     ObservablePatternVersion(PatternVersionRecord patternVersionRecord) {
         super(patternVersionRecord);
@@ -46,10 +44,10 @@ public final class ObservablePatternVersion
         purposeProperty.addListener(this::purposeChanged);
         meaningProperty.set(Entity.getFast(patternVersionRecord.semanticMeaningNid()));
         meaningProperty.addListener(this::meaningChanged);
-        MutableList<ObservableFieldDefinition> mutableFieldDefinitions = Lists.mutable.ofInitialCapacity(patternVersionRecord.fieldDefinitions().size());
+        MutableList<ObservableFeatureDefinition> mutableFieldDefinitions = Lists.mutable.ofInitialCapacity(patternVersionRecord.fieldDefinitions().size());
         for (FieldDefinitionRecord fieldDefinition : patternVersionRecord.fieldDefinitions()) {
-            mutableFieldDefinitions.add(new ObservableFieldDefinition(fieldDefinition, this,
-                    FeatureLocator.Version.PatternFieldDefinitionListItem(nid(), indexInPattern(), patternNid(), stampNid())));
+            mutableFieldDefinitions.add(new ObservableFeatureDefinition(fieldDefinition, this,
+                    FeatureKey.Version.PatternFieldDefinitionListItem(nid(), indexInPattern(), patternNid(), stampNid())));
         }
         this.observableFieldDefinitions = mutableFieldDefinitions.toImmutable();
     }
@@ -134,7 +132,7 @@ public final class ObservablePatternVersion
     }
 
     @Override
-    public ImmutableList<ObservableFieldDefinition> fieldDefinitions() {
+    public ImmutableList<ObservableFeatureDefinition> fieldDefinitions() {
         return this.observableFieldDefinitions;
     }
 
@@ -153,69 +151,54 @@ public final class ObservablePatternVersion
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
     private AtomicReference<Feature> patternMeaningFieldReference = new AtomicReference<>();
-    private Feature getPatternMeaningFeature(StampCalculator stampCalculator) {
+    private Feature getPatternMeaningFeature() {
         return patternMeaningFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makePatternMeaningFeature(stampCalculator));
+                : makePatternMeaningFeature());
     }
-    private Feature makePatternMeaningFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.patternMeaningFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.PatternMeaning(this.nid(), this.stampNid());
-        return new Feature(this.meaning(), fieldDefinition, this, locator);
+    private Feature makePatternMeaningFeature() {
+        FeatureKey locator = FeatureKey.Version.PatternMeaning(this.nid(), this.stampNid());
+        return new FeatureWrapper(this.meaningProperty, Binding.Pattern.Version.pattern().nid(),
+                Binding.Pattern.Version.patternMeaningFieldDefinitionIndex(), this, locator);
     }
-
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
     private AtomicReference<Feature> patternPurposeFieldReference = new AtomicReference<>();
-    private Feature getPatternPurpose(StampCalculator stampCalculator) {
+    private Feature getPatternPurpose() {
         return patternPurposeFieldReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makePatternPurposeFeature(stampCalculator));
+                : makePatternPurposeFeature());
     }
-    private Feature makePatternPurposeFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.patternPurposeFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.PatternPurpose(this.nid(), this.stampNid()) ;
-        return new Feature(this.purpose(), fieldDefinition, this, locator);
+    private Feature makePatternPurposeFeature() {
+        FeatureKey locator = FeatureKey.Version.PatternPurpose(this.nid(), this.stampNid()) ;
+        return new FeatureWrapper(this.purposeProperty, Binding.Pattern.Version.pattern().nid(),
+                Binding.Pattern.Version.patternPurposeFieldDefinitionIndex(),this, locator);
     }
 
     // TODO: replace with JEP 502: Stable Values when finalized to allow lazy initialization of feature.
     private AtomicReference<Feature> fieldDefinitionListReference = new AtomicReference<>();
-    private Feature getFieldDefinitionListFeature(StampCalculator stampCalculator) {
+    private Feature getFieldDefinitionListFeature() {
         return fieldDefinitionListReference.updateAndGet(currentValue -> currentValue != null
                 ? currentValue
-                : makeFieldDefinitionListFeature(stampCalculator));
+                : makeFieldDefinitionListFeature());
     }
-    private Feature makeFieldDefinitionListFeature(StampCalculator stampCalculator) {
-        Latest<PatternEntityVersion> componentVersionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
-        PatternEntityVersion pattern = componentVersionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = pattern.fieldDefinitions().get(Binding.Pattern.Version.fieldDefinitionListFieldDefinitionIndex());
-        FeatureLocator locator = FeatureLocator.Version.PatternFieldDefinitionList(this.nid(), this.stampNid()) ;
-        return new Feature(this.observableFieldDefinitions, fieldDefinition, this, locator);
+    private Feature makeFieldDefinitionListFeature() {
+        FeatureKey locator = FeatureKey.Version.PatternFieldDefinitionList(this.nid(), this.stampNid()) ;
+        return new FeatureList(this.observableFieldDefinitions, locator, Binding.Pattern.Version.pattern(), Binding.Pattern.Version.fieldDefinitionListFieldDefinitionIndex(), this);
     }
 
     @Override
-    protected void addAdditionalVersionFeatures(MutableList<Feature> features, StampCalculator stampCalculator) {
+    protected void addAdditionalVersionFeatures(MutableList<Feature> features) {
         // Pattern purpose
-        features.add(getPatternPurpose(stampCalculator));
+        features.add(getPatternPurpose());
         // Pattern meaning
-        features.add(getPatternMeaningFeature(stampCalculator));
+        features.add(getPatternMeaningFeature());
         // Pattern FieldDefinitionList
-        features.add(getFieldDefinitionListFeature(stampCalculator));
+        features.add(getFieldDefinitionListFeature());
         // Pattern FieldDefinitionListItems
 
-
-        Latest<PatternEntityVersion> latestDefinitionPattern = stampCalculator.latestPatternEntityVersion(Binding.Pattern.Version.pattern());
-        PatternEntityVersion definitionPattern = latestDefinitionPattern.get();
-        FieldDefinitionForEntity fieldDefinition = definitionPattern.fieldDefinitions().get(Binding.Pattern.Version.fieldDefinitionListItemIndex());
-
-        for (ObservableFieldDefinition featureDefinition : observableFieldDefinitions) {
-            FeatureLocator locator = FeatureLocator.Version.PatternFieldDefinitionListItem(
-                    featureDefinition.indexInPattern(), featureDefinition.patternNid(), this.nid(), this.stampNid());
-            features.add(new Feature(featureDefinition, fieldDefinition, this, locator ));
+        for (ObservableFeatureDefinition featureDefinition : observableFieldDefinitions) {
+            features.add(featureDefinition);
         }
     }
 }

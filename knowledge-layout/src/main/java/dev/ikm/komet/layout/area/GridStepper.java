@@ -1,6 +1,6 @@
 package dev.ikm.komet.layout.area;
 
-import dev.ikm.komet.framework.observable.FeatureLocator;
+import dev.ikm.komet.framework.observable.FeatureKey;
 import dev.ikm.komet.layout.LayoutKey;
 
 public interface GridStepper {
@@ -13,8 +13,12 @@ public interface GridStepper {
 
     int column();
 
-    AreaGridSettings nextForFeature(LayoutKey.ForArea forAreaLayoutKey, FeatureLocator locator, String factoryClassName);
+    AreaGridSettings nextForFeature(LayoutKey.ForArea forAreaLayoutKey, FeatureKey locator, String factoryClassName);
 
     AreaGridSettings nextForSupplemental(LayoutKey.ForArea forAreaLayoutKey, String factoryClassName);
+
+    AreaGridSettings nextForFeature(LayoutKey.ForArea forAreaLayoutKey, FeatureKey locator, Class factoryClass);
+
+    AreaGridSettings nextForSupplemental(LayoutKey.ForArea forAreaLayoutKey, Class factoryClass);
 
 }

@@ -2,10 +2,8 @@ package dev.ikm.komet.kview.klfields;
 
 import static dev.ikm.komet.kview.mvvm.model.DataModelHelper.obtainObservableField;
 
-import dev.ikm.komet.framework.observable.ObservableEntity;
-import dev.ikm.komet.framework.observable.ObservableField;
-import dev.ikm.komet.framework.observable.ObservableSemantic;
-import dev.ikm.komet.framework.observable.ObservableSemanticVersion;
+import dev.ikm.komet.framework.observable.*;
+import dev.ikm.komet.framework.observable.FeatureKey;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.komet.kview.klfields.booleanfield.KlBooleanFieldFactory;
 import dev.ikm.komet.kview.klfields.componentfield.KlComponentFieldFactory;
@@ -26,7 +24,6 @@ import dev.ikm.tinkar.entity.PatternEntityVersion;
 import dev.ikm.tinkar.entity.SemanticEntityVersion;
 import dev.ikm.tinkar.terms.TinkarTerm;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,47 +65,47 @@ public class KlFieldHelper {
 
         Node node = null;
         ReadOnlyKLFieldFactory rowf = ReadOnlyKLFieldFactory.getInstance();
-        int dataTypeNid = fieldRecord.dataType().nid();
+        int dataTypeNid = fieldRecord.fieldDefinition(viewProperties.calculator()).dataTypeNid();
 
         //TODO use service loader instead of factories
 
         if (dataTypeNid == TinkarTerm.COMPONENT_FIELD.nid()) {
             // load a read-only component
             KlComponentFieldFactory componentFieldFactory = new KlComponentFieldFactory();
-            node = componentFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
-        } else if (dataTypeNid == TinkarTerm.STRING_FIELD.nid() || fieldRecord.dataType().nid() == TinkarTerm.STRING.nid()) {
+            node = componentFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
+        } else if (dataTypeNid == TinkarTerm.STRING_FIELD.nid() || fieldRecord.fieldDefinition(viewProperties.calculator()).dataTypeNid() == TinkarTerm.STRING.nid()) {
             KlStringFieldFactory stringFieldTextFactory = new KlStringFieldFactory();
-            node = stringFieldTextFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = stringFieldTextFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.COMPONENT_ID_SET_FIELD.nid()) {
             KlComponentSetFieldFactory klComponentSetFieldFactory = new KlComponentSetFieldFactory();
-            node = klComponentSetFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = klComponentSetFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.COMPONENT_ID_LIST_FIELD.nid()) {
             KlComponentListFieldFactory klComponentListFieldFactory = new KlComponentListFieldFactory();
-            node = klComponentListFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = klComponentListFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.DITREE_FIELD.nid()) {
             node = rowf.createReadOnlyDiTree(viewProperties, fieldRecord);
-        } else if (dataTypeNid == TinkarTerm.FLOAT_FIELD.nid() || fieldRecord.dataType().nid() == TinkarTerm.FLOAT.nid()) {
+        } else if (dataTypeNid == TinkarTerm.FLOAT_FIELD.nid() || fieldRecord.fieldDefinition(viewProperties.calculator()).dataTypeNid() == TinkarTerm.FLOAT.nid()) {
             KlFloatFieldFactory klFloatFieldFactory = new KlFloatFieldFactory();
-            node = klFloatFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = klFloatFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.INTEGER_FIELD.nid()) {
             KlIntegerFieldFactory klIntegerFieldFactory = new KlIntegerFieldFactory();
-            node = klIntegerFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = klIntegerFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.BOOLEAN_FIELD.nid()) {
             KlBooleanFieldFactory klBooleanFieldFactory = new KlBooleanFieldFactory();
-            node = klBooleanFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = klBooleanFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
         } else if (dataTypeNid == TinkarTerm.IMAGE_FIELD.nid() || (editable &&
                 (PublicId.equals(semanticEntityVersionLatest.get().entity().publicId(),
                         PublicIds.of(UUID.fromString("48633874-f3d2-434a-9f11-2a07e4c4311b")))
                         && !hasAddedEditableImage))) {
             KlImageFieldFactory imageFieldFactory = new KlImageFieldFactory();
-            node = imageFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = imageFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
             hasAddedEditableImage = true;
         } else if (dataTypeNid == TinkarTerm.IMAGE_FIELD.nid() || (!editable &&
                 (PublicId.equals(semanticEntityVersionLatest.get().entity().publicId(),
                         PublicIds.of(UUID.fromString("48633874-f3d2-434a-9f11-2a07e4c4311b")))
                         && !hasAddedReadOnlyImage))) {
             KlImageFieldFactory imageFieldFactory = new KlImageFieldFactory();
-            node = imageFieldFactory.create(observableField, viewProperties.nodeView(), editable).klWidget();
+            node = imageFieldFactory.create(observableField, viewProperties.nodeView(), editable).fxObject();
             hasAddedReadOnlyImage = true;
         }
 
@@ -134,7 +131,12 @@ public class KlFieldHelper {
             ObservableSemantic observableSemantic = ObservableEntity.get(semanticEntityVersionLatest.get().nid());
             ObservableSemanticVersion observableSemanticVersion = observableSemantic.getVersionFast(semanticEntityVersionLatest.get().stampNid());
 
-            ObservableField observableField = new ObservableField(writeObservableField.field(), observableSemanticVersion, false);
+            FeatureKey.VersionFeature.Semantic.FieldListItem featureKey =
+                    FeatureKey.Version.SemanticFieldListItem(observableSemanticVersion.nid(),
+                            observableSemanticVersion.indexInPattern(), observableSemanticVersion.patternNid(),
+                            observableSemanticVersion.stampNid());
+
+            ObservableField observableField = new ObservableField(featureKey, writeObservableField.field(), observableSemanticVersion, false);
             observableFields.add(observableField);
 
             // TODO: this method below will be removed once the database has the capability to add and edit Image data types

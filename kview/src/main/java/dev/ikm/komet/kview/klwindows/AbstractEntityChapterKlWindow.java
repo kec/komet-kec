@@ -1,12 +1,9 @@
 package dev.ikm.komet.kview.klwindows;
 
 import dev.ikm.komet.framework.view.ViewProperties;
-import dev.ikm.komet.layout.KlGadget;
-import dev.ikm.komet.layout.context.KlContext;
 import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.terms.EntityFacade;
-import javafx.scene.layout.Pane;
 
 import java.util.UUID;
 
@@ -94,6 +91,11 @@ public abstract class AbstractEntityChapterKlWindow extends AbstractChapterKlWin
     @Override
     public KlRenderView getKlRenderView() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void restoreFromPreferencesOrDefaults() {
+        // Not implemented here
     }
 
 }

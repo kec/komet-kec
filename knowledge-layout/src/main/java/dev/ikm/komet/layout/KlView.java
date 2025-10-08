@@ -9,6 +9,7 @@ import dev.ikm.komet.layout.window.KlJournalWindow;
 import dev.ikm.komet.layout.window.KlRenderView;
 import dev.ikm.komet.preferences.KometPreferences;
 import dev.ikm.tinkar.common.service.PluggableService;
+import dev.ikm.tinkar.common.service.TinkExecutor;
 import dev.ikm.tinkar.coordinate.view.calculator.ViewCalculator;
 import javafx.collections.ObservableMap;
 import javafx.scene.Node;
@@ -18,16 +19,18 @@ import javafx.stage.Window;
 import org.eclipse.collections.api.factory.Lists;
 import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.prefs.BackingStoreException;
 
-import static dev.ikm.komet.layout.KlObject.PreferenceKeys.FACTORY_CLASS;
-import static dev.ikm.komet.layout.KlObject.PropertyKeys.KL_CONTEXT;
+import static dev.ikm.komet.layout.KlPeerable.PropertyKeys.KL_CONTEXT;
+import static dev.ikm.komet.layout.KlRestorable.PreferenceKeys.FACTORY_CLASS_NAME;
 
 /**
  * Represents an interface for a knowledge layout gadget with functionality for managing
@@ -38,37 +41,41 @@ import static dev.ikm.komet.layout.KlObject.PropertyKeys.KL_CONTEXT;
  * @param <FX> the type of the JavaFX component associated with this gadget
  */
 
-public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContextSensitiveComponent
-        permits KlGadget, KlRenderView, KlTopView {
-
-    default void addToParent(KlView view) {
+public sealed interface KlView<FX>
+        extends KlPeerable, KlContextProvider, KlContextSensitiveComponent, KlViewLayoutLifecycle
+        permits KlArea, KlTopView, KlRenderView {
+    Logger LOG = LoggerFactory.getLogger(KlView.class);
+    default void addChild(KlView view) {
         switch (this) {
             case KlParent parent
                     when view instanceof KlArea<?> area -> parent.gridPaneForChildren().getChildren().add(area.fxObject());
             case KlRenderView renderView
-                    when view instanceof KlArea<?> area -> renderView.fxObject().setRoot(area.fxObject());
+                    when view instanceof KlArea<?> area -> renderView.setKlRootArea(area);
             case KlTopView topView
                     when view instanceof KlRenderView renderView -> topView.setKlRenderView(renderView);
-            default -> throw new IllegalStateException("Can't add " + view.getClass().getName() + " to parent: " + this.getClass().getName());
+            default -> throw new IllegalStateException("Can't add " + view.getClass().getSimpleName() + " to parent: " + this.getClass().getSimpleName());
+        }
+    }
+    default void setFxPeer(Object fxPeer) {
+        this.properties().put(PropertyKeys.KL_PEER, this);
+        this.properties().put(PropertyKeys.FX_PEER, fxPeer);
+        switch (fxPeer) {
+            case Node node -> node.setAccessibleRoleDescription("Peer for " + this.getClass().getSimpleName());
+            case Window _,
+                 Scene _ -> { /* Valid object type, but nothing to do. */}
+            case null -> {
+                this.properties().remove(PropertyKeys.KL_PEER);
+                this.properties().remove(PropertyKeys.FX_PEER);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + fxPeer);
         }
     }
 
-    default void setFxPeer(FX fxPeer) {
-        if (this.hasProperties()) {
-            this.properties().put(PropertyKeys.FX_PEER, fxPeer);
-            switch (fxPeer) {
-                case Node node -> node.getProperties().put(PropertyKeys.KL_PEER, this);
-                case Window window -> window.getProperties().put(PropertyKeys.KL_PEER, this);
-                case Scene scene -> scene.getProperties().put(PropertyKeys.KL_PEER, this);
-                default -> throw new IllegalStateException("Unexpected value: " + fxPeer);
-            }
-        }
-    }
     default FX getFxPeer() {
         if (this.hasProperties()) {
             return (FX) this.properties().get(PropertyKeys.FX_PEER);
         }
-        throw new IllegalStateException("Peer not found for " + this.getClass().getName() + "");
+        throw new IllegalStateException("Peer not found for " + this.getClass().getName());
     }
 
     /**
@@ -90,7 +97,7 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
 
     @Override
     default boolean hasProperties() {
-        return switch (this) {
+        return switch (this.fxObject()) {
             case Window window -> window.hasProperties();
             case Node node -> node.hasProperties();
             case Scene scene -> scene.hasProperties();
@@ -137,7 +144,10 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
         switch (context.klPeer()) {
             case KlView<?> klView -> {
                 switch (klView) {
-                    case KlArea area -> recursiveAddContexts(area.fxObject().getParent(), contexts);
+                    case KlArea<?> area when area.getFxPeer().getParent() != null ->  {
+                        recursiveAddContexts(area.getFxPeer().getParent(), contexts);
+                    }
+                    case KlArea<?> area -> recursiveAddContexts(area.getFxPeer().getScene(), contexts);
                     case KlTopView _ -> contexts.add(KnowledgeBaseContext.INSTANCE.context());
                     case KlRenderView renderView -> recursiveAddContexts(renderView.topView(), contexts);
                 }
@@ -315,22 +325,10 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
      */
     default void dfsProcessKlView(Consumer<KlView<?>> action) {
         switch (this) {
-            case KlFxWindow<?> windowView -> {
-                action.accept(windowView);
-                dfsProcessNodesWithKlPeer(windowView.getFxPeer(), action);
-            }
-            case KlJournalWindow journalView -> {
-                action.accept(journalView);
-                dfsProcessNodesWithKlPeer(journalView.getFxPeer(), action);
-            }
-            case KlRenderView klRenderView -> {
-                action.accept(klRenderView);
-                dfsProcessNodesWithKlPeer(klRenderView.fxObject().getRoot(), action);
-            }
-            case KlArea area -> {
-                action.accept(area);
-                dfsProcessNodesWithKlPeer(area.fxObject(), action);
-            }
+            case KlFxWindow windowView -> dfsProcessNodesWithKlPeer(windowView.getFxPeer(), action);
+            case KlJournalWindow journalView -> dfsProcessNodesWithKlPeer(journalView.getFxPeer(), action);
+            case KlRenderView klRenderView -> dfsProcessNodesWithKlPeer(klRenderView.fxObject().getRoot(), action);
+            case KlArea<?> area -> dfsProcessNodesWithKlPeer(area.fxObject(), action);
         }
     };
 
@@ -344,9 +342,9 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
      *               object's properties with the {@code KL_PEER} key.
      */
     private void dfsProcessNodesWithKlPeer(Node node, Consumer<KlView<?>> action) {
-        if (node.hasProperties() && node.getProperties().containsKey(PropertyKeys.FX_PEER)) {
-            KlView gadget = (KlView) node.getProperties().get(PropertyKeys.FX_PEER);
-            action.accept(gadget);
+        if (node.hasProperties() && node.getProperties().containsKey(PropertyKeys.KL_PEER)) {
+            KlView view = (KlView) node.getProperties().get(PropertyKeys.KL_PEER);
+            action.accept(view);
         }
         if (node instanceof Parent parent) {
             parent.getChildrenUnmodifiable().forEach(child -> dfsProcessNodesWithKlPeer(child, action));
@@ -354,16 +352,16 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
     }
 
     private void dfsProcessNodesWithKlPeer(Window window, Consumer<KlView<?>> action) {
-        if (window.hasProperties() && window.getProperties().containsKey(PropertyKeys.FX_PEER)) {
-            KlView view = (KlView) window.getProperties().get(PropertyKeys.FX_PEER);
+        if (window.hasProperties() && window.getProperties().containsKey(PropertyKeys.KL_PEER)) {
+            KlView view = (KlView) window.getProperties().get(PropertyKeys.KL_PEER);
             action.accept(view);
         }
         dfsProcessNodesWithKlPeer(window.getScene(), action);
     }
 
     private void dfsProcessNodesWithKlPeer(Scene scene, Consumer<KlView<?>> action) {
-        if (scene.hasProperties() && scene.getProperties().containsKey(PropertyKeys.FX_PEER)) {
-            KlView view = (KlView) scene.getProperties().get(PropertyKeys.FX_PEER);
+        if (scene.hasProperties() && scene.getProperties().containsKey(PropertyKeys.KL_PEER)) {
+            KlView view = (KlView) scene.getProperties().get(PropertyKeys.KL_PEER);
             action.accept(view);
         }
         dfsProcessNodesWithKlPeer(scene.getRoot(), action);
@@ -416,47 +414,36 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
         }
     }
 
-
-
-    /**
-     * Restores a list of {@code KlGadget} instances from all child preferences of the provided
-     * {@code KometPreferences}. This method iterates through all children of the given preferences,
-     * restoring a {@code KlGadget} from each child and collecting the results in an immutable list.
-     *
-     * @param preferences the {@code KometPreferences} containing child preferences from which to restore
-     *                    {@code KlGadget} instances.
-     * @return an immutable list of restored {@code KlGadget} instances.
-     * @throws RuntimeException if an error occurs while accessing the backing store during the restoration process.
-     */
-    static ImmutableList<? extends KlView> restoreFromAllChildren(KometPreferences preferences) {
-        try {
-            MutableList<? extends KlView> views = Lists.mutable.empty();
-            for (KometPreferences childPreferences: preferences.children()) {
-                views.add(restore(childPreferences));
-            }
-            return views.toImmutable();
-        } catch (BackingStoreException e) {
-            throw new RuntimeException(e);
-        }
+    default Future<Void> backgroundSave() {
+        return (Future<Void>) TinkExecutor.ioThreadPool().submit(
+                () -> this.save()
+        );
     }
-    /**
-     * Restores a {@code KlGadget} instance from the only child preference of the given {@code KometPreferences}.
-     * This method assumes that the provided preferences have exactly one child. If the number of child preferences
-     * is not equal to one, an exception is thrown. The restored {@code KlGadget} is derived using the child preference.
-     *
-     * @param <KL> the type of {@code KlView} that will be restored.
-     * @param preferences the {@code KometPreferences} containing the child preference from which to restore the {@code KlGadget}.
-     * @return the restored {@code KlGadget} instance of type {@code G}.
-     * @throws IllegalStateException if the number of child preferences is not equal to one.
-     * @throws RuntimeException if there is an error during the restoration process.
-     */
-    static <KL extends KlView> KL restoreFromOnlyChild(KometPreferences preferences) {
+
+    void save();
+
+    static KlView<?> restoreWithChildren(KometPreferences preferences) {
+        MutableList<KlView<?>> restoredViewList = Lists.mutable.ofInitialCapacity(16);
+        KlView<?> restoredView = restore(preferences);
+        restoredViewList.add(restoredView);
+
+        restoreWithChildren(restoredView, preferences, restoredViewList);
+
+        restoredViewList.forEach(klView -> klView.restoreFromPreferencesOrDefaults());
+        restoredViewList.forEach(klView -> klView.knowledgeLayoutBind());
+        return restoredView;
+    }
+
+    static void restoreWithChildren(KlView<?> parentView, KometPreferences preferences, MutableList<KlView<?>> viewList) {
         try {
-            KometPreferences[] childPreferences = preferences.children();
-            if (childPreferences.length != 1) {
-                throw new IllegalStateException("Expecting 1 child preference, got " + childPreferences.length + " instead.");
+            if (preferences.hasChildren()) {
+                for (KometPreferences childPreferences: preferences.children()) {
+                    KlView<?> restoredChild = restore(childPreferences);
+                    viewList.add(restoredChild);
+                    parentView.addChild(restoredChild);
+                    restoreWithChildren(restoredChild, childPreferences, viewList);
+                }
             }
-            return restore(childPreferences[0]);
         } catch (BackingStoreException e) {
             throw new RuntimeException(e);
         }
@@ -475,40 +462,22 @@ public sealed interface KlView<FX> extends KlObject, KlContextProvider, KlContex
      */
     static <KL extends KlView> KL restore(KometPreferences preferences) {
         try {
-            Optional<String> optionalFactoryClassName = preferences.get(FACTORY_CLASS);
+            LOG.info("Restoring: " + preferences.name() + ": " + preferences.getMap());
+            Optional<String> optionalFactoryClassName = preferences.get(FACTORY_CLASS_NAME);
             if (optionalFactoryClassName.isPresent()) {
-                Class<KlFactory> factoryClass = (Class<KlFactory>) PluggableService.forName(optionalFactoryClassName.get());
-                KlFactory klFactory = factoryClass.getDeclaredConstructor().newInstance();
+                Class<KlView.Factory> factoryClass = (Class<KlView.Factory>) PluggableService.forName(optionalFactoryClassName.get());
+                KlView.Factory klFactory = factoryClass.getDeclaredConstructor().newInstance();
                 return (KL) klFactory.restore(preferences);
             } else {
                 throw new IllegalStateException("FACTORY_CLASS not found in child preferences.");
             }
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException |
-                 ClassNotFoundException e) {
+                 ClassNotFoundException | BackingStoreException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-    /**
-     * Restores an area of type {@code KL} using the provided preferences and associates it
-     * with the specified parent area.
-     *
-     * @param preferences the preferences to use for restoring the area.
-     * @param parentView the parent area to which the restored area will be linked.
-     * @return the restored area of type {@code KL}.
-     */
-    static <KL extends KlView> KL restoreAndAddToParent(KometPreferences preferences, KlView parentView) {
-        Objects.requireNonNull(preferences, "preferences is null");
-        Objects.requireNonNull(parentView, "parentView is null");
-
-        KL klView = restore(preferences);
-        parentView.addToParent(klView);
-        return klView;
-    }
-
-    sealed interface Factory<FX, KL extends KlView<FX>> extends KlObject.Factory<FX, KL>
+    sealed interface Factory<FX, KL extends KlView<FX>> extends KlPeerable.Factory<FX, KL>
             permits KlArea.Factory, KlTopView.Factory, KlRenderView.Factory {
-
     }
 }

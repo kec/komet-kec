@@ -15,7 +15,6 @@
  */
 package dev.ikm.komet.framework.panel;
 
-import dev.ikm.komet.framework.EditedConceptTracker;
 import dev.ikm.komet.framework.PseudoClasses;
 import dev.ikm.komet.framework.graphics.Icon;
 import dev.ikm.komet.framework.observable.*;
@@ -29,7 +28,6 @@ import dev.ikm.komet.framework.rulebase.RuleService;
 import dev.ikm.komet.framework.view.ViewProperties;
 import dev.ikm.tinkar.common.alert.AlertObject;
 import dev.ikm.tinkar.common.alert.AlertStreams;
-import dev.ikm.tinkar.common.service.PrimitiveData;
 import dev.ikm.tinkar.common.service.TinkExecutor;
 import dev.ikm.tinkar.common.util.text.NaturalOrder;
 import dev.ikm.tinkar.common.util.time.DateTimeUtil;
@@ -37,7 +35,6 @@ import dev.ikm.tinkar.coordinate.Coordinates;
 import dev.ikm.tinkar.coordinate.stamp.calculator.Latest;
 import dev.ikm.tinkar.entity.EntityVersion;
 import dev.ikm.tinkar.entity.SemanticEntityVersion;
-import dev.ikm.tinkar.entity.SemanticVersionRecord;
 import dev.ikm.tinkar.entity.StampEntity;
 import dev.ikm.tinkar.entity.transaction.*;
 import javafx.application.Platform;
