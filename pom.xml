@@ -5,7 +5,7 @@
     <parent>
         <groupId>dev.ikm.build</groupId>
         <artifactId>java-parent</artifactId>
-        <version>1.58.0</version>
+        <version>1.65.0</version>
         <relativePath/>
     </parent>
     <groupId>dev.ikm.komet</groupId>
@@ -106,7 +106,7 @@
         <ikonli.version>12.3.1</ikonli.version>
         <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
         <jpackage.version>1.6.6</jpackage.version>
-        <mockito.version>5.15.2</mockito.version>
+        <mockito.version>5.20.0</mockito.version>
         <nsmenufx.version>3.1.0</nsmenufx.version>
         <openjfx.version>24.0.1</openjfx.version>
         <scenic-view.version>11.0.2</scenic-view.version>
@@ -649,13 +649,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
-                    <source>24</source>
-                    <target>24</target>
-                    <release>24</release>
-<!--                    <compilerArgs>-->
-<!--                        <arg>-parameters</arg>-->
-<!--                        <arg>&#45;&#45;enable-preview</arg>-->
-<!--                    </compilerArgs>-->
+                    <source>25</source>
+                    <target>25</target>
+                    <release>25</release>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
                             <groupId>io.soabase.record-builder</groupId>
