@@ -71,10 +71,6 @@
         </dependency>
         <dependency>
             <groupId>${tinkar-core.groupId}</groupId>
-            <artifactId>coordinate</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${tinkar-core.groupId}</groupId>
             <artifactId>entity-provider</artifactId>
         </dependency>
         <dependency>
@@ -124,6 +120,7 @@
         <dependency>
             <groupId>${tinkar-core.groupId}</groupId>
             <artifactId>composer</artifactId>
+            <version>1.10.0</version>
         </dependency>
         <dependency>
             <groupId>org.controlsfx</groupId>

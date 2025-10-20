@@ -109,8 +109,8 @@ public class LayoutOverrides implements Encodable {
         out.writeUuid(id);
         out.writeVarInt(layoutOverrides.size());
         layoutOverrides.forEach((key, value) -> {
-            out.encode(key);
-            out.encode(value);
+            out.write(key);
+            out.write(value);
         });
     }
 

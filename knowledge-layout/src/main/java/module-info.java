@@ -8,7 +8,7 @@ module dev.ikm.komet.layout {
     requires java.compiler;
     requires log4j;
     requires javafx.graphics;
-    requires dev.ikm.jpms.eclipse.collections.api;
+    requires org.eclipse.collections.api;
     requires javafx.base;
     requires dev.ikm.tinkar.common;
     requires javafx.controls;

@@ -5,7 +5,7 @@
     <parent>
         <groupId>dev.ikm.build</groupId>
         <artifactId>java-parent</artifactId>
-        <version>1.65.0</version>
+        <version>1.67.0-dist-SNAPSHOT</version>
         <relativePath/>
     </parent>
     <groupId>dev.ikm.komet</groupId>
@@ -71,7 +71,7 @@
         <!-- Tinkar Core Variables -->
         <tinkar-core.groupId>dev.ikm.tinkar</tinkar-core.groupId>
         <tinkar-composer.version>1.6.0</tinkar-composer.version>
-        <tinkar-core.version>1.91.0</tinkar-core.version>
+        <tinkar-core.version>1.126.0-gudid-db-SNAPSHOT</tinkar-core.version>
 
         <!-- IKM Evrete Variables -->
         <ikm-evrete.groupId>org.evrete</ikm-evrete.groupId>
@@ -81,8 +81,7 @@
         <tinkar-jpms-deps.groupId>dev.ikm.jpms</tinkar-jpms-deps.groupId>
         <jpms-roaringbitmap.version>0.9.31-r11</jpms-roaringbitmap.version>
         <jpms-record-builder-core.version>36-r7</jpms-record-builder-core.version>
-        <eclipse-collections.version>11.1.0-r13</eclipse-collections.version>
-        <eclipse-collections-api.version>11.1.0-r11</eclipse-collections-api.version>
+        <eclipse-collections.version>13.0.0</eclipse-collections.version>
         <jsr305.version>3.0.2-r7</jsr305.version>
 
         <!-- JPRO Variables -->
@@ -227,11 +226,6 @@
             </dependency>
             <dependency>
                 <groupId>${tinkar-core.groupId}</groupId>
-                <artifactId>coordinate</artifactId>
-                <version>${tinkar-core.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>${tinkar-core.groupId}</groupId>
                 <artifactId>entity-provider</artifactId>
                 <version>${tinkar-core.version}</version>
             </dependency>
@@ -315,14 +309,14 @@
                 <version>${jpms-record-builder-core.version}</version>
             </dependency>
             <dependency>
-                <groupId>${tinkar-jpms-deps.groupId}</groupId>
+                <groupId>org.eclipse.collections</groupId>
                 <artifactId>eclipse-collections</artifactId>
                 <version>${eclipse-collections.version}</version>
             </dependency>
             <dependency>
-                <groupId>${tinkar-jpms-deps.groupId}</groupId>
+                <groupId>org.eclipse.collections</groupId>
                 <artifactId>eclipse-collections-api</artifactId>
-                <version>${eclipse-collections-api.version}</version>
+                <version>${eclipse-collections.version}</version>
             </dependency>
             <dependency>
                 <groupId>${tinkar-jpms-deps.groupId}</groupId>
@@ -660,13 +654,19 @@
                         <annotationProcessorPath>
                             <groupId>io.soabase.record-builder</groupId>
                             <artifactId>record-builder-processor</artifactId>
-                            <version>${record-builder-core.version}</version>
+                            <version>36</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                     <annotationProcessors>
-                        <annotationProcessor>io.soabase.recordbuilder.processor.RecordBuilderProcessor
-                        </annotationProcessor>
+                        <annotationProcessor>io.soabase.recordbuilder.processor.RecordBuilderProcessor</annotationProcessor>
                     </annotationProcessors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
         </plugins>

@@ -163,7 +163,7 @@ public record AreaGridSettings(
 //        int rowIndex,
         out.writeInt(rowIndex);
 //        LayoutKey.ForArea layoutKeyForArea,
-        out.encode(layoutKeyForArea);
+        out.write(layoutKeyForArea);
 //        int columnSpan,
         out.writeInt(columnSpan);
 //        int rowSpan,

@@ -64,7 +64,7 @@ public sealed interface KlAreaForListOfFeatures<F extends Feature<?>, FX extends
         public void encode(EncoderOutput out) {
             out.writeVarInt(featureKeys.size());
             for (FeatureKey featureKey : featureKeys) {
-                out.encode(featureKey);
+                out.write(featureKey);
             }
         }
 
